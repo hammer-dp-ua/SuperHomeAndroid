@@ -1,17 +1,14 @@
 package ua.dp.hammer.superhome.activities
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import ua.dp.hammer.superhome.R
-import ua.dp.hammer.superhome.services.TemperaturesService
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
     }
 

@@ -13,15 +13,8 @@
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name="ua.dp.hammer.superhome.services.TemperaturesService"
-            android:description="Load temperature and humidity values from multiple sensors at home"
-            android:exported="false"/>
     </application>
-
 </manifest>
