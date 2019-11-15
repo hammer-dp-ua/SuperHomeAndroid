@@ -5,7 +5,7 @@ data class EnvSensor(
     val temperature: Float?,
     val humidity: Float?,
     val light: Int?,
-    val gain: Float?,
+    val gain: Int?,
     val errors: Int?,
     val uptime: Int?,
     val freeHeap: Int?

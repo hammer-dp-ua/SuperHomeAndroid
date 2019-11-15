@@ -4,7 +4,9 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 
-class SensorsService : Service() {
+// A service runs in the main thread.
+// Consider using AsyncTask or HandlerThread instead of the traditional Thread class
+class EnvSensorsService : Service() {
 
     override fun onCreate() {
 
@@ -14,7 +16,7 @@ class SensorsService : Service() {
                                 flags: Int,
                                 startId: Int): Int {
 
-        return START_STICKY
+        return START_STICKY // If we get killed, after returning from here, restart
     }
 
     override fun onBind(p0: Intent?): IBinder? {
