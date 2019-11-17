@@ -23,7 +23,7 @@ class EnvSensorsListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Intent(context, EnvSensorsService::class.java).also {intent ->
+        Intent(context, EnvSensorsService::class.java).also { intent ->
             context?.startService(intent)
         }
     }
@@ -39,8 +39,8 @@ class EnvSensorsListFragment : Fragment() {
 
         val adapter = EnvSensorsListAdapter()
 
-        binding.envSensorsList.adapter = adapter
         subscribeUi(adapter)
+        binding.envSensorsList.adapter = adapter
 
         return binding.root
     }
@@ -49,5 +49,9 @@ class EnvSensorsListFragment : Fragment() {
         viewModel.sensors.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

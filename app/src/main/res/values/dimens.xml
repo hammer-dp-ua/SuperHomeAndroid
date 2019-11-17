@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="card_side_margin">12dp</dimen>
-    <dimen name="card_elevation">2dp</dimen>
-    <dimen name="header_margin">24dp</dimen>
-    <dimen name="card_bottom_margin">26dp</dimen>
+    <dimen name="env_sensor_item_value_title_start_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_title_top_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_title_bottom_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_title_width">100dp</dimen>
+    <dimen name="env_sensor_item_value_start_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_top_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_bottom_margin">2dp</dimen>
+    <dimen name="env_sensor_item_text_size">16sp</dimen>
 
-    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="card_end_margin">2dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="header_margin">2dp</dimen>
+    <dimen name="card_bottom_margin">2dp</dimen>
+
+    <dimen name="margin_normal">2dp</dimen>
 </resources>
