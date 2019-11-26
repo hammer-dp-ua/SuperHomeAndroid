@@ -16,6 +16,8 @@
         android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
         android:layout_marginEnd="@dimen/card_end_margin"
         android:layout_marginBottom="@dimen/card_bottom_margin"
+        android:clickable="true"
+        android:focusable="true"
         app:cardElevation="@dimen/card_elevation"
         app:cardPreventCornerOverlap="false">
 
@@ -28,11 +30,10 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{envSensor.name}"
+                android:text="@{envSensor.deviceName}"
                 android:textAlignment="center"
                 android:textColor="@color/design_default_color_error"
-                android:textSize="@dimen/env_sensor_item_text_size"
-                tools:text="Name" />
+                android:textSize="@dimen/env_sensor_item_text_size"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,11 +49,10 @@
                     android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
                     android:width="@dimen/env_sensor_item_value_title_width"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textColor="@android:color/holo_red_dark"
                     android:textSize="@dimen/env_sensor_item_text_size"
+                    android:text="@string/temperature"
                     app:layout_constraintBaseline_toBaselineOf="@+id/temperature_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="@string/temperature" />
+                    app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
                     android:id="@+id/temperature_value"
                     android:layout_width="wrap_content"
@@ -65,8 +65,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/temperature_title"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:text="-100°C" />
+                    app:layout_constraintVertical_bias="0.0"/>
             </LinearLayout>
 
             <LinearLayout
@@ -84,9 +83,9 @@
                     android:width="@dimen/env_sensor_item_value_title_width"
                     android:textSize="@dimen/env_sensor_item_text_size"
                     android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="@string/humidity"
                     app:layout_constraintBaseline_toBaselineOf="@+id/humidity_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="@string/humidity" />
+                    app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
                     android:id="@+id/humidity_value"
                     android:layout_width="wrap_content"
@@ -99,8 +98,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/humidity_title"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:text="99%" />
+                    app:layout_constraintVertical_bias="0.0"/>
             </LinearLayout>
 
             <LinearLayout
@@ -118,9 +116,9 @@
                     android:width="@dimen/env_sensor_item_value_title_width"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textSize="@dimen/env_sensor_item_text_size"
+                    android:text="@string/light"
                     app:layout_constraintBaseline_toBaselineOf="@+id/light_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="@string/light" />
+                    app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
                     android:id="@+id/light_value"
                     android:layout_width="wrap_content"
@@ -130,7 +128,6 @@
                     android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
                     android:textSize="@dimen/env_sensor_item_text_size"
                     android:text="@{envSensor.lightString}"
-                    tools:text="10%"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/light_title"
                     app:layout_constraintTop_toTopOf="parent"
@@ -152,9 +149,9 @@
                     android:width="@dimen/env_sensor_item_value_title_width"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textSize="@dimen/env_sensor_item_text_size"
+                    android:text="@string/gain"
                     app:layout_constraintBaseline_toBaselineOf="@+id/gain_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="@string/gain" />
+                    app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
                     android:id="@+id/gain_value"
                     android:layout_width="wrap_content"
@@ -167,8 +164,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/gain_title"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:text="-99dB" />
+                    app:layout_constraintVertical_bias="0.0"/>
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

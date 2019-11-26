@@ -7,7 +7,7 @@
     <dimen name="env_sensor_item_value_start_margin">2dp</dimen>
     <dimen name="env_sensor_item_value_top_margin">2dp</dimen>
     <dimen name="env_sensor_item_value_bottom_margin">2dp</dimen>
-    <dimen name="env_sensor_item_text_size">16sp</dimen>
+    <dimen name="env_sensor_item_text_size">12sp</dimen>
 
     <dimen name="card_end_margin">2dp</dimen>
     <dimen name="card_elevation">2dp</dimen>

@@ -1,16 +1,75 @@
 package ua.dp.hammer.superhome.repositories.sensors
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import ua.dp.hammer.superhome.data.EnvSensor
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+
+
 
 class EnvSensorsRepository private constructor() {
-    fun getEnvSensorsValues(): List<EnvSensor> {
-        val sensor1 = EnvSensor("temp sensor 1", 25.0F, 99F, 0, -55, null, null, null)
-        val sensor2 = EnvSensor("temp sensor 2", -10.0F, 20F, 80, -56, 1, 9844621, 60122)
-        val sensor3 = EnvSensor("temp sensor 3", 20.0F, 80F, null, -56, 1, 22554, 60122)
-        //val dataToReturn = MutableLiveData<List<EnvSensor>>()
+    private val sensorsWebService: SensorsWebService
 
-        //dataToReturn.value = listOf(sensor1, sensor2, sensor3)
-        return listOf(sensor1, sensor2, sensor3)
+    init {
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(5, TimeUnit.MINUTES)
+            .writeTimeout(5, TimeUnit.MINUTES)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .build()
+
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.0.2/server/envSensors/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+        sensorsWebService = retrofit.create(SensorsWebService::class.java)
+    }
+
+    fun getEnvSensorsValues(sensors: MutableLiveData<List<EnvSensor>>, onSuccess: () -> Unit) {
+        sensorsWebService.getAllEnvSensorsData().enqueue(object : Callback<List<EnvSensor>> {
+            override fun onResponse(call: Call<List<EnvSensor>>, response: Response<List<EnvSensor>>) {
+                if (response.code() == 200) {
+                    sensors.postValue(response.body())
+                    onSuccess()
+                }
+            }
+
+            override fun onFailure(call: Call<List<EnvSensor>>, t: Throwable) {
+                Log.e(null, "Response error", t)
+
+                // Retry later
+                Executors.newSingleThreadScheduledExecutor().schedule({
+                    getEnvSensorsValues(sensors, onSuccess)
+                }, 30, TimeUnit.SECONDS)
+            }
+        })
+    }
+
+    fun receiveUpdatedInfoRepeatedly(sensors: MutableLiveData<List<EnvSensor>>) {
+        sensorsWebService.getAllEnvSensorsDataDeferred().enqueue(object : Callback<List<EnvSensor>> {
+            override fun onResponse(call: Call<List<EnvSensor>>, response: Response<List<EnvSensor>>) {
+                if (response.code() == 200) {
+                    sensors.postValue(response.body())
+                    receiveUpdatedInfoRepeatedly(sensors)
+                }
+            }
+
+            override fun onFailure(call: Call<List<EnvSensor>>, t: Throwable) {
+                Log.e(null, "Deferred response error", t)
+
+                // Retry later
+                Executors.newSingleThreadScheduledExecutor().schedule({
+                    receiveUpdatedInfoRepeatedly(sensors)
+                }, 30, TimeUnit.SECONDS)
+            }
+        })
     }
 
     companion object {

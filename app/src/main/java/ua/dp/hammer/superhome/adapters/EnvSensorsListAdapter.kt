@@ -1,5 +1,6 @@
 package ua.dp.hammer.superhome.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -21,6 +22,13 @@ class EnvSensorsListAdapter : ListAdapter<EnvSensor, RecyclerView.ViewHolder>(En
     }
 
     class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnLongClickListener {
+                val envSensor: EnvSensor? = binding.envSensor
+                Log.i(null, "~~~ Long click of sensor:\r\n$envSensor")
+                true
+            }
+        }
 
         fun bind(item: EnvSensor) {
             binding.apply {
@@ -34,7 +42,7 @@ class EnvSensorsListAdapter : ListAdapter<EnvSensor, RecyclerView.ViewHolder>(En
 private class EnvSensorCallback : DiffUtil.ItemCallback<EnvSensor>() {
 
     override fun areItemsTheSame(oldItem: EnvSensor, newItem: EnvSensor): Boolean {
-        return oldItem.name == newItem.name
+        return oldItem.deviceName == newItem.deviceName
     }
 
     override fun areContentsTheSame(oldItem: EnvSensor, newItem: EnvSensor): Boolean {

@@ -1,14 +1,14 @@
 package ua.dp.hammer.superhome.data
 
 data class EnvSensor(
-    val name: String,
+    val deviceName: String,
     val temperature: Float?,
     val humidity: Float?,
     val light: Int?,
     val gain: Int?,
     val errors: Int?,
     val uptime: Int?,
-    val freeHeap: Int?
+    val freeHeapSpace: Int?
 ) {
 
     fun getTemperatureString(): String? {
