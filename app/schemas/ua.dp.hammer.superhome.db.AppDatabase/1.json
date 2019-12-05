@@ -1,0 +1,99 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d460525188ea0598e55f229264d5a4a6",
+    "entities": [
+      {
+        "tableName": "EnvSensorSettings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `displayedName` TEXT NOT NULL, `forPortrait` INTEGER NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayedName",
+            "columnName": "displayedName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "forPortrait",
+            "columnName": "forPortrait",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "EnvSensorDisplayedRow",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `rowName` TEXT NOT NULL, `ownerSetting` TEXT NOT NULL, FOREIGN KEY(`ownerSetting`) REFERENCES `EnvSensorSettings`(`name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rowName",
+            "columnName": "rowName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ownerSetting",
+            "columnName": "ownerSetting",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_EnvSensorDisplayedRow_ownerSetting",
+            "unique": false,
+            "columnNames": [
+              "ownerSetting"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_EnvSensorDisplayedRow_ownerSetting` ON `${TABLE_NAME}` (`ownerSetting`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "EnvSensorSettings",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "ownerSetting"
+            ],
+            "referencedColumns": [
+              "name"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd460525188ea0598e55f229264d5a4a6')"
+    ]
+  }
+}

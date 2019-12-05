@@ -22,15 +22,12 @@ class EnvSensorsListAdapter : ListAdapter<EnvSensor, RecyclerView.ViewHolder>(En
     }
 
     class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        init {
+        fun bind(item: EnvSensor) {
             binding.root.setOnLongClickListener {
-                val envSensor: EnvSensor? = binding.envSensor
-                Log.i(null, "~~~ Long click of sensor:\r\n$envSensor")
+                Log.i(null, "~~~ Long click")
                 true
             }
-        }
 
-        fun bind(item: EnvSensor) {
             binding.apply {
                 envSensor = item
                 executePendingBindings()
