@@ -8,8 +8,9 @@ import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.repositories.sensors.EnvSensorsRepository
 
-class EnvSensorViewModel(private val envSensorsRepository: EnvSensorsRepository) : ViewModel() {
+class EnvSensorViewModel() : ViewModel() {
     val sensors: MutableLiveData<List<EnvSensor>> = MutableLiveData()
+    private val envSensorsRepository: EnvSensorsRepository = EnvSensorsRepository.getInstance()
 
     init {
         viewModelScope.launch {

@@ -4,4 +4,12 @@
     <string name="humidity">Humidity</string>
     <string name="light">Light</string>
     <string name="gain">Gain</string>
+    <string name="name">Name</string>
+    <string name="displayed_name">Displayed name</string>
+    <string name="displayed_env_sensor_dialog_tittle">Displayed info</string>
+    <string name="OK" translatable="false">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="errors">Errors</string>
+    <string name="uptime">Uptime</string>
+    <string name="free_heap">Free heap</string>
 </resources>

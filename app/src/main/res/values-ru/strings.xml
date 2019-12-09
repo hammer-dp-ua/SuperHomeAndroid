@@ -4,4 +4,11 @@
     <string name="humidity">Влажность</string>
     <string name="light">Освещённость</string>
     <string name="gain">Усиление</string>
+    <string name="name">Имя</string>
+    <string name="displayed_name">Отображаемое имя</string>
+    <string name="displayed_env_sensor_dialog_tittle">Отображаемые данные</string>
+    <string name="cancel">Отмена</string>
+    <string name="errors">Ошибки</string>
+    <string name="uptime">Время работы</string>
+    <string name="free_heap">Свободно heap</string>
 </resources>
