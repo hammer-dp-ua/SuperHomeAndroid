@@ -15,4 +15,8 @@ import androidx.room.PrimaryKey
 )])
 data class EnvSensorDisplayedRow(@PrimaryKey(autoGenerate = true) val id: Int?,
                                  val rowName: String,
-                                 val ownerSetting: String)
+                                 val ownerSetting: String) {
+    enum class RowNames {
+        TEMPERATURE, HUMIDITY, LIGHT, GAIN, ERRORS, UPTIME, FREE_HEAP
+    }
+}

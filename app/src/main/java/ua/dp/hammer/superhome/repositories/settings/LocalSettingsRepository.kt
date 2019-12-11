@@ -2,11 +2,16 @@ package ua.dp.hammer.superhome.repositories.settings
 
 import android.content.Context
 import ua.dp.hammer.superhome.db.AppDatabase
+import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
 import ua.dp.hammer.superhome.db.entities.EnvSensorSettings
 
 class LocalSettingsRepository private constructor(val database: AppDatabase) {
     suspend fun getEnvSensorSettings(name: String): EnvSensorSettings {
         return database.getEnvSensorSettingsDao().getEnvSensorSettings(name)
+    }
+
+    suspend fun getEnvSensorSettingsAndDisplayedRows(name: String): EnvSensorSettingAndDisplayedRows? {
+        return database.getEnvSensorSettingsDao().getEnvSensorSettingsAndDisplayedRows(name)
     }
 
     companion object {
