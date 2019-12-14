@@ -19,4 +19,7 @@ interface EnvSensorSettingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEnvSensorDisplayedRow(displayedRow: EnvSensorDisplayedRow)
+
+    @Query("DELETE FROM EnvSensorDisplayedRow WHERE rowName = :rowName AND ownerSetting = :ownerSetting")
+    suspend fun deleteEnvSensorDisplayedRow(rowName: String, ownerSetting: String)
 }

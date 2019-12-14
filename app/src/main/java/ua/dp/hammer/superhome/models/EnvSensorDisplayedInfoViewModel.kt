@@ -1,15 +1,16 @@
 package ua.dp.hammer.superhome.models
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
 import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRow
 import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRow.RowNames.*
 import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
+import ua.dp.hammer.superhome.db.entities.EnvSensorSettings
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 
 class EnvSensorDisplayedInfoViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
@@ -56,8 +57,26 @@ class EnvSensorDisplayedInfoViewModel(private val localSettingsRepository: Local
         }
     }
 
-    fun onOk() {
-        Log.i(null, "~~~ Object: $displayedInfo")
+    fun onOk(onFinish: () -> Unit): EnvSensorDisplayedInfo.Detached {
+        val detachedInfo: EnvSensorDisplayedInfo.Detached = displayedInfo.getDetached()
+        val deviceName = detachedInfo.name
+
+        GlobalScope.launch {
+            val envSensorSettings = EnvSensorSettings(deviceName, detachedInfo.displayedName)
+
+            localSettingsRepository.insertEnvSensorSettings(envSensorSettings)
+
+            saveRowState(detachedInfo.isTemperatureDisplayed, TEMPERATURE, deviceName)
+            saveRowState(detachedInfo.isHumidityDisplayed, HUMIDITY, deviceName)
+            saveRowState(detachedInfo.isLightDisplayed, LIGHT, deviceName)
+            saveRowState(detachedInfo.isGainDisplayed, GAIN, deviceName)
+            saveRowState(detachedInfo.areErrorsDisplayed, ERRORS, deviceName)
+            saveRowState(detachedInfo.isUptimeDisplayed, UPTIME, deviceName)
+            saveRowState(detachedInfo.isFreeHeapSpaceDisplayed, FREE_HEAP, deviceName)
+        }
+
+        onFinish()
+        return detachedInfo
     }
 
     private fun isRowDisplayed(displayedRows: List<EnvSensorDisplayedRow>?, rowName: String): Boolean {
@@ -66,5 +85,20 @@ class EnvSensorDisplayedInfoViewModel(private val localSettingsRepository: Local
             return true
         }
         return displayedRows.firstOrNull{it.rowName == rowName} != null
+    }
+
+    private suspend fun saveRowState(
+        isColumnDisplayed: Boolean?,
+        rowName: EnvSensorDisplayedRow.RowNames,
+        deviceName: String) {
+
+        if (isColumnDisplayed != null) {
+            if (isColumnDisplayed == true) {
+                val newRow = EnvSensorDisplayedRow(null, rowName.name, deviceName)
+                localSettingsRepository.insertEnvSensorDisplayedRow(newRow)
+            } else {
+                localSettingsRepository.deleteEnvSensorDisplayedRow(rowName.name, deviceName)
+            }
+        }
     }
 }

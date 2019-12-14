@@ -2,19 +2,19 @@ package ua.dp.hammer.superhome.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ua.dp.hammer.superhome.activities.fragments.DisplayedEnvSensorInfoDialog
+import ua.dp.hammer.superhome.activities.fragments.EnvSensorsListFragment
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.databinding.EnvSensorListItemBinding
 
-class EnvSensorsListAdapter(private val fragmentManager: FragmentManager) : ListAdapter<EnvSensor, RecyclerView.ViewHolder>(EnvSensorCallback()) {
+class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) : ListAdapter<EnvSensor, RecyclerView.ViewHolder>(EnvSensorCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = EnvSensorListItemBinding.inflate(layoutInflater, parent, false)
-        return EnvSensorsViewHolder(binding, fragmentManager)
+        return EnvSensorsViewHolder(binding, fragment)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -23,11 +23,13 @@ class EnvSensorsListAdapter(private val fragmentManager: FragmentManager) : List
     }
 
     class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding,
-                               private val fragmentManager: FragmentManager) : RecyclerView.ViewHolder(binding.root) {
+                               private val fragment: EnvSensorsListFragment) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: EnvSensor) {
+            binding.lifecycleOwner = fragment
+
             binding.root.setOnLongClickListener {
-                val dialog = DisplayedEnvSensorInfoDialog(item)
-                dialog.show(fragmentManager, "sensors_info")
+                val dialog = DisplayedEnvSensorInfoDialog(item, fragment)
+                dialog.show(fragment.parentFragmentManager, "sensors_info")
                 true
             }
 

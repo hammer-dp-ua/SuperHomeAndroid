@@ -35,7 +35,7 @@ class EnvSensorSettingsTest {
     @Test
     fun testIt() = runBlocking {
         val envSensorSettings: EnvSensorSettings =
-            EnvSensorSettings("name", "displayed name", true)
+            EnvSensorSettings("name", "displayed name")
         envSensorSettingsDao.insertEnvSensorSettings(envSensorSettings)
 
         assertEquals(envSensorSettings.name, envSensorSettingsDao.getEnvSensorSettings(envSensorSettings.name).name)
@@ -59,5 +59,12 @@ class EnvSensorSettingsTest {
         assertNotNull(settingsAndDisplayedRows.displayedRows.find { it.rowName == "row1" })
         assertNotNull(settingsAndDisplayedRows.displayedRows.find { it.rowName == "row2" })
         assertNull(settingsAndDisplayedRows.displayedRows.find { it.rowName == "row3" })
+
+        envSensorSettingsDao.deleteEnvSensorDisplayedRow("row1", envSensorSettings.name)
+        envSensorSettingsDao.deleteEnvSensorDisplayedRow("row2", envSensorSettings.name)
+        settingsAndDisplayedRows = envSensorSettingsDao.getEnvSensorSettingsAndDisplayedRows(envSensorSettings.name)
+
+        assertEquals(envSensorSettings.name, settingsAndDisplayedRows.envSensorSettings?.name)
+        assertEquals(0, settingsAndDisplayedRows.displayedRows.size)
     }
 }

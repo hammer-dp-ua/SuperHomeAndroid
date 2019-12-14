@@ -21,9 +21,36 @@ data class EnvSensorDisplayedInfo(
     val isFreeHeapSpaceDisplayed: MutableLiveData<Boolean> = MutableLiveData(),
     val freeHeapSpaceOptionVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 ) {
+
+    fun getDetached(): Detached {
+        return Detached(
+            name.value ?: throw IllegalStateException("Name can't be null"),
+            displayedName.value,
+            isTemperatureDisplayed.value,
+            isHumidityDisplayed.value,
+            isLightDisplayed.value,
+            isGainDisplayed.value,
+            areErrorsDisplayed.value,
+            isUptimeDisplayed.value,
+            isFreeHeapSpaceDisplayed.value
+        )
+    }
+
     override fun toString(): String {
         return "Name: ${name.value}, Displayed name: ${displayedName.value}, temp: ${isTemperatureDisplayed.value}, " +
                 "humidity: ${isHumidityDisplayed.value}, light: ${isLightDisplayed.value}, gain: ${isGainDisplayed.value}, " +
                 "errors: ${areErrorsDisplayed.value}, uptime: ${isUptimeDisplayed.value}, free heap: ${isFreeHeapSpaceDisplayed.value}"
     }
+
+    inner class Detached(
+        val name: String,
+        val displayedName: String?,
+        val isTemperatureDisplayed: Boolean?,
+        val isHumidityDisplayed: Boolean?,
+        val isLightDisplayed: Boolean?,
+        val isGainDisplayed: Boolean?,
+        val areErrorsDisplayed: Boolean?,
+        val isUptimeDisplayed: Boolean?,
+        val isFreeHeapSpaceDisplayed: Boolean?
+    )
 }

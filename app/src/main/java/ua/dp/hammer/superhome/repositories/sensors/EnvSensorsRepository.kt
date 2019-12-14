@@ -6,8 +6,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ua.dp.hammer.superhome.data.EnvSensor
 import java.util.concurrent.TimeUnit
 
-
-
 class EnvSensorsRepository private constructor() {
     private val sensorsWebServiceDao: SensorsWebServiceDao
 

@@ -19,4 +19,8 @@ data class EnvSensorDisplayedRow(@PrimaryKey(autoGenerate = true) val id: Int?,
     enum class RowNames {
         TEMPERATURE, HUMIDITY, LIGHT, GAIN, ERRORS, UPTIME, FREE_HEAP
     }
+
+    override fun toString(): String {
+        return EnvSensorDisplayedRow::class.java.simpleName + ". ID: $id, name: $rowName, owner: $ownerSetting"
+    }
 }
