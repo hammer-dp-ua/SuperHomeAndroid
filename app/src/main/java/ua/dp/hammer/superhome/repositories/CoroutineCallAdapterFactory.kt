@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.sensors
+package ua.dp.hammer.superhome.repositories
 
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
@@ -42,9 +42,13 @@ class CoroutineCallAdapterFactory private constructor() : CallAdapter.Factory() 
         return if (rawDeferredType == Response::class.java) {
             check(responseType is ParameterizedType) { "Response must be parameterized as Response<Foo> or Response<out Foo>" }
 
-            ResponseCallAdapter<Any>(getParameterUpperBound(0, responseType))
+            ResponseCallAdapter<Any>(
+                getParameterUpperBound(0, responseType)
+            )
         } else {
-            BodyCallAdapter<Any>(responseType)
+            BodyCallAdapter<Any>(
+                responseType
+            )
         }
     }
 

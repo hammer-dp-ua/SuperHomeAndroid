@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ua.dp.hammer.superhome.data.EnvSensor
+import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
 import java.util.concurrent.TimeUnit
 
 class EnvSensorsRepository private constructor() {

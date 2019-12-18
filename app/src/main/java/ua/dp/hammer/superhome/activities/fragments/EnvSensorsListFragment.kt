@@ -29,26 +29,27 @@ class EnvSensorsListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: created")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.i(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: started")
+        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: started")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.i(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: resumed")
+        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: resumed")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: paused")
+        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: paused")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.i(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: stopped")
+        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: stopped")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {

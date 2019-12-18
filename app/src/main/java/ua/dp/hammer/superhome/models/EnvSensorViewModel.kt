@@ -1,6 +1,5 @@
 package ua.dp.hammer.superhome.models
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -67,7 +66,6 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
 
         viewModelScope.launch {
             if (detachedDisplayedInfo.displayedName != null) {
-                Log.i(null, "~~~ Setting displayed name...")
                 envSensor.displayedName.value = detachedDisplayedInfo.displayedName
             }
             envSensor.temperatureVisibility.value = getVisibility(detachedDisplayedInfo.isTemperatureDisplayed)
@@ -119,8 +117,7 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
 
     private fun getVisibility(isValueNull: Boolean,
                               rowName: EnvSensorDisplayedRow.RowNames,
-                              displayedRows: List<EnvSensorDisplayedRow>?):
-            Int {
+                              displayedRows: List<EnvSensorDisplayedRow>?): Int {
         if (isValueNull) {
             return View.GONE
         }
