@@ -15,4 +15,6 @@
     <dimen name="card_bottom_margin">2dp</dimen>
 
     <dimen name="margin_normal">2dp</dimen>
+
+    <dimen name="fragment_manager_remaining_text_size">12sp</dimen>
 </resources>

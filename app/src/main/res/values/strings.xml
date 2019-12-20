@@ -12,4 +12,5 @@
     <string name="errors">Errors</string>
     <string name="uptime">Uptime</string>
     <string name="free_heap">Free heap</string>
+    <string name="remaining">Remaining:</string>
 </resources>

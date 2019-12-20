@@ -37,6 +37,8 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
                 }
             }
 
+            var oftenAmount = 0
+
             while (isActive) {
                 try {
                     val requestStartTime = System.currentTimeMillis()
@@ -50,7 +52,14 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
 
                     if ((requestEndTime - requestStartTime) < 1_000) {
                         // Too often
+                        oftenAmount++
+                    } else {
+                        oftenAmount = 0
+                    }
+
+                    if (oftenAmount >= 3) {
                         delay(10_000)
+                        oftenAmount = 0;
                     }
                 } catch (e: Throwable) {
                     delay(10_000)

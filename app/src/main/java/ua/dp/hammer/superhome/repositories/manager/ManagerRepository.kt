@@ -3,6 +3,9 @@ package ua.dp.hammer.superhome.repositories.manager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ua.dp.hammer.superhome.data.AlarmsState
+import ua.dp.hammer.superhome.data.AllStates
+import ua.dp.hammer.superhome.data.ProjectorState
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
 import java.util.concurrent.TimeUnit
 
@@ -23,5 +26,36 @@ class ManagerRepository private constructor() {
             .client(okHttpClient)
             .build()
         managerWebServiceDao = retrofit.create(ManagerWebServiceDao::class.java)
+    }
+
+    suspend fun stopVideoRecording(timeout: Int): AlarmsState {
+        return managerWebServiceDao.stopVideoRecordingAsync(timeout).await()
+    }
+
+    suspend fun switchProjectors(state: String): ProjectorState {
+        return managerWebServiceDao.switchProjectorsAsync(state).await()
+    }
+
+    suspend fun turnOnBathroomFan(): String {
+        return managerWebServiceDao.turnOnBathroomFanAsync().await()
+    }
+
+    suspend fun getCurrentStates(): AllStates {
+        return managerWebServiceDao.getCurrentStatesAsync().await()
+    }
+
+    suspend fun getCurrentStatesDeferred(): AllStates {
+        return managerWebServiceDao.getCurrentStatesDeferredAsync().await()
+    }
+
+    companion object {
+        // For Singleton instantiation
+        @Volatile private var instance: ManagerRepository? = null
+
+        fun getInstance() : ManagerRepository {
+            return instance ?: synchronized(this) {
+                instance ?: ManagerRepository().also { instance = it }
+            }
+        }
     }
 }

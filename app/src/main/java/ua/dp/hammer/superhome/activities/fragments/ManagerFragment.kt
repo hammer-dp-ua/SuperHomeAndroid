@@ -63,6 +63,11 @@ class ManagerFragment : Fragment() {
             true
         }
 
+        binding.funButton.setOnLongClickListener {
+            viewModel.onFanLongButtonClick(it as ImageButton)
+            true
+        }
+
         return binding.root
     }
 }

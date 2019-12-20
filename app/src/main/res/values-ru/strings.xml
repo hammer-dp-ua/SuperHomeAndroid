@@ -11,4 +11,5 @@
     <string name="errors">Ошибки</string>
     <string name="uptime">Время работы</string>
     <string name="free_heap">Свободно heap</string>
+    <string name="remaining">Осталось:</string>
 </resources>
