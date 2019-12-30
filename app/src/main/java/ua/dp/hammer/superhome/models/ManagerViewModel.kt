@@ -11,12 +11,22 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.AlarmsState
 import ua.dp.hammer.superhome.data.AllStates
+import ua.dp.hammer.superhome.data.FanState
 import ua.dp.hammer.superhome.data.ProjectorState
+import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
 import ua.dp.hammer.superhome.repositories.manager.ManagerRepository
+import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+import java.util.*
 
-class ManagerViewModel : ViewModel() {
+class ManagerViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
     val managerRepository: ManagerRepository = ManagerRepository.getInstance()
 
+    val projectorsButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
+    val cameraButtonSelected: MutableLiveData<Boolean> = MutableLiveData(true)
+    val fanButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
+    val fanButtonEnabled: MutableLiveData<Boolean> = MutableLiveData(true)
+    val fanWorkingMinutesRemaining: MutableLiveData<String> = MutableLiveData()
+    val fanWorkingMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val disabledCameraMinutesRemaining: MutableLiveData<String> = MutableLiveData()
     val cameraMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
@@ -72,6 +82,10 @@ class ManagerViewModel : ViewModel() {
         } else {
             cameraMinutesRemainingStatusVisibility.value = View.GONE
         }
+
+        updateFanState(allSatesResponse.fanState)
+        projectorsButtonSelected.value = allSatesResponse.projectorState.turnedOn
+        cameraButtonSelected.value = allSatesResponse.alarmsState.ignoring
     }
 
     fun onProjectorsButtonClick(view: View) {
@@ -110,25 +124,40 @@ class ManagerViewModel : ViewModel() {
 
         // Selected means start ignoring alarms and stop video recording
         button.isSelected = !button.isSelected
-        val ignoring = button.isSelected
+        val toBeIgnored = button.isSelected
 
         viewModelScope.launch {
             var response: AlarmsState? = null
 
+            val timeout = when (toBeIgnored) {
+                false -> -1
+                else -> {
+                    val currentSettings: CameraSettingsEntity = localSettingsRepository.getCurrentCameraSettings() ?:
+                        throw IllegalStateException()
+                    val currentDateTime = Calendar.getInstance()
+                    val currentHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
+                    val currentMinute = currentDateTime.get(Calendar.MINUTE)
+                    var deltaHours = currentSettings.resumeRecordingHour - currentHour
+                    val deltaMinutes = currentSettings.resumeRecordingMinute - currentMinute
+
+                    if (deltaHours < 0) {
+                        deltaHours += 24
+                    }
+
+                    deltaHours * 60 + deltaMinutes
+                }
+            }
+
             try {
-                response = managerRepository.stopVideoRecording(1)
+                response = managerRepository.stopVideoRecording(timeout)
             } catch (e: Throwable) {
                 Log.d(null, "~~~ Error on changing alarms ignoring state", e)
             }
 
-            if (response == null || response.ignoring != ignoring) {
+            if (response == null || response.ignoring != toBeIgnored) {
                 button.isSelected = prevSelectedState
             }
         }
-    }
-
-    fun onCameraRecordingLongButtonClick(button: ImageButton) {
-
     }
 
     fun onFanButtonClick(view: View) {
@@ -136,6 +165,43 @@ class ManagerViewModel : ViewModel() {
         val prevSelectedState = button.isSelected
 
         button.isSelected = !button.isSelected
+        fanButtonEnabled.value = false
+        fanButtonSelected.value = true
+        val turnOn = button.isSelected
+
+        viewModelScope.launch {
+            var response: FanState? = null
+
+            try {
+                if (turnOn) {
+                    response = managerRepository.turnOnBathroomFan()
+                }
+            } catch (e: Throwable) {
+                Log.d(null, "~~~ Error on changing fan state", e)
+            }
+
+            if (response == null) {
+                button.isSelected = prevSelectedState
+            } else {
+                updateFanState(response)
+            }
+        }
+    }
+
+    private fun updateFanState(response: FanState) {
+        fanWorkingMinutesRemaining.value = response.minutesRemaining.toString()
+
+        if (response.minutesRemaining > 0 && response.turnedOn) {
+            fanWorkingMinutesRemainingStatusVisibility.value = View.VISIBLE
+        } else {
+            fanWorkingMinutesRemainingStatusVisibility.value = View.GONE
+        }
+
+        if (fanButtonSelected.value != response.turnedOn) {
+            // Fan state changed
+            fanButtonEnabled.value = true
+        }
+        fanButtonSelected.value = response.turnedOn
     }
 
     fun onFanLongButtonClick(button: ImageButton) {

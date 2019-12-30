@@ -9,8 +9,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
-import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRow
-import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRow.RowNames.*
+import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
+import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity.RowNames.*
 import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
 import ua.dp.hammer.superhome.repositories.sensors.EnvSensorsRepository
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
@@ -125,8 +125,8 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
     }
 
     private fun getVisibility(isValueNull: Boolean,
-                              rowName: EnvSensorDisplayedRow.RowNames,
-                              displayedRows: List<EnvSensorDisplayedRow>?): Int {
+                              rowName: EnvSensorDisplayedRowEntity.RowNames,
+                              displayedRows: List<EnvSensorDisplayedRowEntity>?): Int {
         if (isValueNull) {
             return View.GONE
         }

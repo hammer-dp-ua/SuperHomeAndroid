@@ -5,6 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ua.dp.hammer.superhome.data.AlarmsState
 import ua.dp.hammer.superhome.data.AllStates
+import ua.dp.hammer.superhome.data.FanState
 import ua.dp.hammer.superhome.data.ProjectorState
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
 import java.util.concurrent.TimeUnit
@@ -36,7 +37,7 @@ class ManagerRepository private constructor() {
         return managerWebServiceDao.switchProjectorsAsync(state).await()
     }
 
-    suspend fun turnOnBathroomFan(): String {
+    suspend fun turnOnBathroomFan(): FanState {
         return managerWebServiceDao.turnOnBathroomFanAsync().await()
     }
 

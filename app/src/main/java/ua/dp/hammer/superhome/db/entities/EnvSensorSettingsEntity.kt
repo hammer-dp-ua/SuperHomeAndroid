@@ -4,11 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class EnvSensorSettings(
+data class EnvSensorSettingsEntity(
     @PrimaryKey val name: String,
     val displayedName: String?
 ) {
     override fun toString(): String {
-        return EnvSensorSettings::class.java.simpleName + ". Name: $name, displayed name: $displayedName"
+        return EnvSensorSettingsEntity::class.java.simpleName + ". Name: $name, displayed name: $displayedName"
     }
 }

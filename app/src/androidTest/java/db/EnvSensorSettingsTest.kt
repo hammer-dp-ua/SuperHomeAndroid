@@ -11,9 +11,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import ua.dp.hammer.superhome.db.AppDatabase
 import ua.dp.hammer.superhome.db.dao.EnvSensorSettingsDao
-import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRow
+import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
 import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
-import ua.dp.hammer.superhome.db.entities.EnvSensorSettings
+import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
 
 @RunWith(AndroidJUnit4::class)
 class EnvSensorSettingsTest {
@@ -34,8 +34,8 @@ class EnvSensorSettingsTest {
 
     @Test
     fun testIt() = runBlocking {
-        val envSensorSettings: EnvSensorSettings =
-            EnvSensorSettings("name", "displayed name")
+        val envSensorSettings: EnvSensorSettingsEntity =
+            EnvSensorSettingsEntity("name", "displayed name")
         envSensorSettingsDao.insertEnvSensorSettings(envSensorSettings)
 
         assertEquals(envSensorSettings.name, envSensorSettingsDao.getEnvSensorSettings(envSensorSettings.name).name)
@@ -46,10 +46,10 @@ class EnvSensorSettingsTest {
         assertEquals(envSensorSettings.name, settingsAndDisplayedRows.envSensorSettings?.name)
         assertEquals(0, settingsAndDisplayedRows.displayedRows.size)
 
-        val envSensorDisplayedRow1: EnvSensorDisplayedRow =
-            EnvSensorDisplayedRow(null, "row1", envSensorSettings.name)
-        val envSensorDisplayedRow2: EnvSensorDisplayedRow =
-            EnvSensorDisplayedRow(null, "row2", envSensorSettings.name)
+        val envSensorDisplayedRow1: EnvSensorDisplayedRowEntity =
+            EnvSensorDisplayedRowEntity(null, "row1", envSensorSettings.name)
+        val envSensorDisplayedRow2: EnvSensorDisplayedRowEntity =
+            EnvSensorDisplayedRowEntity(null, "row2", envSensorSettings.name)
         envSensorSettingsDao.insertEnvSensorDisplayedRow(envSensorDisplayedRow1)
         envSensorSettingsDao.insertEnvSensorDisplayedRow(envSensorDisplayedRow2)
         settingsAndDisplayedRows = envSensorSettingsDao.getEnvSensorSettingsAndDisplayedRows(envSensorSettings.name)

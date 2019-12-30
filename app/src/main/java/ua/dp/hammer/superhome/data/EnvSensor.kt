@@ -34,11 +34,11 @@ data class EnvSensor(
     }
 
     fun getTemperatureString(): String? {
-        return temperature?.toString()?.plus("°C")
+        return roundFloat(temperature)?.plus("°C")
     }
 
     fun getHumidityString(): String? {
-        return humidity?.toString()?.plus("%")
+        return roundFloat(humidity)?.plus("%")
     }
 
     fun getLightString(): String? {
@@ -59,5 +59,12 @@ data class EnvSensor(
 
     fun getFreeHeapSpaceString(): String? {
         return freeHeapSpace?.toString()
+    }
+
+    private fun roundFloat(floatValue: Float?): String? {
+        if (floatValue == null) {
+            return null
+        }
+        return String.format("%.1f", floatValue)
     }
 }

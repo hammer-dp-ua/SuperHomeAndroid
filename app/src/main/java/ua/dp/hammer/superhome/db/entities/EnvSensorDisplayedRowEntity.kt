@@ -8,19 +8,19 @@ import androidx.room.PrimaryKey
 
 @Entity(indices = [Index(value = ["ownerSetting"])],
     foreignKeys = [ForeignKey(
-    entity = EnvSensorSettings::class,
+    entity = EnvSensorSettingsEntity::class,
     parentColumns = arrayOf("name"),
     childColumns = arrayOf("ownerSetting"),
     onDelete = CASCADE
 )])
-data class EnvSensorDisplayedRow(@PrimaryKey(autoGenerate = true) val id: Int?,
-                                 val rowName: String,
-                                 val ownerSetting: String) {
+data class EnvSensorDisplayedRowEntity(@PrimaryKey(autoGenerate = true) val id: Int?,
+                                       val rowName: String,
+                                       val ownerSetting: String) {
     enum class RowNames {
         TEMPERATURE, HUMIDITY, LIGHT, GAIN, ERRORS, UPTIME, FREE_HEAP
     }
 
     override fun toString(): String {
-        return EnvSensorDisplayedRow::class.java.simpleName + ". ID: $id, name: $rowName, owner: $ownerSetting"
+        return EnvSensorDisplayedRowEntity::class.java.simpleName + ". ID: $id, name: $rowName, owner: $ownerSetting"
     }
 }

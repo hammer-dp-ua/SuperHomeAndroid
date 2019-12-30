@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import ua.dp.hammer.superhome.data.AlarmsState
 import ua.dp.hammer.superhome.data.AllStates
+import ua.dp.hammer.superhome.data.FanState
 import ua.dp.hammer.superhome.data.ProjectorState
 
 interface ManagerWebServiceDao {
@@ -15,7 +16,7 @@ interface ManagerWebServiceDao {
     fun switchProjectorsAsync(@Query("switchState") switchState: String): Deferred<ProjectorState>
 
     @GET("turnOnBathroomFun")
-    fun turnOnBathroomFanAsync(): Deferred<String>
+    fun turnOnBathroomFanAsync(): Deferred<FanState>
 
     @GET("getCurrentStates")
     fun getCurrentStatesAsync(): Deferred<AllStates>

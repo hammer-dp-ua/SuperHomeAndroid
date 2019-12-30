@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8182a0505636d28dac9093a8eca9dfd0",
+    "identityHash": "489e686bdb4322afad88367a7c5b9103",
     "entities": [
       {
-        "tableName": "EnvSensorSettings",
+        "tableName": "EnvSensorSettingsEntity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `displayedName` TEXT, PRIMARY KEY(`name`))",
         "fields": [
           {
@@ -31,8 +31,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "EnvSensorDisplayedRow",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `rowName` TEXT NOT NULL, `ownerSetting` TEXT NOT NULL, FOREIGN KEY(`ownerSetting`) REFERENCES `EnvSensorSettings`(`name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "EnvSensorDisplayedRowEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `rowName` TEXT NOT NULL, `ownerSetting` TEXT NOT NULL, FOREIGN KEY(`ownerSetting`) REFERENCES `EnvSensorSettingsEntity`(`name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -61,17 +61,17 @@
         },
         "indices": [
           {
-            "name": "index_EnvSensorDisplayedRow_ownerSetting",
+            "name": "index_EnvSensorDisplayedRowEntity_ownerSetting",
             "unique": false,
             "columnNames": [
               "ownerSetting"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_EnvSensorDisplayedRow_ownerSetting` ON `${TABLE_NAME}` (`ownerSetting`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_EnvSensorDisplayedRowEntity_ownerSetting` ON `${TABLE_NAME}` (`ownerSetting`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "EnvSensorSettings",
+            "table": "EnvSensorSettingsEntity",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -82,12 +82,44 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "CameraSettingsEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `resumeRecordingHour` INTEGER NOT NULL, `resumeRecordingMinute` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resumeRecordingHour",
+            "columnName": "resumeRecordingHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resumeRecordingMinute",
+            "columnName": "resumeRecordingMinute",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8182a0505636d28dac9093a8eca9dfd0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '489e686bdb4322afad88367a7c5b9103')"
     ]
   }
 }

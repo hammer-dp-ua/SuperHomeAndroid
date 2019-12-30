@@ -5,10 +5,10 @@ import androidx.room.Relation
 
 class EnvSensorSettingAndDisplayedRows {
     @Embedded
-    var envSensorSettings: EnvSensorSettings? = null
+    var envSensorSettings: EnvSensorSettingsEntity? = null
 
     @Relation(parentColumn = "name", entityColumn = "ownerSetting")
-    var displayedRows: List<EnvSensorDisplayedRow> = ArrayList()
+    var displayedRows: List<EnvSensorDisplayedRowEntity> = ArrayList()
 
     override fun toString(): String {
         val rows: StringBuilder = StringBuilder()

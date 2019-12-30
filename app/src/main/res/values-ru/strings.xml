@@ -12,4 +12,7 @@
     <string name="uptime">Время работы</string>
     <string name="free_heap">Свободно heap</string>
     <string name="remaining">Осталось:</string>
+    <string name="camera_recording_settings_tittle">Настройки записи камеры</string>
+    <string name="do_not_record_label">Не записывать часов</string>
+    <string name="resume_camera_recording_tittle">Возобновить запись в</string>
 </resources>

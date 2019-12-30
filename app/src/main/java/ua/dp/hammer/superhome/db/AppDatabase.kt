@@ -5,12 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ua.dp.hammer.superhome.db.dao.EnvSensorSettingsDao
-import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRow
-import ua.dp.hammer.superhome.db.entities.EnvSensorSettings
+import ua.dp.hammer.superhome.db.dao.ManagerSettingsDao
+import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
+import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
+import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
 
-@Database(entities = [EnvSensorSettings::class, EnvSensorDisplayedRow::class], version = 1, exportSchema = true)
+@Database(entities = [EnvSensorSettingsEntity::class, EnvSensorDisplayedRowEntity::class, CameraSettingsEntity::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getEnvSensorSettingsDao(): EnvSensorSettingsDao
+    abstract fun getManagerSettingsDao(): ManagerSettingsDao
 
     companion object {
         // For Singleton instantiation

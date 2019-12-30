@@ -13,4 +13,7 @@
     <string name="uptime">Uptime</string>
     <string name="free_heap">Free heap</string>
     <string name="remaining">Remaining:</string>
+    <string name="camera_recording_settings_tittle">Camera recording settings</string>
+    <string name="do_not_record_label">Don\'t record hours:</string>
+    <string name="resume_camera_recording_tittle">Resume recording at</string>
 </resources>

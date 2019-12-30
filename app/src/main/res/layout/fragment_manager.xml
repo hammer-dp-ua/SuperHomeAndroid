@@ -70,7 +70,7 @@
                 app:layout_constraintStart_toEndOf="@+id/camera_recording_remaining_timeout_tittle" />
 
             <ImageButton
-                android:id="@+id/fun_button"
+                android:id="@+id/fan_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -80,6 +80,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/camera_recording_remaining_timeout_tittle"
                 app:srcCompat="@drawable/fan_button_selector" />
+
+            <TextView
+                android:id="@+id/fan_working_remaining_timeout_tittle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:text="@string/remaining"
+                android:textAlignment="center"
+                android:visibility="@{viewModel.fanWorkingMinutesRemainingStatusVisibility}"
+                app:layout_constraintEnd_toStartOf="@+id/fan_working_remaining_timeout_value"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fan_button" />
+
+            <TextView
+                android:id="@+id/fan_working_remaining_timeout_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:text="@{viewModel.fanWorkingMinutesRemaining}"
+                android:visibility="@{viewModel.fanWorkingMinutesRemainingStatusVisibility}"
+                android:textAlignment="center"
+                android:textSize="@dimen/fragment_manager_remaining_text_size"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fan_working_remaining_timeout_tittle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/fan_working_remaining_timeout_tittle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

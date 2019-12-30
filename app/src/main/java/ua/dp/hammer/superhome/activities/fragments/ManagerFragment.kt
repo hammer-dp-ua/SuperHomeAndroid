@@ -8,17 +8,21 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ua.dp.hammer.superhome.databinding.FragmentManagerBinding
 import ua.dp.hammer.superhome.models.ManagerViewModel
+import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 
 class ManagerFragment : Fragment() {
     private val viewModel: ManagerViewModel by viewModels {
         object : ViewModelProvider.NewInstanceFactory() {
+            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
+
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>) =
-                ManagerViewModel() as T
+                ManagerViewModel(LocalSettingsRepository.getInstance(currentContext)) as T
         }
     }
 
@@ -59,14 +63,34 @@ class ManagerFragment : Fragment() {
         }
 
         binding.cameraRecordingButton.setOnLongClickListener() {
-            viewModel.onCameraRecordingLongButtonClick(it as ImageButton)
+            val dialog = CameraRecordingSettingsDialog()
+
+            dialog.show(this.parentFragmentManager, "camera_settings")
+
             true
         }
 
-        binding.funButton.setOnLongClickListener {
+        binding.fanButton.setOnLongClickListener {
             viewModel.onFanLongButtonClick(it as ImageButton)
             true
         }
+
+        viewModel.projectorsButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
+            binding.projectorsButton.isSelected = isSelected
+        })
+
+        viewModel.cameraButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
+            binding.cameraRecordingButton.isSelected = isSelected
+        })
+
+        viewModel.fanButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
+            binding.fanButton.isSelected = isSelected
+        })
+
+        // For button disabling while fun is already turned on
+        viewModel.fanButtonEnabled.observe(viewLifecycleOwner, Observer<Boolean> { isEnabled ->
+            binding.fanButton.isEnabled = isEnabled
+        })
 
         return binding.root
     }
