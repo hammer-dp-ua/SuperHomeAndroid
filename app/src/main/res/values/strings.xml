@@ -16,4 +16,8 @@
     <string name="camera_recording_settings_tittle">Camera recording settings</string>
     <string name="do_not_record_label">Don\'t record hours:</string>
     <string name="resume_camera_recording_tittle">Resume recording at</string>
+    <string name="shutters_tittle">Shutters</string>
+    <string name="room_shutter_tittle">Room shutter</string>
+    <string name="kitchen_shutter_1_tittle">Kitchen shutter 1</string>
+    <string name="kitchen_shutter_2_tittle">Kitchen shutter 2</string>
 </resources>

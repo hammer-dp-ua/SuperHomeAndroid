@@ -3,10 +3,7 @@ package ua.dp.hammer.superhome.repositories.manager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ua.dp.hammer.superhome.data.AlarmsState
-import ua.dp.hammer.superhome.data.AllStates
-import ua.dp.hammer.superhome.data.FanState
-import ua.dp.hammer.superhome.data.ProjectorState
+import ua.dp.hammer.superhome.data.*
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
 import java.util.concurrent.TimeUnit
 
@@ -39,6 +36,10 @@ class ManagerRepository private constructor() {
 
     suspend fun turnOnBathroomFan(): FanState {
         return managerWebServiceDao.turnOnBathroomFanAsync().await()
+    }
+
+    suspend fun changeShutterStateAsync(name: String, open: Boolean): ShutterState {
+        return managerWebServiceDao.changeShutterStateAsync(name, open).await()
     }
 
     suspend fun getCurrentStates(): AllStates {

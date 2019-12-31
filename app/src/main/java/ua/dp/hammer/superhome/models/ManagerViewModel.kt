@@ -9,10 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import ua.dp.hammer.superhome.data.AlarmsState
-import ua.dp.hammer.superhome.data.AllStates
-import ua.dp.hammer.superhome.data.FanState
-import ua.dp.hammer.superhome.data.ProjectorState
+import ua.dp.hammer.superhome.data.*
 import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
 import ua.dp.hammer.superhome.repositories.manager.ManagerRepository
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
@@ -29,6 +26,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     val fanWorkingMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val disabledCameraMinutesRemaining: MutableLiveData<String> = MutableLiveData()
     val cameraMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
+    val roomShutterButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
 
     init {
         viewModelScope.launch {
@@ -86,6 +84,11 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
         updateFanState(allSatesResponse.fanState)
         projectorsButtonSelected.value = allSatesResponse.projectorState.turnedOn
         cameraButtonSelected.value = allSatesResponse.alarmsState.ignoring
+        for (shutterState in allSatesResponse.shuttersStates) {
+            if (shutterState.name == "Room shutter") {
+                roomShutterButtonSelected.value = !shutterState.opened
+            }
+        }
     }
 
     fun onProjectorsButtonClick(view: View) {
@@ -124,16 +127,18 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
         // Selected means start ignoring alarms and stop video recording
         button.isSelected = !button.isSelected
-        val toBeIgnored = button.isSelected
+        val stopRecording = button.isSelected
 
         viewModelScope.launch {
             var response: AlarmsState? = null
+            val currentSettings: CameraSettingsEntity? = localSettingsRepository.getCurrentCameraSettings()
 
-            val timeout = when (toBeIgnored) {
-                false -> -1
-                else -> {
-                    val currentSettings: CameraSettingsEntity = localSettingsRepository.getCurrentCameraSettings() ?:
-                        throw IllegalStateException()
+            val timeout = fun(): Int {
+                if (stopRecording) {
+                    if (currentSettings == null) {
+                        return 60 // Let it be a default value
+                    }
+
                     val currentDateTime = Calendar.getInstance()
                     val currentHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
                     val currentMinute = currentDateTime.get(Calendar.MINUTE)
@@ -143,18 +148,19 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                     if (deltaHours < 0) {
                         deltaHours += 24
                     }
-
-                    deltaHours * 60 + deltaMinutes
+                    return deltaHours * 60 + deltaMinutes
+                } else {
+                    return -1
                 }
             }
 
             try {
-                response = managerRepository.stopVideoRecording(timeout)
+                response = managerRepository.stopVideoRecording(timeout())
             } catch (e: Throwable) {
                 Log.d(null, "~~~ Error on changing alarms ignoring state", e)
             }
 
-            if (response == null || response.ignoring != toBeIgnored) {
+            if (response == null || response.ignoring != stopRecording) {
                 button.isSelected = prevSelectedState
             }
         }
@@ -205,6 +211,61 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     }
 
     fun onFanLongButtonClick(button: ImageButton) {
+
+    }
+
+    fun onKitchenShutter1ButtonClick(view: View) {
+        val button: ImageButton = view as ImageButton
+        val prevSelectedState = button.isSelected
+
+        button.isSelected = !button.isSelected
+
+
+    }
+
+    fun onKitchenShutter1LongButtonClick(view: View) {
+
+    }
+
+    fun onKitchenShutter2ButtonClick(view: View) {
+        val button: ImageButton = view as ImageButton
+        val prevSelectedState = button.isSelected
+
+        button.isSelected = !button.isSelected
+
+
+    }
+
+    fun onKitchenShutter2LongButtonClick(view: View) {
+
+    }
+
+    fun onRoomShutterButtonClick(view: View) {
+        val button: ImageButton = view as ImageButton
+        val prevSelectedState = button.isSelected
+
+        button.isSelected = !button.isSelected
+        val close = button.isSelected
+
+        viewModelScope.launch {
+            var response: ShutterState? = null
+            val shutterName = "Room shutter"
+
+            try {
+                response = managerRepository.changeShutterStateAsync(shutterName, !close)
+            } catch (e: Throwable) {
+                Log.d(null, "~~~ Error on changing '$shutterName' shutter state", e)
+            }
+
+            if (response == null) {
+                roomShutterButtonSelected.value = prevSelectedState
+            } else {
+                roomShutterButtonSelected.value = close
+            }
+        }
+    }
+
+    fun onRoomShutterLongButtonClick(view: View) {
 
     }
 }

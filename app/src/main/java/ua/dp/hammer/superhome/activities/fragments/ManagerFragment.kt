@@ -92,6 +92,10 @@ class ManagerFragment : Fragment() {
             binding.fanButton.isEnabled = isEnabled
         })
 
+        viewModel.roomShutterButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
+            binding.roomShutterButton.isSelected = isSelected
+        })
+
         return binding.root
     }
 }
