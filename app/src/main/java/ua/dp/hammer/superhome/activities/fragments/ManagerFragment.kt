@@ -96,6 +96,14 @@ class ManagerFragment : Fragment() {
             binding.roomShutterButton.isSelected = isSelected
         })
 
+        viewModel.kitchen1ShutterButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
+            binding.kitchenShutter1Button.isSelected = isSelected
+        })
+
+        viewModel.kitchen2ShutterButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
+            binding.kitchenShutter2Button.isSelected = isSelected
+        })
+
         return binding.root
     }
 }
