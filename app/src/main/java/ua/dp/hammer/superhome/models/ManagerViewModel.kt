@@ -26,9 +26,9 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     val fanWorkingMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val disabledCameraMinutesRemaining: MutableLiveData<String> = MutableLiveData()
     val cameraMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
-    val roomShutterButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
-    val kitchen1ShutterButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
-    val kitchen2ShutterButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
+    val roomShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
+    val kitchen1ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
+    val kitchen2ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
 
     init {
         viewModelScope.launch {
@@ -38,7 +38,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                 try {
                     val response: AllStates = managerRepository.getCurrentStates()
 
-                    applyAllState(response)
+                    applyAllStates(response)
                     success = true
                 } catch (e: Throwable) {
                     delay(10_000)
@@ -53,7 +53,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                     val response: AllStates = managerRepository.getCurrentStatesDeferred()
                     val requestEndTime = System.currentTimeMillis()
 
-                    applyAllState(response)
+                    applyAllStates(response)
 
                     if ((requestEndTime - requestStartTime) < 1_000) {
                         // Too often
@@ -73,7 +73,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
         }
     }
 
-    private fun applyAllState(allSatesResponse: AllStates) {
+    private fun applyAllStates(allSatesResponse: AllStates) {
         val stopCameraRecordingTimeout: Int = allSatesResponse.alarmsState.minutesRemaining
 
         if (stopCameraRecordingTimeout > 0) {
@@ -86,13 +86,16 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
         updateFanState(allSatesResponse.fanState)
         projectorsButtonSelected.value = allSatesResponse.projectorState.turnedOn
         cameraButtonSelected.value = allSatesResponse.alarmsState.ignoring
+
         for (shutterState in allSatesResponse.shuttersState) {
             if (shutterState.name == "Room shutter") {
-                roomShutterButtonSelected.value = !shutterState.opened
-            } else if (shutterState.name == "Kitchen shutter 1") {
-                kitchen1ShutterButtonSelected.value = !shutterState.opened
-            } else if (shutterState.name == "Kitchen shutter 2") {
-                kitchen2ShutterButtonSelected.value = !shutterState.opened
+                roomShutterButtonState.value = shutterState
+            } else if (shutterState.name == "Kitchen shutter") {
+                if (shutterState.shutterNo == 1) {
+                    kitchen1ShutterButtonState.value = shutterState
+                } else if (shutterState.shutterNo == 2) {
+                    kitchen2ShutterButtonState.value = shutterState
+                }
             }
         }
     }
@@ -229,19 +232,20 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
         viewModelScope.launch {
             var response: ShutterState? = null
-            val shutterName = "Kitchen shutter 1"
+            val shutterName = "Kitchen shutter"
 
             try {
-                response = managerRepository.changeShutterStateAsync(shutterName, !close)
+                response = managerRepository.doShutter(shutterName, 1, !close)
             } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing '$shutterName' shutter state", e)
+                Log.d(null, "~~~ Error on changing '$shutterName(1)' shutter state", e)
             }
 
-            if (response == null) {
-                kitchen1ShutterButtonSelected.value = prevSelectedState
-            } else {
-                kitchen1ShutterButtonSelected.value = close
+            /*if (response == null) {
+                kitchen1ShutterButtonState.value = prevSelectedState
             }
+            else {
+                kitchen1ShutterButtonSelected.value = close
+            }*/
         }
     }
 
@@ -258,19 +262,20 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
         viewModelScope.launch {
             var response: ShutterState? = null
-            val shutterName = "Kitchen shutter 2"
+            val shutterName = "Kitchen shutter"
 
             try {
-                response = managerRepository.changeShutterStateAsync(shutterName, !close)
+                response = managerRepository.doShutter(shutterName, 2, !close)
             } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing '$shutterName' shutter state", e)
+                Log.d(null, "~~~ Error on changing '$shutterName(2)' shutter state", e)
             }
 
-            if (response == null) {
-                kitchen2ShutterButtonSelected.value = prevSelectedState
-            } else {
-                kitchen2ShutterButtonSelected.value = close
+            /*if (response == null) {
+                kitchen2ShutterButtonState.value = prevSelectedState
             }
+            else {
+                kitchen2ShutterButtonSelected.value = close
+            }*/
         }
     }
 
@@ -290,16 +295,16 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             val shutterName = "Room shutter"
 
             try {
-                response = managerRepository.changeShutterStateAsync(shutterName, !close)
+                response = managerRepository.doShutter(shutterName, 0, !close)
             } catch (e: Throwable) {
                 Log.d(null, "~~~ Error on changing '$shutterName' shutter state", e)
             }
 
-            if (response == null) {
-                roomShutterButtonSelected.value = prevSelectedState
+            /*if (response == null) {
+                roomShutterButtonState.value = prevSelectedState
             } else {
-                roomShutterButtonSelected.value = close
-            }
+                roomShutterButtonState.value = close
+            }*/
         }
     }
 

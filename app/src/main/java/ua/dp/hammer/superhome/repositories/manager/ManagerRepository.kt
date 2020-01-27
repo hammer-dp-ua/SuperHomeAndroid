@@ -38,8 +38,8 @@ class ManagerRepository private constructor() {
         return managerWebServiceDao.turnOnBathroomFanAsync().await()
     }
 
-    suspend fun changeShutterStateAsync(name: String, open: Boolean): ShutterState {
-        return managerWebServiceDao.changeShutterStateAsync(name, open).await()
+    suspend fun doShutter(name: String, no: Int, open: Boolean): ShutterState {
+        return managerWebServiceDao.doShutter(name, no, open).await()
     }
 
     suspend fun getCurrentStates(): AllStates {

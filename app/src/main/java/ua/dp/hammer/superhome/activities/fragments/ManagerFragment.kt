@@ -1,19 +1,25 @@
 package ua.dp.hammer.superhome.activities.fragments
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ua.dp.hammer.superhome.R
+import ua.dp.hammer.superhome.data.ShutterState
+import ua.dp.hammer.superhome.data.ShutterStates
 import ua.dp.hammer.superhome.databinding.FragmentManagerBinding
 import ua.dp.hammer.superhome.models.ManagerViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+
 
 class ManagerFragment : Fragment() {
     private val viewModel: ManagerViewModel by viewModels {
@@ -34,6 +40,10 @@ class ManagerFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: started")
+
+        //val binding = FragmentManagerBinding.inflate(layoutInflater)
+
+
     }
 
     override fun onResume() {
@@ -92,16 +102,47 @@ class ManagerFragment : Fragment() {
             binding.fanButton.isEnabled = isEnabled
         })
 
-        viewModel.roomShutterButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
-            binding.roomShutterButton.isSelected = isSelected
+        viewModel.roomShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
+
         })
 
-        viewModel.kitchen1ShutterButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
-            binding.kitchenShutter1Button.isSelected = isSelected
+        viewModel.kitchen1ShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
+            val animation = binding.kitchenShutter1ActionView.drawable as AnimationDrawable
+
+            if (state.state == ShutterStates.SHUTTER_CLOSED || state.state == ShutterStates.SHUTTER_OPENED) {
+                animation.stop()
+                animation.selectDrawable(0)
+
+                binding.kitchenShutter1ActionView.visibility = View.GONE
+                binding.kitchenShutter1Button.visibility = View.VISIBLE
+            }
+
+            when (state.state) {
+                ShutterStates.SHUTTER_CLOSED -> {
+                    binding.kitchenShutter1Button.isSelected = true
+                }
+                ShutterStates.SHUTTER_OPENED -> {
+                    binding.kitchenShutter1Button.isSelected = false
+                }
+                else -> {
+                    binding.kitchenShutter1Button.visibility = View.GONE
+
+                    val currentContext = context ?: throw java.lang.IllegalStateException()
+                    if (state.state == ShutterStates.SHUTTER_CLOSING) {
+                        binding.kitchenShutter1ActionView.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closing))
+                    } else if (state.state == ShutterStates.SHUTTER_OPENING) {
+                        binding.kitchenShutter1ActionView.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opening))
+                    }
+
+                    binding.kitchenShutter1ActionView.visibility = View.VISIBLE
+
+                    animation.start()
+                }
+            }
         })
 
-        viewModel.kitchen2ShutterButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
-            binding.kitchenShutter2Button.isSelected = isSelected
+        viewModel.kitchen2ShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
+
         })
 
         return binding.root

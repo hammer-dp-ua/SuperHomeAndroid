@@ -137,6 +137,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/kitchen_shutter_1_tittle"
                 app:srcCompat="@drawable/shutter_button_selector" />
+            <ImageView
+                android:id="@+id/kitchenShutter1ActionView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@android:drawable/btn_default"
+                android:src="@drawable/shutter_opening"
+                android:visibility="gone"
+                android:clickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/kitchenShutter1Button" />
 
             <TextView
                 android:id="@+id/kitchen_shutter_2_tittle"
@@ -146,7 +157,7 @@
                 android:text="@string/kitchen_shutter_2_tittle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/kitchenShutter1Button" />
+                app:layout_constraintTop_toBottomOf="@+id/kitchenShutter1ActionView" />
 
             <ImageButton
                 android:id="@+id/kitchenShutter2Button"
@@ -157,6 +168,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/kitchen_shutter_2_tittle"
                 app:srcCompat="@drawable/shutter_button_selector" />
+            <ImageView
+                android:id="@+id/kitchenShutter2ActionView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@android:drawable/btn_default"
+                android:src="@drawable/shutter_opening"
+                android:visibility="gone"
+                android:clickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/kitchenShutter2Button" />
 
             <TextView
                 android:id="@+id/roomShutterTittle"
@@ -166,7 +188,7 @@
                 android:text="@string/room_shutter_tittle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/kitchenShutter2Button" />
+                app:layout_constraintTop_toBottomOf="@+id/kitchenShutter2ActionView" />
 
             <ImageButton
                 android:id="@+id/roomShutterButton"
@@ -177,6 +199,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/roomShutterTittle"
                 app:srcCompat="@drawable/shutter_button_selector" />
+            <ImageView
+                android:id="@+id/roomShutterActionView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@android:drawable/btn_default"
+                android:src="@drawable/shutter_opening"
+                android:visibility="gone"
+                android:clickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/roomShutterButton" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

@@ -1,5 +1,8 @@
-<vector android:height="48dp" android:viewportHeight="667"
-    android:viewportWidth="667" android:width="48dp" xmlns:android="http://schemas.android.com/apk/res/android">
+<vector
+    android:height="@dimen/manager_icon_size"
+    android:width="@dimen/manager_icon_size"
+    android:viewportHeight="667"
+    android:viewportWidth="667" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#000000" android:pathData="M98.464,122.426l34.286,-34.286l442.224,442.224l-34.286,34.286z"/>
     <path android:fillColor="#000000" android:pathData="M556,292l0,55l83,0l0,-55z"/>
     <path android:fillColor="#000000" android:pathData="M111,292l-83,0l0,55l83,0z"/>

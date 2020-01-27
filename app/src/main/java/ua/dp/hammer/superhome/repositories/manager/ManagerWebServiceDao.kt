@@ -15,9 +15,10 @@ interface ManagerWebServiceDao {
     @GET("turnOnBathroomFan")
     fun turnOnBathroomFanAsync(): Deferred<FanState>
 
-    @GET("changeShutterState")
-    fun changeShutterStateAsync(@Query("name") name: String,
-                                @Query("open") open: Boolean): Deferred<ShutterState>
+    @GET("shutters")
+    fun doShutter(@Query("name") name: String,
+                  @Query("no") no: Int,
+                  @Query("open") open: Boolean): Deferred<ShutterState>
 
     @GET("getCurrentStates")
     fun getCurrentStatesAsync(): Deferred<AllStates>

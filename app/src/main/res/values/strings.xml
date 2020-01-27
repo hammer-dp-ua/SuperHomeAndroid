@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">SuperHome</string>
+    <string name="app_name" translatable="false">Super Home</string>
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>
     <string name="light">Light</string>
