@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="manager_icon_size">96dp</dimen>
+    <bool name="isTablet">true</bool>
+
+    <dimen name="env_sensor_item_value_title_start_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_title_top_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_title_bottom_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_title_width">100dp</dimen>
+    <dimen name="env_sensor_item_value_start_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_top_margin">2dp</dimen>
+    <dimen name="env_sensor_item_value_bottom_margin">2dp</dimen>
+    <dimen name="env_sensor_item_text_size">20sp</dimen>
+
+
 </resources>

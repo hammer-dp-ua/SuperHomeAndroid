@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="isTablet">false</bool>
+
     <dimen name="env_sensor_item_value_title_start_margin">2dp</dimen>
     <dimen name="env_sensor_item_value_title_top_margin">2dp</dimen>
     <dimen name="env_sensor_item_value_title_bottom_margin">2dp</dimen>
