@@ -18,5 +18,5 @@
 
     <dimen name="fragment_manager_remaining_text_size">12sp</dimen>
 
-    <dimen name="manager_icon_size">48dp</dimen>
+    <dimen name="manager_icon_size">56dp</dimen>
 </resources>

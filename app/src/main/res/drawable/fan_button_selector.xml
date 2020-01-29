@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_selected="true"
-          android:drawable="@drawable/ic_toys_black" />
-    <item android:drawable="@drawable/ic_toys_off_black" /> <!-- default -->
+          android:drawable="@drawable/fan_turned_on" />
+    <item android:drawable="@drawable/fan_turned_off" /> <!-- default -->
 </selector>

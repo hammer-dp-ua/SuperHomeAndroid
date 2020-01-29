@@ -1,5 +1,4 @@
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="@dimen/manager_icon_size"
     android:height="@dimen/manager_icon_size"
     android:viewportWidth="24.0"

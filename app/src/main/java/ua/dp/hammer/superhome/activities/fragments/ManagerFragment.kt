@@ -1,12 +1,14 @@
 package ua.dp.hammer.superhome.activities.fragments
 
 import android.graphics.drawable.AnimationDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -61,6 +63,7 @@ class ManagerFragment : Fragment() {
         Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: stopped")
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         val binding = FragmentManagerBinding.inflate(inflater, container, false)
 
@@ -107,38 +110,45 @@ class ManagerFragment : Fragment() {
         })
 
         viewModel.kitchen1ShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
-            val animation = binding.kitchenShutter1ActionView.drawable as AnimationDrawable
+            val currentContext = context ?: throw java.lang.IllegalStateException()
 
             if (state.state == ShutterStates.SHUTTER_CLOSED || state.state == ShutterStates.SHUTTER_OPENED) {
+                binding.kitchenShutter1Button.isClickable = true
+
+                if (state.state == ShutterStates.SHUTTER_CLOSED) {
+                    if (state.notAvailable) {
+                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed_disabled))
+                    } else {
+                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed))
+                    }
+                } else {
+                    if (state.notAvailable) {
+                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened_disabled))
+                    } else {
+                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened))
+                    }
+                }
+            } else if (state.state == ShutterStates.SHUTTER_CLOSING || state.state == ShutterStates.SHUTTER_OPENING) {
+                binding.kitchenShutter1Button.isClickable = false
+
+                if (state.state == ShutterStates.SHUTTER_CLOSING) {
+                    binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closing))
+                } else {
+                    binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opening))
+                }
+
+                val animation = binding.kitchenShutter1Button.drawable as AnimationDrawable
                 animation.stop()
                 animation.selectDrawable(0)
-
-                binding.kitchenShutter1ActionView.visibility = View.GONE
-                binding.kitchenShutter1Button.visibility = View.VISIBLE
+                animation.start()
             }
 
-            when (state.state) {
-                ShutterStates.SHUTTER_CLOSED -> {
-                    binding.kitchenShutter1Button.isSelected = true
-                }
-                ShutterStates.SHUTTER_OPENED -> {
-                    binding.kitchenShutter1Button.isSelected = false
-                }
-                else -> {
-                    binding.kitchenShutter1Button.visibility = View.GONE
-
-                    val currentContext = context ?: throw java.lang.IllegalStateException()
-                    if (state.state == ShutterStates.SHUTTER_CLOSING) {
-                        binding.kitchenShutter1ActionView.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closing))
-                    } else if (state.state == ShutterStates.SHUTTER_OPENING) {
-                        binding.kitchenShutter1ActionView.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opening))
-                    }
-
-                    binding.kitchenShutter1ActionView.visibility = View.VISIBLE
-
-                    animation.start()
-                }
-            }
+            /*if (state.notAvailable) {
+                binding.kitchenShutter1Button.backgroundTintList =
+                    currentContext.resources.getColorStateList(R.color.shutterNotAvailable, null)
+            } else {
+                binding.kitchenShutter1Button.setBackgroundTintList(null)
+            }*/
         })
 
         viewModel.kitchen2ShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
