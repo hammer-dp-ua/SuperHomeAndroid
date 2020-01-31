@@ -106,55 +106,52 @@ class ManagerFragment : Fragment() {
         })
 
         viewModel.roomShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
-
+            changeShutterStateButton(binding.roomShutterButton, state)
         })
 
         viewModel.kitchen1ShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
-            val currentContext = context ?: throw java.lang.IllegalStateException()
-
-            if (state.state == ShutterStates.SHUTTER_CLOSED || state.state == ShutterStates.SHUTTER_OPENED) {
-                binding.kitchenShutter1Button.isClickable = true
-
-                if (state.state == ShutterStates.SHUTTER_CLOSED) {
-                    if (state.notAvailable) {
-                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed_disabled))
-                    } else {
-                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed))
-                    }
-                } else {
-                    if (state.notAvailable) {
-                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened_disabled))
-                    } else {
-                        binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened))
-                    }
-                }
-            } else if (state.state == ShutterStates.SHUTTER_CLOSING || state.state == ShutterStates.SHUTTER_OPENING) {
-                binding.kitchenShutter1Button.isClickable = false
-
-                if (state.state == ShutterStates.SHUTTER_CLOSING) {
-                    binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closing))
-                } else {
-                    binding.kitchenShutter1Button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opening))
-                }
-
-                val animation = binding.kitchenShutter1Button.drawable as AnimationDrawable
-                animation.stop()
-                animation.selectDrawable(0)
-                animation.start()
-            }
-
-            /*if (state.notAvailable) {
-                binding.kitchenShutter1Button.backgroundTintList =
-                    currentContext.resources.getColorStateList(R.color.shutterNotAvailable, null)
-            } else {
-                binding.kitchenShutter1Button.setBackgroundTintList(null)
-            }*/
+            changeShutterStateButton(binding.kitchenShutter1Button, state)
         })
 
         viewModel.kitchen2ShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
-
+            changeShutterStateButton(binding.kitchenShutter2Button, state)
         })
 
         return binding.root
+    }
+
+    private fun changeShutterStateButton(button: ImageButton, state: ShutterState) {
+        val currentContext = context ?: throw java.lang.IllegalStateException()
+
+        if (state.state == ShutterStates.SHUTTER_CLOSED || state.state == ShutterStates.SHUTTER_OPENED) {
+            button.isClickable = true
+
+            if (state.state == ShutterStates.SHUTTER_CLOSED) {
+                if (state.notAvailable) {
+                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed_disabled))
+                } else {
+                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed))
+                }
+            } else {
+                if (state.notAvailable) {
+                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened_disabled))
+                } else {
+                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened))
+                }
+            }
+        } else if (state.state == ShutterStates.SHUTTER_CLOSING || state.state == ShutterStates.SHUTTER_OPENING) {
+            button.isClickable = false
+
+            if (state.state == ShutterStates.SHUTTER_CLOSING) {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closing))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opening))
+            }
+
+            val animation = button.drawable as AnimationDrawable
+            animation.stop()
+            animation.selectDrawable(0)
+            animation.start()
+        }
     }
 }

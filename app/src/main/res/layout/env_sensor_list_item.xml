@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -9,276 +9,220 @@
             type="ua.dp.hammer.superhome.data.EnvSensor"/>
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-        android:layout_marginEnd="@dimen/card_end_margin"
-        android:layout_marginBottom="@dimen/card_bottom_margin"
         android:clickable="true"
-        android:focusable="true"
-        app:cardElevation="@dimen/card_elevation"
-        app:cardPreventCornerOverlap="false">
+        android:focusable="true">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:text="@{envSensor.displayedName}"
+            android:textAlignment="center"
+            android:textColor="@color/design_default_color_error"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Sensor Item" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{envSensor.displayedName}"
-                android:textAlignment="center"
-                android:textColor="@color/design_default_color_error"
-                android:textSize="@dimen/env_sensor_item_text_size" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="temperature_title,humidity_title,light_title,gain_title,errors_title,uptime_title,free_heap_title"
+            tools:layout_editor_absoluteX="108dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.temperatureVisibility}">
+        <!--Temperature-->
+        <TextView
+            android:id="@+id/temperature_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/temperature"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.temperatureVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-                <TextView
-                    android:id="@+id/temperature_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/temperature"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/temperature_value"
-                    app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/temperature_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.temperatureString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.temperatureVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/temperature_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/temperature_title"
+            tools:text="T val" />
 
-                <TextView
-                    android:id="@+id/temperature_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.temperatureString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/temperature_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
+        <!--Humidity-->
+        <TextView
+            android:id="@+id/humidity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/humidity"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.humidityVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperature_title" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.humidityVisibility}">
+        <TextView
+            android:id="@+id/humidity_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.humidityString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.humidityVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/humidity_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/humidity_title"
+            tools:text="H val" />
 
-                <TextView
-                    android:id="@+id/humidity_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/humidity"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/humidity_value"
-                    app:layout_constraintStart_toStartOf="parent" />
+        <!--Light-->
+        <TextView
+            android:id="@+id/light_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/light"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.lightVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/humidity_title" />
 
-                <TextView
-                    android:id="@+id/humidity_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.humidityString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/humidity_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/light_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.lightString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.lightVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/light_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/light_title"
+            tools:text="L val" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.lightVisibility}">
+        <!--Gain-->
+        <TextView
+            android:id="@+id/gain_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/gain"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.gainVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/light_title" />
 
-                <TextView
-                    android:id="@+id/light_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/light"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/light_value"
-                    app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/gain_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.gainString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.gainVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/gain_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/gain_title"
+            tools:text="G val" />
 
-                <TextView
-                    android:id="@+id/light_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.lightString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/light_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
+        <!--Errors-->
+        <TextView
+            android:id="@+id/errors_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/errors"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.errorsVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gain_title" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.gainVisibility}">
+        <TextView
+            android:id="@+id/errors_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.errorsString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.errorsVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/errors_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/errors_title"
+            tools:text="E val" />
 
-                <TextView
-                    android:id="@+id/gain_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/gain"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/gain_value"
-                    app:layout_constraintStart_toStartOf="parent" />
+        <!--Uptime-->
+        <TextView
+            android:id="@+id/uptime_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/uptime"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.uptimeVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/errors_title" />
 
-                <TextView
-                    android:id="@+id/gain_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.gainString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/gain_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/uptime_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.uptimeString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.uptimeVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/uptime_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/uptime_title"
+            tools:text="U val" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.errorsVisibility}">
+        <!--Heap-->
+        <TextView
+            android:id="@+id/free_heap_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/free_heap"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.freeHeapSpaceVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/uptime_title" />
 
-                <TextView
-                    android:id="@+id/errors_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/errors"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/errors_value"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/errors_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.errorsString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/errors_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.uptimeVisibility}">
-
-                <TextView
-                    android:id="@+id/uptime_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/uptime"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/uptime_value"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/uptime_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.uptimeString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/uptime_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="@{envSensor.freeHeapSpaceVisibility}">
-
-                <TextView
-                    android:id="@+id/free_heap_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_title_bottom_margin"
-                    android:width="@dimen/env_sensor_item_value_title_width"
-                    android:text="@string/free_heap"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/free_heap_value"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/free_heap_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
-                    android:layout_marginTop="@dimen/env_sensor_item_value_top_margin"
-                    android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
-                    android:text="@{envSensor.freeHeapSpaceString}"
-                    android:textSize="@dimen/env_sensor_item_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/free_heap_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
+        <TextView
+            android:id="@+id/free_heap_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{envSensor.freeHeapSpaceString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{envSensor.freeHeapSpaceVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/free_heap_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/free_heap_title"
+            tools:text="H val" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

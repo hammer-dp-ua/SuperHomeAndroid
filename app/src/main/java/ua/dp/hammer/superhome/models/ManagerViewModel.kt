@@ -225,28 +225,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
     fun onKitchenShutter1ButtonClick(view: View) {
         val button: ImageButton = view as ImageButton
-        val prevSelectedState = button.isSelected
-
-        button.isSelected = !button.isSelected
-        val close = button.isSelected
-
-        viewModelScope.launch {
-            var response: ShutterState? = null
-            val shutterName = "Kitchen shutter"
-
-            try {
-                response = managerRepository.doShutter(shutterName, 1, !close)
-            } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing '$shutterName(1)' shutter state", e)
-            }
-
-            /*if (response == null) {
-                kitchen1ShutterButtonState.value = prevSelectedState
-            }
-            else {
-                kitchen1ShutterButtonSelected.value = close
-            }*/
-        }
+        val state: ShutterState? = kitchen1ShutterButtonState.value
+        sendShutterRequest(state)
     }
 
     fun onKitchenShutter1LongButtonClick(view: View) {
@@ -255,28 +235,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
     fun onKitchenShutter2ButtonClick(view: View) {
         val button: ImageButton = view as ImageButton
-        val prevSelectedState = button.isSelected
-
-        button.isSelected = !button.isSelected
-        val close = button.isSelected
-
-        viewModelScope.launch {
-            var response: ShutterState? = null
-            val shutterName = "Kitchen shutter"
-
-            try {
-                response = managerRepository.doShutter(shutterName, 2, !close)
-            } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing '$shutterName(2)' shutter state", e)
-            }
-
-            /*if (response == null) {
-                kitchen2ShutterButtonState.value = prevSelectedState
-            }
-            else {
-                kitchen2ShutterButtonSelected.value = close
-            }*/
-        }
+        val state: ShutterState? = kitchen2ShutterButtonState.value
+        sendShutterRequest(state)
     }
 
     fun onKitchenShutter2LongButtonClick(view: View) {
@@ -285,30 +245,33 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
     fun onRoomShutterButtonClick(view: View) {
         val button: ImageButton = view as ImageButton
-        val prevSelectedState = button.isSelected
-
-        button.isSelected = !button.isSelected
-        val close = button.isSelected
-
-        viewModelScope.launch {
-            var response: ShutterState? = null
-            val shutterName = "Room shutter"
-
-            try {
-                response = managerRepository.doShutter(shutterName, 0, !close)
-            } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing '$shutterName' shutter state", e)
-            }
-
-            /*if (response == null) {
-                roomShutterButtonState.value = prevSelectedState
-            } else {
-                roomShutterButtonState.value = close
-            }*/
-        }
+        val state: ShutterState? = roomShutterButtonState.value
+        sendShutterRequest(state)
     }
 
     fun onRoomShutterLongButtonClick(view: View) {
 
+    }
+
+    private fun sendShutterRequest(state: ShutterState?) {
+        if (state == null || state.notAvailable) {
+            return
+        }
+
+        val open = when (state.state) {
+            ShutterStates.SHUTTER_CLOSED -> true
+            ShutterStates.SHUTTER_OPENED -> false
+            else -> return
+        }
+
+        viewModelScope.launch {
+            var response: ShutterState? = null
+
+            try {
+                response = managerRepository.doShutter(state.name, state.shutterNo, open)
+            } catch (e: Throwable) {
+                Log.d(null, "~~~ Error on changing '$state' shutter state", e)
+            }
+        }
     }
 }
