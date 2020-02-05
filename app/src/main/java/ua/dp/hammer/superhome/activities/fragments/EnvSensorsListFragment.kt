@@ -39,6 +39,7 @@ class EnvSensorsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.resumeMonitoring()
         Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: resumed")
     }
 
@@ -49,6 +50,7 @@ class EnvSensorsListFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        viewModel.stopMonitoring()
         Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: stopped")
     }
 

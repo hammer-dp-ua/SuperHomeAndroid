@@ -50,6 +50,7 @@ class ManagerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.resumeMonitoring()
         Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: resumed")
     }
 
@@ -60,6 +61,7 @@ class ManagerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        viewModel.stopMonitoring()
         Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: stopped")
     }
 

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -20,9 +21,24 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
     var stopUpdating = false
 
     private val envSensorsRepository: EnvSensorsRepository = EnvSensorsRepository.getInstance()
+    private var statesJob: Job
 
     init {
-        viewModelScope.launch {
+        statesJob = startMonitoring()
+    }
+
+    fun stopMonitoring() {
+        statesJob.cancel()
+    }
+
+    fun resumeMonitoring() {
+        if (statesJob.isCancelled) {
+            statesJob = startMonitoring()
+        }
+    }
+
+    private fun startMonitoring(): Job {
+        return viewModelScope.launch {
             var success = false
 
             while (!success) {

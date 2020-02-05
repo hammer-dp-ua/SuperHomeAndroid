@@ -6,6 +6,7 @@ import android.widget.ImageButton
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -30,8 +31,24 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     val kitchen1ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
     val kitchen2ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
 
+    private var statesJob: Job
+
     init {
-        viewModelScope.launch {
+        statesJob = startMonitoring()
+    }
+
+    fun stopMonitoring() {
+        statesJob.cancel()
+    }
+
+    fun resumeMonitoring() {
+        if (statesJob.isCancelled) {
+            statesJob = startMonitoring()
+        }
+    }
+
+    private fun startMonitoring(): Job {
+        return viewModelScope.launch {
             var success = false
 
             while (!success) {
@@ -59,7 +76,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                         // Too often
                         oftenAmount++
                     } else {
-                        oftenAmount = 0;
+                        oftenAmount = 0
                     }
 
                     if (oftenAmount >= 3) {
@@ -70,6 +87,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                     delay(10_000)
                 }
             }
+
+            Log.i(null, "~~~ Job has been cancelled")
         }
     }
 
