@@ -7,7 +7,6 @@
     <dimen name="env_sensor_item_value_title_bottom_margin">2dp</dimen>
     <dimen name="env_sensor_item_value_title_width">100dp</dimen>
     <dimen name="env_sensor_item_value_start_margin">2dp</dimen>
-    <dimen name="env_sensor_item_value_top_margin">2dp</dimen>
     <dimen name="env_sensor_item_value_bottom_margin">2dp</dimen>
     <dimen name="env_sensor_item_text_size">12sp</dimen>
 
@@ -21,4 +20,7 @@
     <dimen name="fragment_manager_remaining_text_size">12sp</dimen>
 
     <dimen name="manager_icon_size">56dp</dimen>
+
+    <dimen name="shutters_tittle">15sp</dimen>
+    <dimen name="shutter_tittle">12sp</dimen>
 </resources>

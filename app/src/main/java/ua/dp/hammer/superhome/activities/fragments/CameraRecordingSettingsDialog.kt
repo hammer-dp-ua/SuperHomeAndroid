@@ -4,15 +4,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.databinding.CameraRecordingSettingsDialogBinding
 import ua.dp.hammer.superhome.models.CameraRecordingSettingsViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+
 
 class CameraRecordingSettingsDialog : DialogFragment() {
     private val viewModel: CameraRecordingSettingsViewModel by viewModels {
@@ -25,7 +24,6 @@ class CameraRecordingSettingsDialog : DialogFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -37,15 +35,23 @@ class CameraRecordingSettingsDialog : DialogFragment() {
 
             binding.timePicker.setIs24HourView(true)
 
-            builder
+            val dialog: AlertDialog = builder
                 .setView(binding.root)
-                .setPositiveButton(R.string.OK) { dialog, id ->
-                    viewModel.saveSettings(binding.timePicker.hour, binding.timePicker.minute)
-                }
-                .setNegativeButton(R.string.cancel) { dialog, id ->
-                    dialog.cancel()
-                }
                 .create()
+
+            binding.okButton.setOnClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    viewModel.saveSettings(binding.timePicker.hour, binding.timePicker.minute)
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    viewModel.saveSettings(binding.timePicker.currentHour, binding.timePicker.currentMinute)
+                }
+                dialog.cancel()
+            }
+            binding.cancelButton.setOnClickListener {
+                dialog.cancel()
+            }
+
+            dialog
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }

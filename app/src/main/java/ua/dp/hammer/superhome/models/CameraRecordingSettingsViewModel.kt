@@ -17,7 +17,5 @@ class CameraRecordingSettingsViewModel(private val localSettingsRepository: Loca
         viewModelScope.launch {
             localSettingsRepository.insertCameraSettings(settings)
         }
-
-
     }
 }

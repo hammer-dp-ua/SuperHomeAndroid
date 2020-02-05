@@ -16,7 +16,7 @@
     <string name="do_not_record_label">Не записывать часов</string>
     <string name="resume_camera_recording_tittle">Возобновить запись в</string>
     <string name="shutters_tittle">Жалюзи</string>
-    <string name="room_shutter_tittle">Жалюзи комната</string>
-    <string name="kitchen_shutter_1_tittle">Жалюзи кухни 1</string>
-    <string name="kitchen_shutter_2_tittle">Жалюзи кухни 2</string>
+    <string name="room_shutter_tittle">Комната</string>
+    <string name="kitchen_shutter_1_tittle">Кухня 1</string>
+    <string name="kitchen_shutter_2_tittle">Кухня 2</string>
 </resources>
