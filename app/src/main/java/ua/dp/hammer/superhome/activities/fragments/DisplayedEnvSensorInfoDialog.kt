@@ -7,7 +7,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
 import ua.dp.hammer.superhome.databinding.DisplayedEnvSensorInfoDialogBinding
@@ -40,20 +39,24 @@ class DisplayedEnvSensorInfoDialog(private val envSensor: EnvSensor,
             binding.lifecycleOwner = this
             viewModel.updateLiveData(envSensor)
 
-            builder
+            val dialog = builder
                 .setView(binding.root)
-                .setPositiveButton(R.string.OK) { dialog, id ->
-                    val result: EnvSensorDisplayedInfo.Detached = viewModel.onOk() {
-                        parentFragment.resumeInfoUpdating()
-                    }
-
-                    parentFragment.updateVisibility(result)
-                }
-                .setNegativeButton(R.string.cancel) { dialog, id ->
-                    parentFragment.resumeInfoUpdating()
-                    dialog.cancel()
-                }
                 .create()
+
+            binding.okButton.setOnClickListener {
+                val result: EnvSensorDisplayedInfo.Detached = viewModel.onOk {
+                    parentFragment.resumeInfoUpdating()
+                }
+
+                parentFragment.updateVisibility(result)
+                dialog.cancel()
+            }
+            binding.cancelButton.setOnClickListener {
+                parentFragment.resumeInfoUpdating()
+                dialog.cancel()
+            }
+
+            dialog
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }
