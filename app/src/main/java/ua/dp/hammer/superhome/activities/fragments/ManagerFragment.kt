@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ua.dp.hammer.superhome.R
+import ua.dp.hammer.superhome.data.ProjectorState
 import ua.dp.hammer.superhome.data.ShutterState
 import ua.dp.hammer.superhome.data.ShutterStates
 import ua.dp.hammer.superhome.databinding.FragmentManagerBinding
@@ -44,8 +45,6 @@ class ManagerFragment : Fragment() {
         Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: started")
 
         //val binding = FragmentManagerBinding.inflate(layoutInflater)
-
-
     }
 
     override fun onResume() {
@@ -77,7 +76,7 @@ class ManagerFragment : Fragment() {
             true
         }
 
-        binding.cameraRecordingButton.setOnLongClickListener() {
+        binding.cameraRecordingButton.setOnLongClickListener {
             val dialog = CameraRecordingSettingsDialog()
 
             dialog.show(this.parentFragmentManager, "camera_settings")
@@ -90,8 +89,8 @@ class ManagerFragment : Fragment() {
             true
         }
 
-        viewModel.projectorsButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
-            binding.projectorsButton.isSelected = isSelected
+        viewModel.projectorsButtonState.observe(viewLifecycleOwner, Observer<ProjectorState> { state ->
+            changeProjectorStateButton(binding.projectorsButton, state)
         })
 
         viewModel.cameraButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
@@ -154,6 +153,24 @@ class ManagerFragment : Fragment() {
             animation.stop()
             animation.selectDrawable(0)
             animation.start()
+        }
+    }
+
+    private fun changeProjectorStateButton(button: ImageButton, state: ProjectorState) {
+        val currentContext = context ?: throw java.lang.IllegalStateException()
+
+        if (state.turnedOn) {
+            if (state.notAvailable) {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_on_disabled))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_on))
+            }
+        } else {
+            if (state.notAvailable) {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off_disabled))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off))
+            }
         }
     }
 }

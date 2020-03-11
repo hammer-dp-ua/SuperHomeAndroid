@@ -4,15 +4,10 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 
 data class EnvSensor(
-    val deviceName: String,
     val temperature: Float?,
     val humidity: Float?,
-    val light: Int?,
-    val gain: Int?,
-    val errors: Int?,
-    val uptime: Int?,
-    val freeHeapSpace: Int?
-) {
+    val light: Int?
+) : DeviceState() {
     lateinit var displayedName: MutableLiveData<String>
     lateinit var temperatureVisibility: MutableLiveData<Int>
     lateinit var humidityVisibility: MutableLiveData<Int>
@@ -43,22 +38,6 @@ data class EnvSensor(
 
     fun getLightString(): String? {
         return light?.toString()?.plus("%")
-    }
-
-    fun getGainString(): String? {
-        return gain?.toString()?.plus("dB")
-    }
-
-    fun getErrorsString(): String? {
-        return errors?.toString()
-    }
-
-    fun getUptimeString(): String? {
-        return uptime?.toString()
-    }
-
-    fun getFreeHeapSpaceString(): String? {
-        return freeHeapSpace?.toString()
     }
 
     private fun roundFloat(floatValue: Float?): String? {

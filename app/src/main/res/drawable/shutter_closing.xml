@@ -3,8 +3,8 @@
     android:id="@+id/shutter_closing"
     android:oneshot="false">
 
-    <item android:drawable="@drawable/shutter_opened" android:duration="500" />
-    <item android:drawable="@drawable/shutter_opening_2" android:duration="500" />
-    <item android:drawable="@drawable/shutter_opening_1" android:duration="500" />
-    <item android:drawable="@drawable/shutter_closed" android:duration="500" />
+    <item android:drawable="@drawable/shutter_opened" android:duration="200" />
+    <item android:drawable="@drawable/shutter_opening_2" android:duration="200" />
+    <item android:drawable="@drawable/shutter_opening_1" android:duration="200" />
+    <item android:drawable="@drawable/shutter_closed" android:duration="200" />
 </animation-list>

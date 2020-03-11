@@ -37,22 +37,18 @@ class EnvSensorDisplayedInfoViewModel(private val localSettingsRepository: Local
                     lightOptionVisibility.value = View.VISIBLE
                     isLightDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, LIGHT.name)
                 }
-                if (envSensor.gain != null) {
-                    gainOptionVisibility.value = View.VISIBLE
-                    isGainDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, GAIN.name)
-                }
-                if (envSensor.errors != null) {
-                    errorsOptionVisibility.value = View.VISIBLE
-                    areErrorsDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, ERRORS.name)
-                }
-                if (envSensor.uptime != null) {
-                    uptimeOptionVisibility.value = View.VISIBLE
-                    isUptimeDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, UPTIME.name)
-                }
-                if (envSensor.freeHeapSpace != null) {
-                    freeHeapSpaceOptionVisibility.value = View.VISIBLE
-                    isFreeHeapSpaceDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, FREE_HEAP.name)
-                }
+
+                gainOptionVisibility.value = View.VISIBLE
+                isGainDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, GAIN.name)
+
+                errorsOptionVisibility.value = View.VISIBLE
+                areErrorsDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, ERRORS.name)
+
+                uptimeOptionVisibility.value = View.VISIBLE
+                isUptimeDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, UPTIME.name)
+
+                freeHeapSpaceOptionVisibility.value = View.VISIBLE
+                isFreeHeapSpaceDisplayed.value = isRowDisplayed(settingsAndRows?.displayedRows, FREE_HEAP.name)
             }
         }
     }
