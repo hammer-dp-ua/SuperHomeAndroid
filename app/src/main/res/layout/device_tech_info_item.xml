@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="deviceInfo"
+            type="ua.dp.hammer.superhome.data.DeviceTechInfo"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/env_sensor_item_value_bottom_margin"
+        android:background="@drawable/sensor_border"
+        android:backgroundTint="@{deviceInfo.notAvailable ? @color/design_default_color_error : @color/cardview_shadow_start_color}"
+        android:clickable="true"
+        android:focusable="true"
+        android:topLeftRadius="10dp">
+
+        <TextView
+            android:id="@+id/deviceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{deviceInfo.displayedName}"
+            android:textAlignment="center"
+            android:textColor="@color/design_default_color_error"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Tech Info Item" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="uptime_title,last_device_request_time_tittle,build_timestamp_tittle"
+            tools:layout_editor_absoluteX="119dp" />
+
+        <!--Uptime-->
+        <TextView
+            android:id="@+id/uptime_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
+            android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
+            android:text="@string/uptime"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deviceName" />
+        <TextView
+            android:id="@+id/uptime_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
+            android:text="@{deviceInfo.uptimeString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/uptime_title"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/uptime_title"
+            tools:text="U val" />
+
+        <!--Last request time-->
+        <TextView
+            android:id="@+id/last_device_request_time_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
+            android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
+            android:text="@string/last_request_time_tittle"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/uptime_value" />
+        <TextView
+            android:id="@+id/last_device_request_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
+            android:text="@{deviceInfo.lastDeviceRequestTimestampString}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/last_device_request_time_tittle"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/last_device_request_time_tittle"
+            tools:text="2000-12-31 18:59:58" />
+
+        <!--Build timestamp-->
+        <TextView
+            android:id="@+id/build_timestamp_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/env_sensor_item_value_title_start_margin"
+            android:layout_marginTop="@dimen/env_sensor_item_value_title_top_margin"
+            android:text="@string/build_timestamp_tittle"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{(deviceInfo.buildTimestamp == null || deviceInfo.buildTimestamp.empty) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/last_device_request_time_tittle" />
+        <TextView
+            android:id="@+id/build_timestamp_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/env_sensor_item_value_start_margin"
+            android:text="@{deviceInfo.buildTimestamp}"
+            android:textSize="@dimen/env_sensor_item_text_size"
+            android:visibility="@{(deviceInfo.buildTimestamp == null || deviceInfo.buildTimestamp.empty) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/build_timestamp_tittle"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/build_timestamp_tittle"
+            tools:text="BT val" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

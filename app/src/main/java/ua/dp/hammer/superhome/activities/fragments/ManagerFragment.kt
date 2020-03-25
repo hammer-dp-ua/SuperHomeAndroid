@@ -76,6 +76,10 @@ class ManagerFragment : Fragment() {
             true
         }
 
+        viewModel.projectorsButtonState.observe(viewLifecycleOwner, Observer<ProjectorState> { state ->
+            changeProjectorStateButton(binding.projectorsButton, state)
+        })
+
         binding.cameraRecordingButton.setOnLongClickListener {
             val dialog = CameraRecordingSettingsDialog()
 
@@ -88,10 +92,6 @@ class ManagerFragment : Fragment() {
             viewModel.onFanLongButtonClick(it as ImageButton)
             true
         }
-
-        viewModel.projectorsButtonState.observe(viewLifecycleOwner, Observer<ProjectorState> { state ->
-            changeProjectorStateButton(binding.projectorsButton, state)
-        })
 
         viewModel.cameraButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
             binding.cameraRecordingButton.isSelected = isSelected

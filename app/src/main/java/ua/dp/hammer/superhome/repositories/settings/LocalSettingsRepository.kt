@@ -8,7 +8,7 @@ import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
 import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
 
 class LocalSettingsRepository private constructor(val database: AppDatabase) {
-    suspend fun getEnvSensorSettings(name: String): EnvSensorSettingsEntity {
+    suspend fun getEnvSensorSettings(name: String): EnvSensorSettingsEntity? {
         return database.getEnvSensorSettingsDao().getEnvSensorSettings(name)
     }
 

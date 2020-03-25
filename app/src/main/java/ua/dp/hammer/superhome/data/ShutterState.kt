@@ -1,7 +1,7 @@
 package ua.dp.hammer.superhome.data
 
 data class ShutterState(
-    val name: String,
+    val deviceName: String,
     val shutterNo: Int,
     var state: ShutterStates,
     var notAvailable: Boolean

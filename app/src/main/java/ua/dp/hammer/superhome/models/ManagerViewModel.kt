@@ -66,6 +66,11 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
             while (isActive) {
                 try {
+                    if (oftenAmount >= 3) {
+                        delay(10_000)
+                        oftenAmount = 0
+                    }
+
                     val requestStartTime = System.currentTimeMillis()
                     val response: AllStates = managerRepository.getCurrentStatesDeferred()
                     val requestEndTime = System.currentTimeMillis()
@@ -78,13 +83,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                     } else {
                         oftenAmount = 0
                     }
-
-                    if (oftenAmount >= 3) {
-                        delay(10_000)
-                        oftenAmount = 0;
-                    }
                 } catch (e: Throwable) {
-                    delay(10_000)
+                    oftenAmount++
                 }
             }
 
@@ -116,10 +116,10 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var kitchenShutterProcessed = false
 
             for (shutterState in allSatesResponse.shuttersState) {
-                if (shutterState.name == "Room shutter") {
+                if (shutterState.deviceName == "Room shutter") {
                     roomShutterButtonState.value = shutterState
                     roomShutterProcessed = true
-                } else if (shutterState.name == "Kitchen shutter") {
+                } else if (shutterState.deviceName == "Kitchen shutter") {
                     kitchenShutterProcessed = true
                     if (shutterState.shutterNo == 1) {
                         kitchen1ShutterButtonState.value = shutterState
@@ -145,15 +145,10 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             return
         }
 
-        val button: ImageButton = view as ImageButton
-        val prevSelectedState = button.isSelected
-
-        button.isSelected = !button.isSelected
-
         viewModelScope.launch {
-            val stateParam = when (button.isSelected) {
-                true -> "turnOn"
-                else -> "turnOff"
+            val stateParam = when (projectorState.turnedOn) {
+                true -> "turnOff"
+                else -> "turnOn"
             }
 
             var response: ProjectorState? = null
@@ -165,10 +160,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             }
 
             if (response == null) {
-                button.isSelected = prevSelectedState
-
                 val state = ProjectorState()
-                state.turnedOn = button.isSelected
+                state.turnedOn = projectorState.turnedOn
                 projectorsButtonState.value = state
             }
         }
@@ -279,10 +272,10 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var turnOn = false
             var notAvailable = true
             for (receivedProjectorState in receivedProjectorsState) {
-                // At least 1 is turned on
-                turnOn = turnOn || receivedProjectorState.turnedOn
                 // At least 1 is available
                 notAvailable = notAvailable && receivedProjectorState.notAvailable
+                // At least 1 available is turned on
+                turnOn = turnOn || (receivedProjectorState.turnedOn && !receivedProjectorState.notAvailable)
             }
             currentProjectorButtonState.turnedOn = turnOn
             currentProjectorButtonState.notAvailable = notAvailable
@@ -295,7 +288,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     }
 
     fun onKitchenShutter1ButtonClick(view: View) {
-        val button: ImageButton = view as ImageButton
         val state: ShutterState? = kitchen1ShutterButtonState.value
         sendShutterRequest(state)
     }
@@ -305,7 +297,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     }
 
     fun onKitchenShutter2ButtonClick(view: View) {
-        val button: ImageButton = view as ImageButton
         val state: ShutterState? = kitchen2ShutterButtonState.value
         sendShutterRequest(state)
     }
@@ -315,7 +306,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     }
 
     fun onRoomShutterButtonClick(view: View) {
-        val button: ImageButton = view as ImageButton
         val state: ShutterState? = roomShutterButtonState.value
         sendShutterRequest(state)
     }
@@ -339,7 +329,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var response: ShutterState? = null
 
             try {
-                response = managerRepository.doShutter(state.name, state.shutterNo, open)
+                response = managerRepository.doShutter(state.deviceName, state.shutterNo, open)
             } catch (e: Throwable) {
                 Log.d(null, "~~~ Error on changing '$state' shutter state", e)
             }

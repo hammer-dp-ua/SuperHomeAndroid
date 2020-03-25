@@ -20,4 +20,7 @@
     <string name="room_shutter_tittle">Room</string>
     <string name="kitchen_shutter_1_tittle">Kitchen 1</string>
     <string name="kitchen_shutter_2_tittle">Kitchen 2</string>
+    <string name="tech_info_fragment_tittle">Devices Technical Info</string>
+    <string name="build_timestamp_tittle">Build timestamp</string>
+    <string name="last_request_time_tittle">Last request</string>
 </resources>

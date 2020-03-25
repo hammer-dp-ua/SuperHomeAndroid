@@ -11,7 +11,7 @@
     <fragment
         android:id="@+id/temperatures_fragment"
         android:name="ua.dp.hammer.superhome.activities.fragments.EnvSensorsListFragment"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,11 +19,19 @@
     <fragment
         android:id="@+id/manager_fragment"
         android:name="ua.dp.hammer.superhome.activities.fragments.ManagerFragment"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <fragment
+        android:id="@+id/all_devices_tech_info"
+        android:name="ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@+id/manager_fragment"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier

@@ -5,10 +5,8 @@ open class DeviceState(
     val gain: Int?,
     val errors: Int?,
     val uptime: Int?,
-    val freeHeapSpace: Int?,
-    val type: DeviceType,
-    val lastKeepAliveRequestSec: Int) {
-    constructor() : this("", null, null, null, null, DeviceType.ENV_SENSOR, 0)
+    val freeHeapSpace: Int?) {
+    constructor() : this("", null, null, null, null)
 
     fun getGainString(): String? {
         return gain?.toString()?.plus("dB")

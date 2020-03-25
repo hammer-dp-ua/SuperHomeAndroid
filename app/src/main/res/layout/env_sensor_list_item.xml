@@ -20,7 +20,7 @@
         android:topLeftRadius="10dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/sensorName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{envSensor.displayedName}"
@@ -31,7 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Sensor Item" />
-
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="wrap_content"
@@ -52,8 +51,7 @@
             android:textSize="@dimen/env_sensor_item_text_size"
             android:visibility="@{envSensor.temperatureVisibility}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+            app:layout_constraintTop_toBottomOf="@+id/sensorName" />
         <TextView
             android:id="@+id/temperature_value"
             android:layout_width="wrap_content"
@@ -80,7 +78,6 @@
             android:visibility="@{envSensor.humidityVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/temperature_title" />
-
         <TextView
             android:id="@+id/humidity_value"
             android:layout_width="wrap_content"
@@ -107,7 +104,6 @@
             android:visibility="@{envSensor.lightVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/humidity_title" />
-
         <TextView
             android:id="@+id/light_value"
             android:layout_width="wrap_content"
@@ -134,7 +130,6 @@
             android:visibility="@{envSensor.gainVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/light_title" />
-
         <TextView
             android:id="@+id/gain_value"
             android:layout_width="wrap_content"
@@ -161,7 +156,6 @@
             android:visibility="@{envSensor.errorsVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gain_title" />
-
         <TextView
             android:id="@+id/errors_value"
             android:layout_width="wrap_content"
@@ -188,7 +182,6 @@
             android:visibility="@{envSensor.uptimeVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/errors_title" />
-
         <TextView
             android:id="@+id/uptime_value"
             android:layout_width="wrap_content"
@@ -215,7 +208,6 @@
             android:visibility="@{envSensor.freeHeapSpaceVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/uptime_title" />
-
         <TextView
             android:id="@+id/free_heap_value"
             android:layout_width="wrap_content"

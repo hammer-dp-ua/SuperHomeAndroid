@@ -19,4 +19,7 @@
     <string name="room_shutter_tittle">Комната</string>
     <string name="kitchen_shutter_1_tittle">Кухня 1</string>
     <string name="kitchen_shutter_2_tittle">Кухня 2</string>
+    <string name="tech_info_fragment_tittle">Техническая информация</string>
+    <string name="build_timestamp_tittle">Время компилиции</string>
+    <string name="last_request_time_tittle">Последняя активность</string>
 </resources>
