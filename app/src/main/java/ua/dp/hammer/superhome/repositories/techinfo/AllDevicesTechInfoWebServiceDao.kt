@@ -9,7 +9,7 @@ import ua.dp.hammer.superhome.data.PhoneAwareDeviceState
 
 interface AllDevicesTechInfoWebServiceDao {
     @POST("getAllDevicesTechInfoStates")
-    fun getAllDevicesTechInfoStatesAsync(@Body awareStates: Set<PhoneAwareDeviceState>): Deferred<List<DeviceTechInfo>>
+    fun getAllDevicesTechInfoStatesAsync(@Body awareStates: Set<PhoneAwareDeviceState>): Deferred<ArrayList<DeviceTechInfo>>
 
     @GET("getUnavailableDevices")
     fun getUnavailableDevicesAsync(): Deferred<Set<String>>

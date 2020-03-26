@@ -30,7 +30,7 @@ class AllDevicesTechInfoRepository private constructor() {
         allDevicesTechInfoWebServiceDao = retrofit.create(AllDevicesTechInfoWebServiceDao::class.java)
     }
 
-    suspend fun getAllDevicesTechInfoStates(awareStates: Set<PhoneAwareDeviceState>): List<DeviceTechInfo> {
+    suspend fun getAllDevicesTechInfoStates(awareStates: Set<PhoneAwareDeviceState>): ArrayList<DeviceTechInfo> {
         return allDevicesTechInfoWebServiceDao.getAllDevicesTechInfoStatesAsync(awareStates).await()
     }
 
