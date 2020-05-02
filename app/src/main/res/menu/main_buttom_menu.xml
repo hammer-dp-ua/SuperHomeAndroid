@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/managerFragment"
+        android:icon="@drawable/manager_icon"
+        android:title="@string/menu_manager_tittle">
+    </item>
+    <item
+        android:id="@+id/envSensorsListFragment"
+        android:icon="@drawable/temperature"
+        android:title="@string/menu_sensors_tittle" />
+    <item
+        android:id="@+id/allDevicesTechInfoFragment"
+        android:icon="@drawable/remote_device"
+        android:title="@string/menu_all_devices_tittle" />
+</menu>

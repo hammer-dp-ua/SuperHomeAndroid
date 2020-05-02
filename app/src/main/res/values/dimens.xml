@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="match_parent" format="integer" type="dimen">-1</item>
+    <item name="wrap_content" format="integer" type="dimen">-2</item>
+
     <bool name="isTablet">false</bool>
 
-    <dimen name="env_sensor_item_value_title_start_margin">2dp</dimen>
-    <dimen name="env_sensor_item_value_title_top_margin">2dp</dimen>
-    <dimen name="env_sensor_item_value_title_bottom_margin">2dp</dimen>
-    <dimen name="env_sensor_item_value_title_width">100dp</dimen>
-    <dimen name="env_sensor_item_value_start_margin">2dp</dimen>
-    <dimen name="env_sensor_item_value_bottom_margin">2dp</dimen>
-    <dimen name="env_sensor_item_text_size">12sp</dimen>
+    <dimen name="list_frame_layout_width">0dp</dimen>
+    <dimen name="device_list_item_value_title_start_margin">2dp</dimen>
+    <dimen name="device_list_item_value_title_top_margin">2dp</dimen>
+    <dimen name="device_list_item_value_title_bottom_margin">2dp</dimen>
+    <dimen name="device_list_item_value_start_margin">8dp</dimen>
+    <dimen name="device_list_item_value_bottom_margin">2dp</dimen>
+    <dimen name="device_list_item_value_end_margin">2dp</dimen>
+    <fraction name="device_list_item_value_bias">1.0</fraction>
+    <dimen name="device_list_item_name_text_size">30sp</dimen>
 
     <dimen name="card_end_margin">2dp</dimen>
     <dimen name="card_elevation">2dp</dimen>

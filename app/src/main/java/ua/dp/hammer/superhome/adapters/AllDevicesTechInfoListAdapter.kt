@@ -9,7 +9,8 @@ import ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment
 import ua.dp.hammer.superhome.data.DeviceTechInfo
 import ua.dp.hammer.superhome.databinding.DeviceTechInfoItemBinding
 
-class AllDevicesTechInfoListAdapter(private val fragment: AllDevicesTechInfoFragment) : ListAdapter<DeviceTechInfo, RecyclerView.ViewHolder>(DeviceTechInfoCallback()) {
+class AllDevicesTechInfoListAdapter(private val fragment: AllDevicesTechInfoFragment) :
+    ListAdapter<DeviceTechInfo, RecyclerView.ViewHolder>(DeviceTechInfoCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DeviceTechInfoItemBinding.inflate(layoutInflater, parent, false)

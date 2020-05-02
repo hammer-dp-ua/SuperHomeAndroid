@@ -2,14 +2,14 @@ package ua.dp.hammer.superhome.activities.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.NavHostFragment
 import ua.dp.hammer.superhome.adapters.EnvSensorsListAdapter
 import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
 import ua.dp.hammer.superhome.databinding.FragmentEnvSensorsListBinding
@@ -29,29 +29,16 @@ class EnvSensorsListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: created")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: started")
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.resumeMonitoring()
-        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: resumed")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: paused")
     }
 
     override fun onStop() {
         super.onStop()
         viewModel.stopMonitoring()
-        Log.d(null, "~~~ " + EnvSensorsListFragment::class.java.simpleName + " state: stopped")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
@@ -63,6 +50,10 @@ class EnvSensorsListFragment : Fragment() {
 
         subscribeUi(adapter)
         binding.envSensorsList.adapter = adapter
+
+        binding.root.setOnTouchListener {v, event ->
+            true
+        }
 
         return binding.root
     }
@@ -83,9 +74,5 @@ class EnvSensorsListFragment : Fragment() {
         viewModel.sensors.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 }

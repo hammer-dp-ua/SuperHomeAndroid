@@ -9,7 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.adapters.AllDevicesTechInfoListAdapter
 import ua.dp.hammer.superhome.adapters.EnvSensorsListAdapter
 import ua.dp.hammer.superhome.databinding.FragmentAllDevicesTechInfoListBinding
@@ -46,6 +50,13 @@ class AllDevicesTechInfoFragment : Fragment() {
         val adapter = AllDevicesTechInfoListAdapter(this)
         subscribeUi(adapter)
         binding.devicesTechInfoList.adapter = adapter
+        lifecycleScope.launch {
+            while (true) {
+                binding.devicesTechInfoList.smoothScrollToPosition(0)
+                delay(30_000)
+            }
+        }
+
         return binding.root
     }
 

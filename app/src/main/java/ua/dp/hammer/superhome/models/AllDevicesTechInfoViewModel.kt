@@ -8,14 +8,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.DeviceTechInfo
+import ua.dp.hammer.superhome.data.DeviceType
 import ua.dp.hammer.superhome.data.PhoneAwareDeviceState
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.repositories.techinfo.AllDevicesTechInfoRepository
+import java.lang.IllegalArgumentException
 
 class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
     private val allDevicesTechInfoRepository: AllDevicesTechInfoRepository = AllDevicesTechInfoRepository.getInstance()
 
-    val devicesInfo: MutableLiveData<ArrayList<DeviceTechInfo>> = MutableLiveData()
+    val devicesInfo: MutableLiveData<MutableList<DeviceTechInfo>> = MutableLiveData()
 
     private var statesJob: Job
 
@@ -87,9 +89,10 @@ class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSett
         val maxElementsAmount: Int = (devicesInfo.value?.size ?: 0) + response.size
 
         if (devicesInfo.value == null) {
+            response.sortWith(DefaultSorter())
             devicesInfo.value = response
         } else {
-            val newElementsCollection = ArrayList<DeviceTechInfo>(maxElementsAmount)
+            val newElementsCollection: MutableList<DeviceTechInfo> = ArrayList(maxElementsAmount)
 
             newElementsCollection.addAll(devicesInfo.value!!)
 
@@ -102,7 +105,60 @@ class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSett
                     newElementsCollection.add(responseElement)
                 }
             }
+            newElementsCollection.sortWith(DefaultSorter())
             devicesInfo.value = newElementsCollection
+        }
+    }
+
+    private inner class DefaultSorter : Comparator<DeviceTechInfo> {
+        override fun compare(a: DeviceTechInfo, b: DeviceTechInfo): Int {
+            if (a.notAvailable && !b.notAvailable) {
+                return -1
+            } else if (!a.notAvailable && b.notAvailable) {
+                return 1
+            } else {
+                val typeComparison = compareByType(a.deviceType, b.deviceType)
+
+                if (typeComparison != 0) {
+                    return typeComparison
+                } else {
+                    return compareNullableNumbers(a.uptime, b.uptime)
+                }
+            }
+        }
+    }
+
+    private val typesSortingOrder = mapOf(DeviceType.MOTION_DETECTOR to 1,
+        DeviceType.SHUTTER to 2,
+        DeviceType.PROJECTOR to 3,
+        DeviceType.ENV_SENSOR to 4)
+
+    private fun compareByType(a: DeviceType, b: DeviceType): Int {
+        val aOrder = typesSortingOrder[a] ?: throw IllegalArgumentException("'$a' type is not known")
+        val bOrder = typesSortingOrder[b] ?: throw IllegalArgumentException("'$b' type is not known")
+
+        return if (aOrder < bOrder) {
+            -1
+        } else if (aOrder > bOrder) {
+            1
+        } else {
+            0
+        }
+    }
+
+    private fun compareNullableNumbers(a: Int?, b: Int?): Int {
+        if (a == b) {
+            return 0
+        } else if (a == null && b != null) {
+            return -1
+        } else if (a != null && b == null) {
+            return 1
+        }
+
+        return if (a!! < b!!) {
+            -1
+        } else {
+            1
         }
     }
 }

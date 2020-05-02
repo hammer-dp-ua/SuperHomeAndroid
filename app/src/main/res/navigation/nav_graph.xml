@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/managerFragment">
+
+    <fragment
+        android:id="@+id/managerFragment"
+        android:name="ua.dp.hammer.superhome.activities.fragments.ManagerFragment"
+        android:label="ManagerFragment" />
+    <fragment
+        android:id="@+id/envSensorsListFragment"
+        android:name="ua.dp.hammer.superhome.activities.fragments.EnvSensorsListFragment"
+        android:label="EnvSensorsListFragment" />
+    <fragment
+        android:id="@+id/allDevicesTechInfoFragment"
+        android:name="ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment"
+        android:label="AllDevicesTechInfoFragment" />
+</navigation>

@@ -4,17 +4,19 @@ import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.data.ProjectorState
 import ua.dp.hammer.superhome.data.ShutterState
@@ -37,25 +39,12 @@ class ManagerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: created")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: started")
-
-        //val binding = FragmentManagerBinding.inflate(layoutInflater)
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.resumeMonitoring()
         Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: resumed")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: paused")
     }
 
     override fun onStop() {
@@ -70,6 +59,10 @@ class ManagerFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        binding.root.setOnTouchListener {v, event ->
+            true
+        }
 
         binding.projectorsButton.setOnLongClickListener() {
             viewModel.onProjectorsLongButtonClick(it as ImageButton)

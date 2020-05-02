@@ -23,4 +23,7 @@
     <string name="tech_info_fragment_tittle">Devices Technical Info</string>
     <string name="build_timestamp_tittle">Build timestamp</string>
     <string name="last_request_time_tittle">Last request</string>
+    <string name="menu_manager_tittle">Manager</string>
+    <string name="menu_sensors_tittle">Sensors</string>
+    <string name="menu_all_devices_tittle">All devices</string>
 </resources>

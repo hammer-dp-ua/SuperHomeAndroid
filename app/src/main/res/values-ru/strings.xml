@@ -22,4 +22,7 @@
     <string name="tech_info_fragment_tittle">Техническая информация</string>
     <string name="build_timestamp_tittle">Время компилиции</string>
     <string name="last_request_time_tittle">Посл. активность</string>
+    <string name="menu_manager_tittle">Управление</string>
+    <string name="menu_sensors_tittle">Датчики</string>
+    <string name="menu_all_devices_tittle">Все устр-ва</string>
 </resources>
