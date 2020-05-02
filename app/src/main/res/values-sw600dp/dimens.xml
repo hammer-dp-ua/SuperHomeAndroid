@@ -10,6 +10,8 @@
     <dimen name="device_list_item_value_bottom_margin">8dp</dimen>
     <fraction name="device_list_item_value_bias">0.0</fraction>
     <dimen name="device_list_item_name_text_size">20sp</dimen>
+    <dimen name="device_list_item_value_text_size">20sp</dimen>
+    <dimen name="device_list_item_value_bold_text_size">22sp</dimen>
     <dimen name="shutters_tittle">25sp</dimen>
     <dimen name="shutter_tittle">20sp</dimen>
 </resources>

@@ -52,12 +52,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_buttom_menu, menu)
-        return true
+        if (!baseContext.resources.getBoolean(R.bool.isTablet)) {
+            menuInflater.inflate(R.menu.main_buttom_menu, menu)
+            return true
+        }
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = findNavController(R.id.nav_graph)
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+        if (!baseContext.resources.getBoolean(R.bool.isTablet)) {
+            val navController = findNavController(R.id.nav_graph)
+            return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

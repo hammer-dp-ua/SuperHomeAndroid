@@ -12,8 +12,10 @@
     <dimen name="device_list_item_value_start_margin">8dp</dimen>
     <dimen name="device_list_item_value_bottom_margin">2dp</dimen>
     <dimen name="device_list_item_value_end_margin">2dp</dimen>
-    <fraction name="device_list_item_value_bias">1.0</fraction>
     <dimen name="device_list_item_name_text_size">30sp</dimen>
+    <dimen name="device_list_item_value_text_size">30sp</dimen>
+    <dimen name="device_list_item_value_bold_text_size">32sp</dimen>
+    <fraction name="device_list_item_value_bias">1.0</fraction>
 
     <dimen name="card_end_margin">2dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
@@ -24,7 +26,7 @@
 
     <dimen name="fragment_manager_remaining_text_size">12sp</dimen>
 
-    <dimen name="manager_icon_size">56dp</dimen>
+    <dimen name="manager_icon_size">72dp</dimen>
 
     <dimen name="shutters_tittle">15sp</dimen>
     <dimen name="shutter_tittle">12sp</dimen>
