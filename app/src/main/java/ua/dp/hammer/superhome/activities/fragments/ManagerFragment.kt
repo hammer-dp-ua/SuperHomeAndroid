@@ -4,20 +4,19 @@ import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import ua.dp.hammer.superhome.R
+import ua.dp.hammer.superhome.data.FanState
 import ua.dp.hammer.superhome.data.ProjectorState
 import ua.dp.hammer.superhome.data.ShutterState
 import ua.dp.hammer.superhome.data.ShutterStates
@@ -73,6 +72,10 @@ class ManagerFragment : Fragment() {
             changeProjectorStateButton(binding.projectorsButton, state)
         })
 
+        viewModel.fanButtonState.observe(viewLifecycleOwner, Observer<FanState> { state ->
+            changeFanStateButton(binding.fanButton, state)
+        })
+
         binding.cameraRecordingButton.setOnLongClickListener {
             val dialog = CameraRecordingSettingsDialog()
 
@@ -88,15 +91,6 @@ class ManagerFragment : Fragment() {
 
         viewModel.cameraButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
             binding.cameraRecordingButton.isSelected = isSelected
-        })
-
-        viewModel.fanButtonSelected.observe(viewLifecycleOwner, Observer<Boolean> { isSelected ->
-            binding.fanButton.isSelected = isSelected
-        })
-
-        // For button disabling while fun is already turned on
-        viewModel.fanButtonEnabled.observe(viewLifecycleOwner, Observer<Boolean> { isEnabled ->
-            binding.fanButton.isEnabled = isEnabled
         })
 
         viewModel.roomShutterButtonState.observe(viewLifecycleOwner, Observer<ShutterState> { state ->
@@ -163,6 +157,24 @@ class ManagerFragment : Fragment() {
                 button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off_disabled))
             } else {
                 button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off))
+            }
+        }
+    }
+
+    private fun changeFanStateButton(button: ImageButton, state: FanState) {
+        val currentContext = context ?: throw java.lang.IllegalStateException()
+
+        if (state.turnedOn) {
+            if (state.notAvailable) {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_on_disabled))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_on))
+            }
+        } else {
+            if (state.notAvailable) {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_off_disabled))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_off))
             }
         }
     }

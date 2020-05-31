@@ -21,8 +21,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
     val projectorsButtonState: MutableLiveData<ProjectorState> = MutableLiveData()
     val cameraButtonSelected: MutableLiveData<Boolean> = MutableLiveData(true)
-    val fanButtonSelected: MutableLiveData<Boolean> = MutableLiveData(false)
-    val fanButtonEnabled: MutableLiveData<Boolean> = MutableLiveData(true)
     val fanWorkingMinutesRemaining: MutableLiveData<String> = MutableLiveData()
     val fanWorkingMinutesRemainingStatusVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val disabledCameraMinutesRemaining: MutableLiveData<String> = MutableLiveData()
@@ -30,6 +28,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     val roomShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
     val kitchen1ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
     val kitchen2ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
+    val fanButtonState: MutableLiveData<FanState> = MutableLiveData()
 
     private var statesJob: Job
 
@@ -217,34 +216,36 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     }
 
     fun onFanButtonClick(view: View) {
-        val button: ImageButton = view as ImageButton
-        val prevSelectedState = button.isSelected
+        val currentFanState = fanButtonState.value
 
-        button.isSelected = !button.isSelected
-        fanButtonEnabled.value = false
-        fanButtonSelected.value = true
-        val turnOn = button.isSelected
+        if (currentFanState == null || currentFanState.turnedOn || currentFanState.notAvailable) {
+            return
+        }
 
         viewModelScope.launch {
             var response: FanState? = null
 
             try {
-                if (turnOn) {
-                    response = managerRepository.turnOnBathroomFan()
-                }
+                response = managerRepository.turnOnBathroomFan()
+                updateFanState(response)
             } catch (e: Throwable) {
                 Log.d(null, "~~~ Error on changing fan state", e)
             }
 
             if (response == null) {
-                button.isSelected = prevSelectedState
-            } else {
-                updateFanState(response)
+                currentFanState.notAvailable = true
+                fanButtonState.value = currentFanState
             }
         }
     }
 
     private fun updateFanState(response: FanState) {
+        var currentFanState = fanButtonState.value
+
+        if (currentFanState == null) {
+            currentFanState = FanState()
+        }
+
         fanWorkingMinutesRemaining.value = response.minutesRemaining.toString()
 
         if (response.minutesRemaining > 0 && response.turnedOn) {
@@ -253,15 +254,15 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             fanWorkingMinutesRemainingStatusVisibility.value = View.GONE
         }
 
-        if (fanButtonSelected.value != response.turnedOn) {
-            // Fan state changed
-            fanButtonEnabled.value = true
-        }
-        fanButtonSelected.value = response.turnedOn
+        currentFanState.turnedOn = response.turnedOn
+        currentFanState.notAvailable = response.notAvailable
+
+        fanButtonState.value = currentFanState
     }
 
     private fun updateProjectorState(receivedProjectorsState: List<ProjectorState>?) {
         var currentProjectorButtonState = projectorsButtonState.value
+
         if (receivedProjectorsState == null || receivedProjectorsState.isEmpty()) {
             currentProjectorButtonState = ProjectorState()
         } else {

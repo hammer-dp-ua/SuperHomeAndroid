@@ -1,5 +1,6 @@
 package ua.dp.hammer.superhome.data
 
 data class FanState(
-    val turnedOn: Boolean,
-    val minutesRemaining: Int)
+    var turnedOn: Boolean = false,
+    val minutesRemaining: Int = 0,
+    var notAvailable: Boolean = true)
