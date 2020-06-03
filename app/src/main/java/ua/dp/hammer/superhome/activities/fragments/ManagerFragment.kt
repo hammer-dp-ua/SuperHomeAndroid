@@ -115,16 +115,16 @@ class ManagerFragment : Fragment() {
             button.isClickable = true
 
             if (state.state == ShutterStates.SHUTTER_CLOSED) {
-                if (state.notAvailable) {
-                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed_disabled))
-                } else {
+                if (state.notAvailable == false) {
                     button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed))
+                } else {
+                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_closed_disabled))
                 }
             } else {
-                if (state.notAvailable) {
-                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened_disabled))
-                } else {
+                if (state.notAvailable == false) {
                     button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened))
+                } else {
+                    button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.shutter_opened_disabled))
                 }
             }
         } else if (state.state == ShutterStates.SHUTTER_CLOSING || state.state == ShutterStates.SHUTTER_OPENING) {
@@ -147,16 +147,16 @@ class ManagerFragment : Fragment() {
         val currentContext = context ?: throw java.lang.IllegalStateException()
 
         if (state.turnedOn) {
-            if (state.notAvailable) {
-                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_on_disabled))
-            } else {
+            if (state.notAvailable == false) {
                 button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_on))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_on_disabled))
             }
         } else {
-            if (state.notAvailable) {
-                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off_disabled))
-            } else {
+            if (state.notAvailable == false) {
                 button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.lamp_turned_off_disabled))
             }
         }
     }
@@ -164,17 +164,17 @@ class ManagerFragment : Fragment() {
     private fun changeFanStateButton(button: ImageButton, state: FanState) {
         val currentContext = context ?: throw java.lang.IllegalStateException()
 
-        if (state.turnedOn) {
-            if (state.notAvailable) {
-                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_on_disabled))
-            } else {
+        if (state.turnedOn == true) {
+            if (state.notAvailable == false) {
                 button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_on))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_on_disabled))
             }
         } else {
-            if (state.notAvailable) {
-                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_off_disabled))
-            } else {
+            if (state.notAvailable == false) {
                 button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_off))
+            } else {
+                button.setImageDrawable(ContextCompat.getDrawable(currentContext, R.drawable.fan_turned_off_disabled))
             }
         }
     }

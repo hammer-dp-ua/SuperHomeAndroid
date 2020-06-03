@@ -140,7 +140,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
     fun onProjectorsButtonClick(view: View) {
         val projectorState = projectorsButtonState.value
-        if (projectorState == null || projectorState.notAvailable) {
+        if (projectorState?.notAvailable == null || projectorState.notAvailable == true) {
             return
         }
 
@@ -155,7 +155,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             try {
                 response = managerRepository.switchProjectors(stateParam)
             } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on switching projectors", e)
             }
 
             if (response == null) {
@@ -218,7 +217,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     fun onFanButtonClick(view: View) {
         val currentFanState = fanButtonState.value
 
-        if (currentFanState == null || currentFanState.turnedOn || currentFanState.notAvailable) {
+        if (currentFanState == null || currentFanState.turnedOn != false ||
+            currentFanState.notAvailable != false) {
             return
         }
 
@@ -229,7 +229,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
                 response = managerRepository.turnOnBathroomFan()
                 updateFanState(response)
             } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing fan state", e)
             }
 
             if (response == null) {
@@ -248,7 +247,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
         fanWorkingMinutesRemaining.value = response.minutesRemaining.toString()
 
-        if (response.minutesRemaining > 0 && response.turnedOn) {
+        if (response.minutesRemaining != null && response.minutesRemaining > 0 &&
+            response.turnedOn == true) {
             fanWorkingMinutesRemainingStatusVisibility.value = View.VISIBLE
         } else {
             fanWorkingMinutesRemainingStatusVisibility.value = View.GONE
@@ -274,9 +274,10 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var notAvailable = true
             for (receivedProjectorState in receivedProjectorsState) {
                 // At least 1 is available
-                notAvailable = notAvailable && receivedProjectorState.notAvailable
+                notAvailable = notAvailable &&
+                        (receivedProjectorState.notAvailable == null || receivedProjectorState.notAvailable == true)
                 // At least 1 available is turned on
-                turnOn = turnOn || (receivedProjectorState.turnedOn && !receivedProjectorState.notAvailable)
+                turnOn = turnOn || (receivedProjectorState.turnedOn && receivedProjectorState.notAvailable == false)
             }
             currentProjectorButtonState.turnedOn = turnOn
             currentProjectorButtonState.notAvailable = notAvailable
@@ -316,7 +317,8 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     }
 
     private fun sendShutterRequest(state: ShutterState?) {
-        if (state == null || state.notAvailable) {
+        if (state?.notAvailable == null || state.notAvailable == true ||
+            state.deviceName == null) {
             return
         }
 
@@ -332,7 +334,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             try {
                 response = managerRepository.doShutter(state.deviceName, state.shutterNo, open)
             } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing '$state' shutter state", e)
             }
 
             if (response == null) {

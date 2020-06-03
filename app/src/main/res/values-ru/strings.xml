@@ -20,7 +20,7 @@
     <string name="kitchen_shutter_1_tittle">Кухня 1</string>
     <string name="kitchen_shutter_2_tittle">Кухня 2</string>
     <string name="tech_info_fragment_tittle">Техническая информация</string>
-    <string name="build_timestamp_tittle">Время компилиции</string>
+    <string name="build_timestamp_tittle">Время компиляции</string>
     <string name="last_request_time_tittle">Посл. активность</string>
     <string name="menu_manager_tittle">Управление</string>
     <string name="menu_sensors_tittle">Датчики</string>
