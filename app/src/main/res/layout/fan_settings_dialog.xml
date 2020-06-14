@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ua.dp.hammer.superhome.models.FanSettingsViewModel"/>
+        <import type="ua.dp.hammer.superhome.utilities.DataBindingConverter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="layout/fan_settings_dialog">
+
+        <TextView
+            android:id="@+id/tittle_section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_text_top_margin"
+            android:text="@string/fan_settings_tittle"
+            android:textAlignment="center"
+            android:textSize="@dimen/dialog_text_size_tittle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="nameView,fanTurnOnHumidityThresholdView,manuallyTurnedOnTimeoutView,onFallingHumidityWorkingTimeoutView"/>
+
+        <TextView
+            android:id="@+id/nameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:layout_marginTop="@dimen/dialog_text_top_margin"
+            android:text="@string/name"
+            android:textSize="@dimen/dialog_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tittle_section" />
+
+        <TextView
+            android:id="@+id/nameValueView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:text="@{viewModel.name}"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/dialog_text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/nameView"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/nameView"
+            tools:text="The fan name" />
+
+        <TextView
+            android:id="@+id/fanTurnOnHumidityThresholdView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:layout_marginTop="@dimen/dialog_text_top_margin"
+            android:text="@string/fan_turn_on_humidity_threshold"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/dialog_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameView" />
+
+        <EditText
+            android:id="@+id/fanTurnOnHumidityThresholdValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:ems="2"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            android:textSize="@dimen/dialog_text_size"
+            android:text="@={DataBindingConverter.convertStringToInteger(viewModel.turnOnHumidityThreshold)}"
+            app:layout_constraintBottom_toBottomOf="@+id/fanTurnOnHumidityThresholdView"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/fanTurnOnHumidityThresholdView"
+            tools:text="85" />
+
+        <TextView
+            android:id="@+id/manuallyTurnedOnTimeoutView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:layout_marginTop="@dimen/dialog_text_top_margin"
+            android:text="@string/manually_turned_on_timeout"
+            android:textSize="@dimen/dialog_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fanTurnOnHumidityThresholdView" />
+
+        <EditText
+            android:id="@+id/manuallyTurnedOnTimeoutValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:ems="2"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            android:textSize="@dimen/dialog_text_size"
+            android:text="@={DataBindingConverter.convertStringToInteger(viewModel.manuallyTurnedOnTimeoutMinutes)}"
+            app:layout_constraintBottom_toBottomOf="@+id/manuallyTurnedOnTimeoutView"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/manuallyTurnedOnTimeoutView"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/onFallingHumidityWorkingTimeoutView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:layout_marginTop="@dimen/dialog_text_top_margin"
+            android:text="@string/on_falling_humidity_working_timeout"
+            android:textSize="@dimen/dialog_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manuallyTurnedOnTimeoutView" />
+
+        <EditText
+            android:id="@+id/onFallingHumidityWorkingTimeoutValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_text_start_margin"
+            android:ems="2"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            android:textSize="@dimen/dialog_text_size"
+            android:text="@={DataBindingConverter.convertStringToInteger(viewModel.afterFallingThresholdWorkTimeoutMinutes)}"
+            app:layout_constraintBottom_toBottomOf="@+id/onFallingHumidityWorkingTimeoutView"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="@+id/onFallingHumidityWorkingTimeoutView"
+            tools:text="30" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/OK"
+            app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onFallingHumidityWorkingTimeoutView" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/okButton"
+            app:layout_constraintTop_toBottomOf="@+id/onFallingHumidityWorkingTimeoutView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

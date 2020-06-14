@@ -26,4 +26,8 @@
     <string name="menu_manager_tittle">Manager</string>
     <string name="menu_sensors_tittle">Sensors</string>
     <string name="menu_all_devices_tittle">All devices</string>
+    <string name="fan_settings_tittle">Fan Settings</string>
+    <string name="fan_turn_on_humidity_threshold">Turn on humidity threshold</string>
+    <string name="manually_turned_on_timeout">Manually turned on working timeout</string>
+    <string name="on_falling_humidity_working_timeout">On falling humidity working timeout</string>
 </resources>

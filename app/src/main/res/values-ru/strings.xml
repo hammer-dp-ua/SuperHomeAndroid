@@ -25,4 +25,8 @@
     <string name="menu_manager_tittle">Управление</string>
     <string name="menu_sensors_tittle">Датчики</string>
     <string name="menu_all_devices_tittle">Все устр-ва</string>
+    <string name="fan_settings_tittle">Настройки вентилятора</string>
+    <string name="fan_turn_on_humidity_threshold">Пороговое знач. влажности</string>
+    <string name="manually_turned_on_timeout">Таймаут работы ручного включения</string>
+    <string name="on_falling_humidity_working_timeout">Таймаут работы после падения влажности</string>
 </resources>

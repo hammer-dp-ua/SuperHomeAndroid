@@ -256,6 +256,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
 
         currentFanState.turnedOn = response.turnedOn
         currentFanState.notAvailable = response.notAvailable
+        currentFanState.deviceName = response.deviceName
 
         fanButtonState.value = currentFanState
     }
@@ -283,10 +284,6 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             currentProjectorButtonState.notAvailable = notAvailable
         }
         projectorsButtonState.value = currentProjectorButtonState
-    }
-
-    fun onFanLongButtonClick(button: ImageButton) {
-
     }
 
     fun onKitchenShutter1ButtonClick(view: View) {

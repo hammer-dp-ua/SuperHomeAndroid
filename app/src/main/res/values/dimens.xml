@@ -30,4 +30,10 @@
 
     <dimen name="shutters_tittle">15sp</dimen>
     <dimen name="shutter_tittle">12sp</dimen>
+
+    <dimen name="dialog_text_size_tittle">20sp</dimen>
+    <dimen name="dialog_text_size">18sp</dimen>
+    <dimen name="dialog_text_top_margin">8dp</dimen>
+    <dimen name="dialog_text_start_margin">8dp</dimen>
+    <dimen name="dialog_text_end_margin">8dp</dimen>
 </resources>

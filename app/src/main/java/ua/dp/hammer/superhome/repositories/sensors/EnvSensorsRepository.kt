@@ -26,11 +26,11 @@ class EnvSensorsRepository private constructor() {
         sensorsWebServiceDao = retrofit.create(SensorsWebServiceDao::class.java)
     }
 
-    suspend fun getEnvSensorsValuesAsync(): List<EnvSensor> {
+    suspend fun getEnvSensorsValues(): List<EnvSensor> {
         return sensorsWebServiceDao.getAllEnvSensorsDataAsync().await()
     }
 
-    suspend fun getAllEnvSensorsDataDeferredAsync(): List<EnvSensor> {
+    suspend fun getAllEnvSensorsDataDeferred(): List<EnvSensor> {
         return sensorsWebServiceDao.getAllEnvSensorsDataDeferredAsync().await()
     }
 

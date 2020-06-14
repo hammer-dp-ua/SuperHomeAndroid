@@ -14,4 +14,7 @@
     <dimen name="device_list_item_value_bold_text_size">22sp</dimen>
     <dimen name="shutters_tittle">25sp</dimen>
     <dimen name="shutter_tittle">20sp</dimen>
+
+    <dimen name="dialog_text_size_tittle">20sp</dimen>
+    <dimen name="dialog_text_size">18sp</dimen>
 </resources>

@@ -43,7 +43,7 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
 
             while (!success) {
                 try {
-                    val response: List<EnvSensor> = envSensorsRepository.getEnvSensorsValuesAsync()
+                    val response: List<EnvSensor> = envSensorsRepository.getEnvSensorsValues()
 
                     applyColumnsVisibility(response)
                     sensors.value = response
@@ -58,7 +58,7 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
             while (isActive) {
                 try {
                     val requestStartTime = System.currentTimeMillis()
-                    val response = envSensorsRepository.getAllEnvSensorsDataDeferredAsync()
+                    val response = envSensorsRepository.getAllEnvSensorsDataDeferred()
                     val requestEndTime = System.currentTimeMillis()
 
                     if (!stopUpdating) {

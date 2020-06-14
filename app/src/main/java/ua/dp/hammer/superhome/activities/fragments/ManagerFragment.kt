@@ -85,7 +85,13 @@ class ManagerFragment : Fragment() {
         }
 
         binding.fanButton.setOnLongClickListener {
-            viewModel.onFanLongButtonClick(it as ImageButton)
+            val deviceName: String? = viewModel.fanButtonState.value?.deviceName
+
+            if (deviceName != null) {
+                val dialog = FanSettingsDialog(deviceName)
+                dialog.show(this.parentFragmentManager, "fan_settings")
+            }
+
             true
         }
 
