@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ua.dp.hammer.superhome.models.MainSettingsViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/main_fragment_layout_padding_margin">
+
+        <TextView
+            android:id="@+id/localServerAddressTittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/local_server_address_tittle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/lovalServerAddressValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="192.168.0.2"
+            android:inputType="textPersonName"
+            android:text="@={viewModel.localServerAddress}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/localServerAddressTittle" />
+
+        <TextView
+            android:id="@+id/globalServerAddressTittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/global_server_address_tittle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lovalServerAddressValue" />
+
+        <EditText
+            android:id="@+id/globalServerAddressValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="www.domain.com"
+            android:inputType="textPersonName"
+            android:text="@={viewModel.globalServerAddress}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/globalServerAddressTittle" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

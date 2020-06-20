@@ -6,6 +6,7 @@
     <string name="gain">Усиление</string>
     <string name="name">Имя</string>
     <string name="displayed_name">Отображаемое имя</string>
+    <string name="displayed_name_colon">Отображаемое имя:</string>
     <string name="displayed_env_sensor_dialog_tittle">Отображаемые данные</string>
     <string name="cancel">Отмена</string>
     <string name="errors">Ошибки</string>
@@ -29,4 +30,11 @@
     <string name="fan_turn_on_humidity_threshold">Пороговое знач. влажности</string>
     <string name="manually_turned_on_timeout">Таймаут работы ручного включения</string>
     <string name="on_falling_humidity_working_timeout">Таймаут работы после падения влажности</string>
+    <string name="minutes">минут</string>
+    <string name="name_colon">Имя:</string>
+    <string name="enter_displayed_name">Введите отображаемое имя</string>
+    <string name="settings">Настройки</string>
+    <string name="local_server_address_tittle">Локальный адрес сервера</string>
+    <string name="global_server_address_tittle">Глобальный адрес сервера</string>
+    <string name="save">Сохранить</string>
 </resources>

@@ -5,7 +5,9 @@
     <string name="light">Light</string>
     <string name="gain">Gain</string>
     <string name="name">Name</string>
+    <string name="name_colon">Name:</string>
     <string name="displayed_name">Displayed name</string>
+    <string name="displayed_name_colon">Displayed name:</string>
     <string name="displayed_env_sensor_dialog_tittle">Displayed info</string>
     <string name="OK" translatable="false">OK</string>
     <string name="cancel">Cancel</string>
@@ -30,4 +32,10 @@
     <string name="fan_turn_on_humidity_threshold">Turn on humidity threshold</string>
     <string name="manually_turned_on_timeout">Manually turned on working timeout</string>
     <string name="on_falling_humidity_working_timeout">On falling humidity working timeout</string>
+    <string name="minutes">minutes</string>
+    <string name="enter_displayed_name">Enter displayed name</string>
+    <string name="settings">Settings</string>
+    <string name="local_server_address_tittle">Local Server Address</string>
+    <string name="global_server_address_tittle">Global Server Address</string>
+    <string name="save">Save</string>
 </resources>

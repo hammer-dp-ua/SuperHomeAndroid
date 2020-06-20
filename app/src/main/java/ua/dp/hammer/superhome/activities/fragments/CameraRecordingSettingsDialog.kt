@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.databinding.CameraRecordingSettingsDialogBinding
 import ua.dp.hammer.superhome.models.CameraRecordingSettingsViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
@@ -25,7 +26,8 @@ class CameraRecordingSettingsDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            // ThemeOverlay_AppCompat_Dialog makes the dialog width fit its content
+            val builder = AlertDialog.Builder(it, R.style.ThemeOverlay_AppCompat_Dialog)
             val inflater = requireActivity().layoutInflater
             val binding = CameraRecordingSettingsDialogBinding.inflate(inflater)
 

@@ -18,6 +18,7 @@
         android:backgroundTint="@{deviceInfo.notAvailable ? @color/design_default_color_error : @color/cardview_shadow_start_color}"
         android:clickable="true"
         android:focusable="true"
+        android:padding="8dp"
         android:topLeftRadius="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/uptime_value"
         app:layout_constraintTop_toBottomOf="@+id/uptime_value">
@@ -33,7 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Tech Info Item" />
+            tools:text="Tech Info Item long1 long2 long3" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
@@ -41,14 +42,15 @@
             android:layout_height="wrap_content"
             app:barrierDirection="right"
             app:constraint_referenced_ids="uptime_title,last_device_request_time_tittle,build_timestamp_tittle"
-            tools:layout_editor_absoluteX="119dp" />
+            tools:layout_editor_absoluteX="119dp"
+            tools:layout_editor_absoluteY="8dp" />
 
         <!--Uptime-->
         <TextView
             android:id="@+id/uptime_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/device_list_item_value_title_start_margin"
+            android:layout_marginTop="2dp"
             android:text="@string/uptime"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="@dimen/device_list_item_name_text_size"
@@ -68,14 +70,14 @@
             app:layout_constraintHorizontal_bias="@fraction/device_list_item_value_bias"
             app:layout_constraintStart_toEndOf="@+id/barrier"
             app:layout_constraintTop_toTopOf="@+id/uptime_title"
-            tools:text="U val" />
+            tools:text="Uptime val" />
 
         <!--Last request time-->
         <TextView
             android:id="@+id/last_device_request_time_tittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/device_list_item_value_title_start_margin"
+            android:layout_marginTop="2dp"
             android:text="@string/last_request_time_tittle"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="@dimen/device_list_item_name_text_size"
@@ -101,7 +103,6 @@
             android:id="@+id/build_timestamp_tittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/device_list_item_value_title_start_margin"
             android:layout_marginTop="@dimen/device_list_item_value_title_top_margin"
             android:text="@string/build_timestamp_tittle"
             android:textAppearance="?attr/textAppearanceListItem"
@@ -114,16 +115,13 @@
             android:id="@+id/build_timestamp_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/device_list_item_value_start_margin"
+            android:layout_marginStart="16dp"
             android:text="@{deviceInfo.buildTimestamp}"
             android:textSize="@dimen/device_list_item_value_text_size"
             android:visibility="@{(deviceInfo.buildTimestamp == null || deviceInfo.buildTimestamp.empty) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@+id/build_timestamp_tittle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="@fraction/device_list_item_value_bias"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            app:layout_constraintTop_toTopOf="@+id/build_timestamp_tittle"
-            tools:text="BT val" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/build_timestamp_tittle"
+            tools:text="BT val long1 long2 long3" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

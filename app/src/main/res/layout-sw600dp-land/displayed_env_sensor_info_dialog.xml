@@ -32,59 +32,56 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/name_section"
+            <TextView
+                android:id="@+id/nameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_text_top_margin"
-                android:orientation="vertical"
+                android:text="@string/name_colon"
+                android:textSize="@dimen/dialog_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tittle_section">
+                app:layout_constraintTop_toBottomOf="@+id/tittle_section" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name"
-                    android:textSize="@dimen/dialog_text_size" />
+            <TextView
+                android:id="@+id/nameValueView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dialog_text_start_margin"
+                android:text="@{viewModel.displayedInfo.name}"
+                android:textColor="@color/valueColor"
+                android:textSize="@dimen/dialog_text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/nameView"
+                app:layout_constraintStart_toEndOf="@+id/nameView"
+                app:layout_constraintTop_toTopOf="@+id/nameView"
+                tools:text="A name" />
 
-                <TextView
-                    android:id="@+id/name_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.displayedInfo.name}"
-                    android:textColor="@color/valueColor"
-                    android:textSize="@dimen/dialog_text_size"
-                    tools:text="A name" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/displayed_name"
+            <TextView
+                android:id="@+id/displayedNameTittle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_text_top_margin"
-                android:orientation="vertical"
+                android:text="@string/displayed_name_colon"
+                android:textSize="@dimen/dialog_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name_section">
+                app:layout_constraintTop_toBottomOf="@+id/nameView" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/displayed_name"
-                    android:textSize="@dimen/dialog_text_size" />
-
-                <EditText
-                    android:id="@+id/displayed_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/enter_displayed_name"
-                    android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:text="@={viewModel.displayedInfo.displayedName}"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/valueColor"
-                    android:textSize="@dimen/dialog_text_size" />
-            </LinearLayout>
+            <EditText
+                android:id="@+id/displayed_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dialog_text_start_margin"
+                android:ems="10"
+                android:hint="@string/enter_displayed_name"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:padding="@dimen/dialog_layout_padding_margin"
+                android:text="@={viewModel.displayedInfo.displayedName}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/valueColor"
+                android:textSize="@dimen/dialog_text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/displayedNameTittle"
+                app:layout_constraintStart_toEndOf="@+id/displayedNameTittle"
+                app:layout_constraintTop_toTopOf="@+id/displayedNameTittle" />
 
             <Switch
                 android:id="@+id/temperature_switch"
@@ -97,7 +94,7 @@
                 android:visibility="@{viewModel.displayedInfo.temperatureOptionVisibility}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/displayed_name" />
+                app:layout_constraintTop_toBottomOf="@+id/displayedNameTittle" />
 
             <Switch
                 android:id="@+id/humidity_switch"
@@ -181,8 +178,8 @@
                 android:id="@+id/okButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
                 android:layout_marginTop="@dimen/dialog_text_top_margin"
+                android:layout_marginEnd="4dp"
                 android:text="@string/OK"
                 app:layout_constraintEnd_toStartOf="@+id/cancelButton"
                 app:layout_constraintHorizontal_bias="0.5"

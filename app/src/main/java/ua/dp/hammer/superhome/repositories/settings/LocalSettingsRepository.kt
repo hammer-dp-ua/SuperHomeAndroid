@@ -2,10 +2,7 @@ package ua.dp.hammer.superhome.repositories.settings
 
 import android.content.Context
 import ua.dp.hammer.superhome.db.AppDatabase
-import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
-import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
-import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
-import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
+import ua.dp.hammer.superhome.db.entities.*
 
 class LocalSettingsRepository private constructor(val database: AppDatabase) {
     suspend fun getEnvSensorSettings(name: String): EnvSensorSettingsEntity? {
@@ -42,6 +39,14 @@ class LocalSettingsRepository private constructor(val database: AppDatabase) {
 
     suspend fun getCurrentCameraSettings(): CameraSettingsEntity? {
         return database.getManagerSettingsDao().getCurrentCameraSettings()
+    }
+
+    suspend fun getLocalSettings(): LocalSettingsEntity? {
+        return database.getLocalSettingsDao().getLocalSettings()
+    }
+
+    suspend fun saveLocalSettings(localSettings: LocalSettingsEntity) {
+        return database.getLocalSettingsDao().saveLocalSettings(localSettings)
     }
 
     companion object {

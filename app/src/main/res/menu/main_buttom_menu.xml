@@ -13,4 +13,8 @@
         android:id="@+id/allDevicesTechInfoFragment"
         android:icon="@drawable/remote_device"
         android:title="@string/menu_all_devices_tittle" />
+    <item
+        android:id="@+id/mainSettingsFragment"
+        android:icon="@drawable/settings"
+        android:title="@string/settings" />
 </menu>

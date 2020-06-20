@@ -15,4 +15,8 @@
         android:id="@+id/allDevicesTechInfoFragment"
         android:name="ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment"
         android:label="AllDevicesTechInfoFragment" />
+    <fragment
+        android:id="@+id/mainSettingsFragment"
+        android:name="ua.dp.hammer.superhome.activities.fragments.MainSettingsFragment"
+        android:label="MainSettingsFragment" />
 </navigation>
