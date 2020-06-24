@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.manager
+package ua.dp.hammer.superhome.repositories.web.manager
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET

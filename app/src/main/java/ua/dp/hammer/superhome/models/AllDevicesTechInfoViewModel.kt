@@ -11,18 +11,31 @@ import ua.dp.hammer.superhome.data.DeviceTechInfo
 import ua.dp.hammer.superhome.data.DeviceType
 import ua.dp.hammer.superhome.data.PhoneAwareDeviceState
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
-import ua.dp.hammer.superhome.repositories.techinfo.AllDevicesTechInfoRepository
-import java.lang.IllegalArgumentException
+import ua.dp.hammer.superhome.repositories.web.techinfo.AllDevicesTechInfoWebRepository
 
-class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
-    private val allDevicesTechInfoRepository: AllDevicesTechInfoRepository = AllDevicesTechInfoRepository.getInstance()
-
+class AllDevicesTechInfoViewModel(
+    private val localSettingsRepository: LocalSettingsRepository,
+    serverAddress: String?
+) : ViewModel() {
     val devicesInfo: MutableLiveData<MutableList<DeviceTechInfo>> = MutableLiveData()
 
+    private var allDevicesTechInfoWebRepository: AllDevicesTechInfoWebRepository? = null
     private var statesJob: Job
 
     init {
+        if (serverAddress != null) {
+            allDevicesTechInfoWebRepository = AllDevicesTechInfoWebRepository(serverAddress)
+        }
+
         statesJob = startMonitoring()
+    }
+
+    fun changeServerAddress(serverAddress: String?) {
+        if (serverAddress == null) {
+            allDevicesTechInfoWebRepository = null
+        } else if (allDevicesTechInfoWebRepository?.address != serverAddress) {
+            allDevicesTechInfoWebRepository = AllDevicesTechInfoWebRepository(serverAddress)
+        }
     }
 
     fun stopMonitoring() {
@@ -40,12 +53,10 @@ class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSett
             var oftenAmount = 0
 
             while (isActive) {
-                try {
-                    if (oftenAmount >= 3) {
-                        delay(10_000)
-                        oftenAmount = 0
-                    }
+                val requestStartTime = System.currentTimeMillis()
+                var response: ArrayList<DeviceTechInfo>? = null
 
+                try {
                     val phoneAwareStates: MutableSet<PhoneAwareDeviceState> = HashSet()
                     devicesInfo.value?.forEach {
                         if (it.lastDeviceRequestTimestamp != null) {
@@ -53,22 +64,27 @@ class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSett
                         }
                     }
 
-                    val requestStartTime = System.currentTimeMillis()
-                    val response: ArrayList<DeviceTechInfo> = allDevicesTechInfoRepository.getAllDevicesTechInfoStates(phoneAwareStates)
-                    val requestEndTime = System.currentTimeMillis()
-
-                    setCustomNames(response)
-                    setResponseValues(response)
-
-                    if ((requestEndTime - requestStartTime) < 1_000) {
-                        // Too often
-                        oftenAmount++
-                    } else {
-                        oftenAmount = 0
-                    }
+                    response = allDevicesTechInfoWebRepository?.getAllDevicesTechInfoStates(phoneAwareStates)
                 } catch (e: Throwable) {
                     oftenAmount++
                 }
+
+                val requestEndTime = System.currentTimeMillis()
+                if ((requestEndTime - requestStartTime) < 1_000) {
+                    // Too often
+                    oftenAmount++
+                } else {
+                    oftenAmount = 0
+                }
+
+                if (response == null || oftenAmount >= 3) {
+                    delay(10_000)
+                    oftenAmount = 0
+                    continue
+                }
+
+                setCustomNames(response)
+                setResponseValues(response)
             }
         }
     }
@@ -112,7 +128,7 @@ class AllDevicesTechInfoViewModel(private val localSettingsRepository: LocalSett
 
     private inner class DefaultSorter : Comparator<DeviceTechInfo> {
         override fun compare(a: DeviceTechInfo, b: DeviceTechInfo): Int {
-            if (a.notAvailable && !b.notAvailable) {
+            if (a.notAvailable && !b.notAvailable || a.buildTimestamp?.isNotEmpty() == true) {
                 return -1
             } else if (!a.notAvailable && b.notAvailable) {
                 return 1

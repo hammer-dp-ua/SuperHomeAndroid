@@ -12,13 +12,14 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.*
 import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
-import ua.dp.hammer.superhome.repositories.manager.ManagerRepository
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+import ua.dp.hammer.superhome.repositories.web.manager.ManagerWebRepository
 import java.util.*
 
-class ManagerViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
-    val managerRepository: ManagerRepository = ManagerRepository.getInstance()
-
+class ManagerViewModel(
+    private val localSettingsRepository: LocalSettingsRepository,
+    serverAddress: String?
+) : ViewModel() {
     val projectorsButtonState: MutableLiveData<ProjectorState> = MutableLiveData()
     val cameraButtonSelected: MutableLiveData<Boolean> = MutableLiveData(true)
     val fanWorkingMinutesRemaining: MutableLiveData<String> = MutableLiveData()
@@ -30,10 +31,23 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
     val kitchen2ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
     val fanButtonState: MutableLiveData<FanState> = MutableLiveData()
 
+    private var managerWebRepository: ManagerWebRepository? = null
     private var statesJob: Job
 
     init {
+        if (serverAddress != null) {
+            managerWebRepository = ManagerWebRepository(serverAddress)
+        }
+
         statesJob = startMonitoring()
+    }
+
+    fun changeServerAddress(serverAddress: String?) {
+        if (serverAddress == null) {
+            managerWebRepository = null
+        } else if (managerWebRepository?.address != serverAddress) {
+            managerWebRepository = ManagerWebRepository(serverAddress)
+        }
     }
 
     fun stopMonitoring() {
@@ -51,43 +65,48 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var success = false
 
             while (!success) {
-                try {
-                    val response: AllStates = managerRepository.getCurrentStates()
+                var response: AllStates? = null
 
-                    applyAllStates(response)
-                    success = true
-                } catch (e: Throwable) {
+                try {
+                    response = managerWebRepository?.getCurrentStates()
+                } catch (e: Throwable) {}
+
+                if (response == null) {
                     delay(10_000)
+                    continue
                 }
+
+                applyAllStates(response)
+                success = true
+
             }
 
             var oftenAmount = 0
 
             while (isActive) {
+                val requestStartTime = System.currentTimeMillis()
+                var response: AllStates? = null
+
                 try {
-                    if (oftenAmount >= 3) {
-                        delay(10_000)
-                        oftenAmount = 0
-                    }
+                    response = managerWebRepository?.getCurrentStatesDeferred()
+                } catch (e: Throwable) {}
 
-                    val requestStartTime = System.currentTimeMillis()
-                    val response: AllStates = managerRepository.getCurrentStatesDeferred()
-                    val requestEndTime = System.currentTimeMillis()
-
-                    applyAllStates(response)
-
-                    if ((requestEndTime - requestStartTime) < 1_000) {
-                        // Too often
-                        oftenAmount++
-                    } else {
-                        oftenAmount = 0
-                    }
-                } catch (e: Throwable) {
+                val requestEndTime = System.currentTimeMillis()
+                if ((requestEndTime - requestStartTime) < 1_000) {
+                    // Too often
                     oftenAmount++
+                } else {
+                    oftenAmount = 0
                 }
-            }
 
-            Log.i(null, "~~~ Job has been cancelled")
+                if (response == null || oftenAmount >= 3) {
+                    delay(10_000)
+                    oftenAmount = 0
+                    continue
+                }
+
+                applyAllStates(response)
+            }
         }
     }
 
@@ -153,7 +172,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var response: ProjectorState? = null
 
             try {
-                response = managerRepository.switchProjectors(stateParam)
+                response = managerWebRepository?.switchProjectors(stateParam)
             } catch (e: Throwable) {
             }
 
@@ -203,7 +222,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             }
 
             try {
-                response = managerRepository.stopVideoRecording(timeout())
+                response = managerWebRepository?.stopVideoRecording(timeout())
             } catch (e: Throwable) {
                 Log.d(null, "~~~ Error on changing alarms ignoring state", e)
             }
@@ -226,7 +245,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var response: FanState? = null
 
             try {
-                response = managerRepository.turnOnBathroomFan()
+                response = managerWebRepository?.turnOnBathroomFan()
                 updateFanState(response)
             } catch (e: Throwable) {
             }
@@ -238,7 +257,11 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
         }
     }
 
-    private fun updateFanState(response: FanState) {
+    private fun updateFanState(response: FanState?) {
+        if (response == null) {
+            return
+        }
+
         var currentFanState = fanButtonState.value
 
         if (currentFanState == null) {
@@ -329,7 +352,7 @@ class ManagerViewModel(private val localSettingsRepository: LocalSettingsReposit
             var response: ShutterState? = null
 
             try {
-                response = managerRepository.doShutter(state.deviceName, state.shutterNo, open)
+                response = managerWebRepository?.doShutter(state.deviceName, state.shutterNo, open)
             } catch (e: Throwable) {
             }
 

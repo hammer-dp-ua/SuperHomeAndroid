@@ -15,7 +15,7 @@ import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
 import ua.dp.hammer.superhome.db.entities.LocalSettingsEntity
 
 @Database(entities = [EnvSensorSettingsEntity::class, EnvSensorDisplayedRowEntity::class, CameraSettingsEntity::class,
-    LocalSettingsEntity::class], version = 2, exportSchema = true)
+    LocalSettingsEntity::class], version = 3, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getEnvSensorSettingsDao(): EnvSensorSettingsDao
     abstract fun getManagerSettingsDao(): ManagerSettingsDao
@@ -35,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "super_home_db")
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
         }
 
@@ -48,6 +48,15 @@ abstract class AppDatabase : RoomDatabase() {
                         "`globalServerAddress` TEXT," +
                         "PRIMARY KEY(`id`)" +
                         ")")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE `LocalSettingsEntity` " +
+                            "ADD COLUMN `localWiFiSsid` TEXT"
+                )
             }
         }
     }

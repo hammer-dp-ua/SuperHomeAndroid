@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.settings
+package ua.dp.hammer.superhome.repositories.web.settings
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.Body

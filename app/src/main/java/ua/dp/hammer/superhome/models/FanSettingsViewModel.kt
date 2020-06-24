@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.FanSettingsInfo
-import ua.dp.hammer.superhome.repositories.settings.ServerSettingsRepository
+import ua.dp.hammer.superhome.repositories.web.settings.ServerSettingsWebRepository
 
-class FanSettingsViewModel(private val serverSettingsRepository: ServerSettingsRepository) : ViewModel() {
+class FanSettingsViewModel(private val serverSettingsWebRepository: ServerSettingsWebRepository) : ViewModel() {
     val name: MutableLiveData<String> = MutableLiveData()
     val turnOnHumidityThreshold: MutableLiveData<Int> = MutableLiveData()
     val manuallyTurnedOnTimeoutMinutes: MutableLiveData<Int> = MutableLiveData()
@@ -19,13 +19,13 @@ class FanSettingsViewModel(private val serverSettingsRepository: ServerSettingsR
             manuallyTurnedOnTimeoutMinutes.value!!, afterFallingThresholdWorkTimeoutMinutes.value!!)
 
         viewModelScope.launch {
-            serverSettingsRepository.saveFanSettings(fanSettingsInfo)
+            serverSettingsWebRepository.saveFanSettings(fanSettingsInfo)
         }
     }
 
     fun loadSettings(fanName: String) {
         viewModelScope.launch {
-            val fanSettingsInfo = serverSettingsRepository.getFanSettings(fanName)
+            val fanSettingsInfo = serverSettingsWebRepository.getFanSettings(fanName)
 
             name.value = fanSettingsInfo.name
             turnOnHumidityThreshold.value = fanSettingsInfo.turnOnHumidityThreshold.toInt()

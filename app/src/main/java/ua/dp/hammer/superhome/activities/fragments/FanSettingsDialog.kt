@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.databinding.FanSettingsDialogBinding
 import ua.dp.hammer.superhome.models.FanSettingsViewModel
-import ua.dp.hammer.superhome.repositories.settings.ServerSettingsRepository
+import ua.dp.hammer.superhome.repositories.web.settings.ServerSettingsWebRepository
 
 class FanSettingsDialog(val fanName: String) : DialogFragment() {
     private val viewModel: FanSettingsViewModel by viewModels {
         object : ViewModelProvider.NewInstanceFactory() {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>) =
-                FanSettingsViewModel(ServerSettingsRepository.getInstance()) as T
+                FanSettingsViewModel(ServerSettingsWebRepository.getInstance()) as T
         }
     }
 

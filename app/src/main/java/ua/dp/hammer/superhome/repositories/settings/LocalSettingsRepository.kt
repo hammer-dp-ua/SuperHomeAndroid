@@ -50,8 +50,11 @@ class LocalSettingsRepository private constructor(val database: AppDatabase) {
     }
 
     companion object {
+        const val DEFAULT_SERVER_ADDRESS = "192.168.0.2"
+
         // For Singleton instantiation
-        @Volatile private var instance: LocalSettingsRepository? = null
+        @Volatile
+        private var instance: LocalSettingsRepository? = null
 
         fun getInstance(context: Context) : LocalSettingsRepository {
             return instance ?: synchronized(this) {

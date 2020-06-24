@@ -8,8 +8,10 @@ import ua.dp.hammer.superhome.db.entities.LocalSettingsEntity
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 
 class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
+
     val localServerAddress: MutableLiveData<String> = MutableLiveData()
     val globalServerAddress: MutableLiveData<String> = MutableLiveData()
+    val localWiFiSsid: MutableLiveData<String> = MutableLiveData()
 
     fun loadSettings()  {
         viewModelScope.launch {
@@ -20,6 +22,9 @@ class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRe
             }
             if (settings?.globalServerAddress != null) {
                 globalServerAddress.value = settings.globalServerAddress
+            }
+            if (settings?.localWiFiSsid != null) {
+                localWiFiSsid.value = settings.localWiFiSsid
             }
         }
     }
@@ -33,12 +38,19 @@ class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRe
                 settings = LocalSettingsEntity()
             }
 
-            if (settings.localServerAddress != localServerAddress.value) {
+            if (settings.localServerAddress != localServerAddress.value &&
+                localServerAddress.value?.isNotEmpty() == true) {
                 settings.localServerAddress = localServerAddress.value
                 toSave = true
             }
-            if (settings.globalServerAddress != globalServerAddress.value) {
+            if (settings.globalServerAddress != globalServerAddress.value &&
+                globalServerAddress.value?.isNotEmpty() == true) {
                 settings.globalServerAddress = globalServerAddress.value
+                toSave = true
+            }
+            if (settings.localWiFiSsid != localWiFiSsid.value &&
+                localWiFiSsid.value?.isNotEmpty() == true) {
+                settings.localWiFiSsid = localWiFiSsid.value
                 toSave = true
             }
 

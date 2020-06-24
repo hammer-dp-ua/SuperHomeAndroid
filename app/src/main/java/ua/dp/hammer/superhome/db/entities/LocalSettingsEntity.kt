@@ -8,5 +8,6 @@ class LocalSettingsEntity(
     @PrimaryKey
     var id: Int? = null,
     var localServerAddress: String? = null,
-    var globalServerAddress: String? = null
+    var globalServerAddress: String? = null,
+    var localWiFiSsid: String? = null
 )

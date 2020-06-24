@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.sensors
+package ua.dp.hammer.superhome.repositories.web.sensors
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET

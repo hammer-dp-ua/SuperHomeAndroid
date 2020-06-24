@@ -37,4 +37,5 @@
     <string name="local_server_address_tittle">Локальный адрес сервера</string>
     <string name="global_server_address_tittle">Глобальный адрес сервера</string>
     <string name="save">Сохранить</string>
+    <string name="local_wifi_ssid_tittle">Локальный WI-FI SSID</string>
 </resources>

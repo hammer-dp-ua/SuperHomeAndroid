@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.manager
+package ua.dp.hammer.superhome.repositories.web.manager
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -7,18 +7,18 @@ import ua.dp.hammer.superhome.data.*
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
 import java.util.concurrent.TimeUnit
 
-class ManagerRepository private constructor() {
+class ManagerWebRepository(val address: String) {
     private val managerWebServiceDao: ManagerWebServiceDao
 
     init {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(65, TimeUnit.SECONDS)
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.2/server/manager/")
+            .baseUrl("http://$address/server/manager/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
@@ -48,16 +48,5 @@ class ManagerRepository private constructor() {
 
     suspend fun getCurrentStatesDeferred(): AllStates {
         return managerWebServiceDao.getCurrentStatesDeferredAsync().await()
-    }
-
-    companion object {
-        // For Singleton instantiation
-        @Volatile private var instance: ManagerRepository? = null
-
-        fun getInstance() : ManagerRepository {
-            return instance ?: synchronized(this) {
-                instance ?: ManagerRepository().also { instance = it }
-            }
-        }
     }
 }

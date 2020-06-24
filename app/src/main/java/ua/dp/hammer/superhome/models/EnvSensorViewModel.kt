@@ -13,18 +13,32 @@ import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
 import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
 import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity.RowNames.*
 import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
-import ua.dp.hammer.superhome.repositories.sensors.EnvSensorsRepository
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+import ua.dp.hammer.superhome.repositories.web.sensors.EnvSensorsWebRepository
 
-class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
+class EnvSensorViewModel(
+    private val localSettingsRepository: LocalSettingsRepository,
+    serverAddress: String?) : ViewModel() {
+
     val sensors: MutableLiveData<List<EnvSensor>> = MutableLiveData()
     var stopUpdating = false
 
-    private val envSensorsRepository: EnvSensorsRepository = EnvSensorsRepository.getInstance()
+    private var envSensorsWebRepository: EnvSensorsWebRepository? = null
     private var statesJob: Job
 
     init {
+        if (serverAddress != null) {
+            envSensorsWebRepository = EnvSensorsWebRepository(serverAddress)
+        }
         statesJob = startMonitoring()
+    }
+
+    fun changeServerAddress(serverAddress: String?) {
+        if (serverAddress == null) {
+            envSensorsWebRepository = null
+        } else if (envSensorsWebRepository?.address != serverAddress) {
+            envSensorsWebRepository = EnvSensorsWebRepository(serverAddress)
+        }
     }
 
     fun stopMonitoring() {
@@ -42,43 +56,50 @@ class EnvSensorViewModel(private val localSettingsRepository: LocalSettingsRepos
             var success = false
 
             while (!success) {
-                try {
-                    val response: List<EnvSensor> = envSensorsRepository.getEnvSensorsValues()
+                var response: List<EnvSensor>? = null
 
-                    applyColumnsVisibility(response)
-                    sensors.value = response
-                    success = true
-                } catch (e: Throwable) {
+                try {
+                    response = envSensorsWebRepository?.getEnvSensorsValues()
+                } catch (e: Throwable) {}
+
+                if (response == null) {
                     delay(10_000)
+                    continue
                 }
+
+                applyColumnsVisibility(response)
+                sensors.value = response
+                success = true
             }
 
             var oftenAmount = 0
 
             while (isActive) {
+                val requestStartTime = System.currentTimeMillis()
+                var response: List<EnvSensor>? = null
+
                 try {
-                    val requestStartTime = System.currentTimeMillis()
-                    val response = envSensorsRepository.getAllEnvSensorsDataDeferred()
-                    val requestEndTime = System.currentTimeMillis()
+                    response = envSensorsWebRepository?.getAllEnvSensorsDataDeferred()
+                } catch (e: Throwable) {}
 
-                    if (!stopUpdating) {
-                        applyColumnsVisibility(response)
-                        sensors.value = response
-                    }
+                val requestEndTime = System.currentTimeMillis()
 
-                    if ((requestEndTime - requestStartTime) < 1_000) {
-                        // Too often
-                        oftenAmount++
-                    } else {
-                        oftenAmount = 0
-                    }
+                if ((requestEndTime - requestStartTime) < 1_000) {
+                    // Too often
+                    oftenAmount++
+                } else {
+                    oftenAmount = 0
+                }
 
-                    if (oftenAmount >= 3) {
-                        delay(10_000)
-                        oftenAmount = 0;
-                    }
-                } catch (e: Throwable) {
+                if (response == null || oftenAmount >= 3) {
                     delay(10_000)
+                    oftenAmount = 0
+                    continue
+                }
+
+                if (!stopUpdating) {
+                    applyColumnsVisibility(response)
+                    sensors.value = response
                 }
             }
         }

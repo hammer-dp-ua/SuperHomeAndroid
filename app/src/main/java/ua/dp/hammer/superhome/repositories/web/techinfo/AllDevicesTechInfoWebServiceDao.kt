@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.techinfo
+package ua.dp.hammer.superhome.repositories.web.techinfo
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.Body

@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.repositories.settings
+package ua.dp.hammer.superhome.repositories.web.settings
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -7,7 +7,7 @@ import ua.dp.hammer.superhome.data.FanSettingsInfo
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
 import java.util.concurrent.TimeUnit
 
-class ServerSettingsRepository private constructor() {
+class ServerSettingsWebRepository private constructor() {
     private val serverSettingsWebServiceDao: ServerSettingsWebServiceDao
 
     init {
@@ -36,11 +36,14 @@ class ServerSettingsRepository private constructor() {
 
     companion object {
         // For Singleton instantiation
-        @Volatile private var instance: ServerSettingsRepository? = null
+        @Volatile private var instance: ServerSettingsWebRepository? = null
 
-        fun getInstance() : ServerSettingsRepository {
-            return instance ?: synchronized(this) {
-                instance ?: ServerSettingsRepository().also { instance = it }
+        fun getInstance() : ServerSettingsWebRepository {
+            return instance
+                ?: synchronized(this) {
+                instance
+                    ?: ServerSettingsWebRepository()
+                        .also { instance = it }
             }
         }
     }

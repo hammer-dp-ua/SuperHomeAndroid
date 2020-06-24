@@ -3,7 +3,6 @@ package ua.dp.hammer.superhome.activities.fragments
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.data.FanState
 import ua.dp.hammer.superhome.data.ProjectorState
@@ -23,33 +25,38 @@ import ua.dp.hammer.superhome.data.ShutterStates
 import ua.dp.hammer.superhome.databinding.FragmentManagerBinding
 import ua.dp.hammer.superhome.models.ManagerViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
-
+import ua.dp.hammer.superhome.utilities.getServerAddress
 
 class ManagerFragment : Fragment() {
     private val viewModel: ManagerViewModel by viewModels {
         object : ViewModelProvider.NewInstanceFactory() {
             val currentContext = context ?: throw IllegalStateException("Context cannot be null")
+            val localSettingsRepository = LocalSettingsRepository.getInstance(currentContext)
 
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>) =
-                ManagerViewModel(LocalSettingsRepository.getInstance(currentContext)) as T
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return runBlocking {
+                    val serverAddress = getServerAddress(context, localSettingsRepository)
+                    ManagerViewModel(localSettingsRepository, serverAddress) as T
+                }
+            }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.resumeMonitoring()
-        Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: resumed")
+
+        lifecycleScope.launch {
+            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
+            val serverAddress = getServerAddress(currentContext, LocalSettingsRepository.getInstance(currentContext))
+            viewModel.changeServerAddress(serverAddress)
+            viewModel.resumeMonitoring()
+        }
     }
 
     override fun onStop() {
         super.onStop()
         viewModel.stopMonitoring()
-        Log.d(null, "~~~ " + ManagerFragment::class.java.simpleName + " state: stopped")
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
