@@ -27,6 +27,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.SettingsActivity">
+        </activity>
+
         <!--<service
             android:name="ua.dp.hammer.superhome.services.EnvSensorsService"
             android:exported="false"/>-->
