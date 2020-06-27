@@ -24,7 +24,6 @@
             android:name="ua.dp.hammer.superhome.activities.fragments.ManagerFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@+id/barrier"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,8 +32,6 @@
             android:name="ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/manager_fragment"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,14 +41,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="right"
-            app:constraint_referenced_ids="temperatures_fragment"/>
+            app:constraint_referenced_ids="temperatures_fragment"
+            tools:layout_editor_absoluteX="74dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/settingsLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/manager_section_border"
+            app:layout_constraintEnd_toEndOf="@+id/manager_fragment"
             app:layout_constraintStart_toEndOf="@+id/barrier"
             app:layout_constraintTop_toBottomOf="@+id/manager_fragment">
 
@@ -59,7 +58,7 @@
                 android:id="@+id/settingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/cardview_shadow_end_color"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/settings" />

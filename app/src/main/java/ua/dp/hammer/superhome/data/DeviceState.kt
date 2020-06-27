@@ -16,10 +16,6 @@ open class DeviceState(
         return errors?.toString()
     }
 
-    fun getUptimeString(): String? {
-        return uptime?.toString()
-    }
-
     fun getFreeHeapSpaceString(): String? {
         return freeHeapSpace?.toString()
     }

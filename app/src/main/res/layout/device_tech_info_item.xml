@@ -8,6 +8,7 @@
         <variable
             name="deviceInfo"
             type="ua.dp.hammer.superhome.data.DeviceTechInfo"/>
+        <import type="ua.dp.hammer.superhome.utilities.DataBindingConverter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/device_list_item_value_start_margin"
             android:layout_marginEnd="@dimen/device_list_item_value_end_margin"
-            android:text="@{deviceInfo.uptimeString}"
+            android:text="@{DataBindingConverter.convertSecondsToFormattedTime(deviceInfo.uptime, 3)}"
             android:textSize="@dimen/device_list_item_value_text_size"
             app:layout_constraintBottom_toBottomOf="@+id/uptime_title"
             app:layout_constraintEnd_toEndOf="parent"
