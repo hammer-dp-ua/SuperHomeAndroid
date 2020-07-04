@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -23,12 +22,14 @@
             app:layout_constraintTop_toBottomOf="@+id/localWiFiSsidValue" />
 
         <EditText
-            android:id="@+id/lovalServerAddressValue"
+            android:id="@+id/localServerAddressValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="192.168.1.1"
-            android:inputType="textPersonName"
-            android:text="@={viewModel.localServerAddress}"
+
+            android:inputType="none"
+            android:textIsSelectable="true"
+
+            android:text="@{viewModel.localServerAddress}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/localServerAddressTittle" />
 
@@ -38,14 +39,14 @@
             android:layout_height="wrap_content"
             android:text="@string/global_server_address_tittle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lovalServerAddressValue" />
+            app:layout_constraintTop_toBottomOf="@+id/localServerAddressValue" />
 
         <EditText
             android:id="@+id/globalServerAddressValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="www.domain.com"
-            android:inputType="textPersonName"
+            android:hint="domain.com"
+            android:inputType="textUri"
             android:text="@={viewModel.globalServerAddress}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/globalServerAddressTittle" />

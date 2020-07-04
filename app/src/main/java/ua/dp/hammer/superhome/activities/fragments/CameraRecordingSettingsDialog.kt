@@ -2,7 +2,6 @@ package ua.dp.hammer.superhome.activities.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -41,11 +40,7 @@ class CameraRecordingSettingsDialog : DialogFragment() {
                 .create()
 
             binding.okButton.setOnClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    viewModel.saveSettings(binding.timePicker.hour, binding.timePicker.minute)
-                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    viewModel.saveSettings(binding.timePicker.currentHour, binding.timePicker.currentMinute)
-                }
+                viewModel.saveSettings(binding.timePicker.hour, binding.timePicker.minute)
                 dialog.cancel()
             }
             binding.cancelButton.setOnClickListener {

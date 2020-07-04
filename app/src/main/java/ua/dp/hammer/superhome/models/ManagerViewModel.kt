@@ -69,7 +69,9 @@ class ManagerViewModel(
 
                 try {
                     response = managerWebRepository?.getCurrentStates()
-                } catch (e: Throwable) {}
+                } catch (e: Throwable) {
+                    Log.d(null, "", e)
+                }
 
                 if (response == null) {
                     delay(10_000)
@@ -89,7 +91,9 @@ class ManagerViewModel(
 
                 try {
                     response = managerWebRepository?.getCurrentStatesDeferred()
-                } catch (e: Throwable) {}
+                } catch (e: Throwable) {
+                    Log.d(null, "", e)
+                }
 
                 val requestEndTime = System.currentTimeMillis()
                 if ((requestEndTime - requestStartTime) < 1_000) {
@@ -223,9 +227,7 @@ class ManagerViewModel(
 
             try {
                 response = managerWebRepository?.stopVideoRecording(timeout())
-            } catch (e: Throwable) {
-                Log.d(null, "~~~ Error on changing alarms ignoring state", e)
-            }
+            } catch (e: Throwable) {}
 
             if (response == null || response.ignoring != stopRecording) {
                 button.isSelected = prevSelectedState

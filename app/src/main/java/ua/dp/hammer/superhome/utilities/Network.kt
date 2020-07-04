@@ -8,11 +8,9 @@ suspend fun getServerAddress(context: Context?, localSettingsRepository: LocalSe
     val wifiManager = context?.applicationContext?.getSystemService(Context.WIFI_SERVICE) as WifiManager
     val localSettingsEntity = localSettingsRepository.getLocalSettings()
 
-
-    return if (localSettingsEntity?.localWiFiSsid == "test") {
-        "192.168.0.2"
-    } else if (wifiManager.connectionInfo.ssid == "\"" + localSettingsEntity?.localWiFiSsid + "\"") {
-        localSettingsEntity?.localServerAddress
+    return if (localSettingsEntity?.localWiFiSsid == "test" ||
+        wifiManager.connectionInfo.ssid == "\"" + localSettingsEntity?.localWiFiSsid + "\"") {
+        localSettingsEntity?.localServerAddressStatic
     } else {
         localSettingsEntity?.globalServerAddress
     }

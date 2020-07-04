@@ -19,7 +19,7 @@ class AllDevicesTechInfoWebRepository(val address: String) {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://$address/server/devicesTechInfo/")
+            .baseUrl("https://$address/server/devicesTechInfo/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)

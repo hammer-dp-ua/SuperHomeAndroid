@@ -17,8 +17,8 @@ class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRe
         viewModelScope.launch {
             val settings: LocalSettingsEntity? = localSettingsRepository.getLocalSettings()
 
-            if (settings?.localServerAddress != null) {
-                localServerAddress.value = settings.localServerAddress
+            if (settings?.localServerAddressStatic != null) {
+                localServerAddress.value = settings.localServerAddressStatic
             }
             if (settings?.globalServerAddress != null) {
                 globalServerAddress.value = settings.globalServerAddress
@@ -38,16 +38,6 @@ class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRe
                 settings = LocalSettingsEntity()
             }
 
-            if (settings.localServerAddress != localServerAddress.value &&
-                localServerAddress.value?.isNotEmpty() == true) {
-                settings.localServerAddress = localServerAddress.value
-                toSave = true
-            }
-            if (settings.globalServerAddress != globalServerAddress.value &&
-                globalServerAddress.value?.isNotEmpty() == true) {
-                settings.globalServerAddress = globalServerAddress.value
-                toSave = true
-            }
             if (settings.localWiFiSsid != localWiFiSsid.value &&
                 localWiFiSsid.value?.isNotEmpty() == true) {
                 settings.localWiFiSsid = localWiFiSsid.value

@@ -18,7 +18,7 @@ class ManagerWebRepository(val address: String) {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://$address/server/manager/")
+            .baseUrl("https://$address/server/manager/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)

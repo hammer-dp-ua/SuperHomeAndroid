@@ -19,7 +19,7 @@ class EnvSensorsWebRepository(val address: String) {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("http://$address/server/envSensors/")
+            .baseUrl("https://$address/server/envSensors/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
