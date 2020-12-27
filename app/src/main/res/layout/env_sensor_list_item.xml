@@ -92,6 +92,7 @@
             android:layout_marginStart="@dimen/device_list_item_value_start_margin"
             android:layout_marginEnd="@dimen/device_list_item_value_end_margin"
             android:text="@{envSensor.humidityString}"
+            android:textColor="@{envSensor.humidityIsIllegal ? @color/deviceNotAvailable : @color/textColor}"
             android:textSize="@dimen/device_list_item_value_bold_text_size"
             android:textStyle="bold"
             android:visibility="@{envSensor.humidityVisibility}"

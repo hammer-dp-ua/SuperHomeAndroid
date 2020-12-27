@@ -7,12 +7,18 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.databinding.CameraRecordingSettingsDialogBinding
 import ua.dp.hammer.superhome.models.CameraRecordingSettingsViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+import ua.dp.hammer.superhome.repositories.web.manager.ManagerWebRepository
+import java.util.*
 
-class CameraRecordingSettingsDialog : DialogFragment() {
+class CameraRecordingSettingsDialog(
+    private val managerWebRepository: ManagerWebRepository?
+) : DialogFragment() {
     private val viewModel: CameraRecordingSettingsViewModel by viewModels {
         object : ViewModelProvider.NewInstanceFactory() {
             val currentContext = context ?: throw IllegalStateException("Context cannot be null")
@@ -35,12 +41,28 @@ class CameraRecordingSettingsDialog : DialogFragment() {
 
             binding.timePicker.setIs24HourView(true)
 
+            val currentDateTime = Calendar.getInstance()
+            val currentHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
+            val currentMinute = currentDateTime.get(Calendar.MINUTE)
+
+            binding.timePicker.hour = currentHour + 2
+            binding.timePicker.minute = currentMinute
+
             val dialog: AlertDialog = builder
                 .setView(binding.root)
                 .create()
 
             binding.okButton.setOnClickListener {
-                viewModel.saveSettings(binding.timePicker.hour, binding.timePicker.minute)
+                //viewModel.saveSettings(binding.timePicker.hour, binding.timePicker.minute)
+                var deltaMinutes = (binding.timePicker.hour * 60 + binding.timePicker.minute) -
+                        (currentHour * 60 + currentMinute)
+                if (deltaMinutes < 0) {
+                    deltaMinutes += (60 * 24)
+                }
+
+                viewModel.viewModelScope.launch {
+                    managerWebRepository?.stopVideoRecording(deltaMinutes)
+                }
                 dialog.cancel()
             }
             binding.cancelButton.setOnClickListener {

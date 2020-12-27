@@ -11,16 +11,20 @@ data class EnvSensor(
     lateinit var displayedName: MutableLiveData<String>
     lateinit var temperatureVisibility: MutableLiveData<Int>
     lateinit var humidityVisibility: MutableLiveData<Int>
+    lateinit var humidityIsIllegal: MutableLiveData<Boolean>
     lateinit var lightVisibility: MutableLiveData<Int>
     lateinit var gainVisibility: MutableLiveData<Int>
     lateinit var errorsVisibility: MutableLiveData<Int>
     lateinit var uptimeVisibility: MutableLiveData<Int>
     lateinit var freeHeapSpaceVisibility: MutableLiveData<Int>
 
+    private val humidityIsIllegalInternal = humidity != null && humidity >= 150.0
+
     fun initObservables() {
         displayedName = MutableLiveData(deviceName)
         temperatureVisibility = MutableLiveData(View.GONE)
         humidityVisibility = MutableLiveData(View.GONE)
+        humidityIsIllegal = MutableLiveData(humidityIsIllegalInternal)
         lightVisibility = MutableLiveData(View.GONE)
         gainVisibility = MutableLiveData(View.GONE)
         errorsVisibility = MutableLiveData(View.GONE)
@@ -33,7 +37,12 @@ data class EnvSensor(
     }
 
     fun getHumidityString(): String? {
-        return roundFloat(humidity)?.plus("%")
+        val humidityString: String? = if (humidityIsIllegalInternal) {
+            "0.0"
+        } else {
+            roundFloat(humidity)
+        }
+        return humidityString.plus("%")
     }
 
     fun getLightString(): String? {

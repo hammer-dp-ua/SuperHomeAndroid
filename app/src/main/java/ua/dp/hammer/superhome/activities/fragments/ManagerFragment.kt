@@ -37,7 +37,7 @@ class ManagerFragment : Fragment() {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return runBlocking {
                     val serverAddress = getServerAddress(context, localSettingsRepository)
-                    ManagerViewModel(localSettingsRepository, serverAddress) as T
+                    ManagerViewModel(serverAddress) as T
                 }
             }
         }
@@ -84,7 +84,7 @@ class ManagerFragment : Fragment() {
         })
 
         binding.cameraRecordingButton.setOnLongClickListener {
-            val dialog = CameraRecordingSettingsDialog()
+            val dialog = CameraRecordingSettingsDialog(viewModel.getManagerWebRepository())
 
             dialog.show(this.parentFragmentManager, "camera_settings")
 

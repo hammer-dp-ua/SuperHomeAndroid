@@ -11,13 +11,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.*
-import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
-import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.repositories.web.manager.ManagerWebRepository
-import java.util.*
 
 class ManagerViewModel(
-    private val localSettingsRepository: LocalSettingsRepository,
     serverAddress: String?
 ) : ViewModel() {
     val projectorsButtonState: MutableLiveData<ProjectorState> = MutableLiveData()
@@ -40,6 +36,10 @@ class ManagerViewModel(
         }
 
         statesJob = startMonitoring()
+    }
+
+    fun getManagerWebRepository(): ManagerWebRepository? {
+        return managerWebRepository
     }
 
     fun changeServerAddress(serverAddress: String?) {
@@ -194,44 +194,21 @@ class ManagerViewModel(
 
     fun onCameraRecordingButtonClick(view: View) {
         val button: ImageButton = view as ImageButton
-        val prevSelectedState = button.isSelected
 
         // Selected means start ignoring alarms and stop video recording
         button.isSelected = !button.isSelected
         val stopRecording = button.isSelected
 
         viewModelScope.launch {
-            var response: AlarmsState? = null
-            val currentSettings: CameraSettingsEntity? = localSettingsRepository.getCurrentCameraSettings()
-
             val timeout = fun(): Int {
-                if (stopRecording) {
-                    if (currentSettings == null) {
-                        return 60 // Let it be a default value
-                    }
-
-                    val currentDateTime = Calendar.getInstance()
-                    val currentHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
-                    val currentMinute = currentDateTime.get(Calendar.MINUTE)
-                    var deltaHours = currentSettings.resumeRecordingHour - currentHour
-                    val deltaMinutes = currentSettings.resumeRecordingMinute - currentMinute
-
-                    if (deltaHours < 0) {
-                        deltaHours += 24
-                    }
-                    return deltaHours * 60 + deltaMinutes
+                return if (stopRecording) {
+                    60
                 } else {
-                    return -1
+                    -1
                 }
             }
 
-            try {
-                response = managerWebRepository?.stopVideoRecording(timeout())
-            } catch (e: Throwable) {}
-
-            if (response == null || response.ignoring != stopRecording) {
-                button.isSelected = prevSelectedState
-            }
+            managerWebRepository?.stopVideoRecording(timeout())
         }
     }
 
