@@ -7,11 +7,13 @@ import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.db.entities.LocalSettingsEntity
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 
-class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRepository) : ViewModel() {
+class MainSettingsViewModel : ViewModel() {
 
     val localServerAddress: MutableLiveData<String> = MutableLiveData()
     val globalServerAddress: MutableLiveData<String> = MutableLiveData()
     val localWiFiSsid: MutableLiveData<String> = MutableLiveData()
+
+    lateinit var localSettingsRepository: LocalSettingsRepository
 
     fun loadSettings()  {
         viewModelScope.launch {
@@ -38,8 +40,7 @@ class MainSettingsViewModel(private val localSettingsRepository: LocalSettingsRe
                 settings = LocalSettingsEntity()
             }
 
-            if (settings.localWiFiSsid != localWiFiSsid.value &&
-                localWiFiSsid.value?.isNotEmpty() == true) {
+            if (settings.localWiFiSsid != localWiFiSsid.value) {
                 settings.localWiFiSsid = localWiFiSsid.value
                 toSave = true
             }

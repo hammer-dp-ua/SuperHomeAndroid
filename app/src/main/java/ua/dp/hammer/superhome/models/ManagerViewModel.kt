@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -13,9 +12,7 @@ import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.*
 import ua.dp.hammer.superhome.repositories.web.manager.ManagerWebRepository
 
-class ManagerViewModel(
-    serverAddress: String?
-) : ViewModel() {
+class ManagerViewModel : AbstractMonitoringViewModel() {
     val projectorsButtonState: MutableLiveData<ProjectorState> = MutableLiveData()
     val cameraButtonSelected: MutableLiveData<Boolean> = MutableLiveData(true)
     val fanWorkingMinutesRemaining: MutableLiveData<String> = MutableLiveData()
@@ -27,40 +24,17 @@ class ManagerViewModel(
     val kitchen2ShutterButtonState: MutableLiveData<ShutterState> = MutableLiveData()
     val fanButtonState: MutableLiveData<FanState> = MutableLiveData()
 
-    private var managerWebRepository: ManagerWebRepository? = null
-    private var statesJob: Job
+    lateinit var managerWebRepository: ManagerWebRepository
+        private set
 
-    init {
-        if (serverAddress != null) {
+    override fun setServerAddressAndInit(serverAddress: String) {
+        if (notInitialized || managerWebRepository.address != serverAddress) {
             managerWebRepository = ManagerWebRepository(serverAddress)
-        }
-
-        statesJob = startMonitoring()
-    }
-
-    fun getManagerWebRepository(): ManagerWebRepository? {
-        return managerWebRepository
-    }
-
-    fun changeServerAddress(serverAddress: String?) {
-        if (serverAddress == null) {
-            managerWebRepository = null
-        } else if (managerWebRepository?.address != serverAddress) {
-            managerWebRepository = ManagerWebRepository(serverAddress)
+            init()
         }
     }
 
-    fun stopMonitoring() {
-        statesJob.cancel()
-    }
-
-    fun resumeMonitoring() {
-        if (statesJob.isCancelled) {
-            statesJob = startMonitoring()
-        }
-    }
-
-    private fun startMonitoring(): Job {
+    override fun startMonitoring(): Job {
         return viewModelScope.launch {
             var success = false
 
@@ -68,7 +42,7 @@ class ManagerViewModel(
                 var response: AllStates? = null
 
                 try {
-                    response = managerWebRepository?.getCurrentStates()
+                    response = managerWebRepository.getCurrentStates()
                 } catch (e: Throwable) {
                     Log.d(null, "", e)
                 }
@@ -80,7 +54,6 @@ class ManagerViewModel(
 
                 applyAllStates(response)
                 success = true
-
             }
 
             var oftenAmount = 0
@@ -90,7 +63,7 @@ class ManagerViewModel(
                 var response: AllStates? = null
 
                 try {
-                    response = managerWebRepository?.getCurrentStatesDeferred()
+                    response = managerWebRepository.getCurrentStatesDeferred()
                 } catch (e: Throwable) {
                     Log.d(null, "", e)
                 }
@@ -103,9 +76,12 @@ class ManagerViewModel(
                     oftenAmount = 0
                 }
 
-                if (response == null || oftenAmount >= 3) {
+                if (oftenAmount >= 3) {
                     delay(10_000)
                     oftenAmount = 0
+                    continue
+                }
+                if (response == null) {
                     continue
                 }
 
@@ -176,7 +152,7 @@ class ManagerViewModel(
             var response: ProjectorState? = null
 
             try {
-                response = managerWebRepository?.switchProjectors(stateParam)
+                response = managerWebRepository.switchProjectors(stateParam)
             } catch (e: Throwable) {
             }
 
@@ -208,15 +184,15 @@ class ManagerViewModel(
                 }
             }
 
-            managerWebRepository?.stopVideoRecording(timeout())
+            managerWebRepository.stopVideoRecording(timeout())
         }
     }
 
     fun onFanButtonClick(view: View) {
         val currentFanState = fanButtonState.value
 
-        if (currentFanState == null || currentFanState.turnedOn != false ||
-            currentFanState.notAvailable != false) {
+        if (currentFanState == null || currentFanState.turnedOn == true ||
+            currentFanState.notAvailable == true) {
             return
         }
 
@@ -224,7 +200,7 @@ class ManagerViewModel(
             var response: FanState? = null
 
             try {
-                response = managerWebRepository?.turnOnBathroomFan()
+                response = managerWebRepository.turnOnBathroomFan()
                 updateFanState(response)
             } catch (e: Throwable) {
             }
@@ -331,7 +307,7 @@ class ManagerViewModel(
             var response: ShutterState? = null
 
             try {
-                response = managerWebRepository?.doShutter(state.deviceName, state.shutterNo, open)
+                response = managerWebRepository.doShutter(state.deviceName, state.shutterNo, open)
             } catch (e: Throwable) {
             }
 

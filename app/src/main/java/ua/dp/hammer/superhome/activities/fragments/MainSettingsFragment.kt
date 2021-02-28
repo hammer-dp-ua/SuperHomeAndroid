@@ -5,23 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import ua.dp.hammer.superhome.databinding.FragmentMainSettingsBinding
 import ua.dp.hammer.superhome.models.MainSettingsViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 
 class MainSettingsFragment : Fragment() {
-    private val viewModel: MainSettingsViewModel by viewModels {
-        object : ViewModelProvider.NewInstanceFactory() {
-            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>) =
-                MainSettingsViewModel(LocalSettingsRepository.getInstance(currentContext)) as T
-        }
-    }
+    private val viewModel by activityViewModels<MainSettingsViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         val binding = FragmentMainSettingsBinding.inflate(inflater, container, false)
@@ -29,6 +19,8 @@ class MainSettingsFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        viewModel.localSettingsRepository =
+            LocalSettingsRepository.getInstance(context ?: throw IllegalStateException("Context cannot be null"))
         viewModel.loadSettings()
 
         binding.saveButton.setOnClickListener {

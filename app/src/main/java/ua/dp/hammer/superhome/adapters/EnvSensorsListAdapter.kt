@@ -10,7 +10,9 @@ import ua.dp.hammer.superhome.activities.fragments.EnvSensorsListFragment
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.databinding.EnvSensorListItemBinding
 
-class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) : ListAdapter<EnvSensor, RecyclerView.ViewHolder>(EnvSensorCallback()) {
+class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) :
+    ListAdapter<EnvSensor, RecyclerView.ViewHolder>(EnvSensorCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = EnvSensorListItemBinding.inflate(layoutInflater, parent, false)
@@ -21,22 +23,22 @@ class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) : List
         val sensor = getItem(position)
         (holder as EnvSensorsViewHolder).bind(sensor)
     }
+}
 
-    class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding,
-                               private val fragment: EnvSensorsListFragment) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: EnvSensor) {
-            binding.lifecycleOwner = fragment
+private class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding,
+                                   private val fragment: EnvSensorsListFragment) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: EnvSensor) {
+        binding.lifecycleOwner = fragment
 
-            binding.root.setOnLongClickListener {
-                val dialog = DisplayedEnvSensorInfoDialog(item, fragment)
-                dialog.show(fragment.parentFragmentManager, "sensors_info")
-                true
-            }
+        binding.root.setOnLongClickListener {
+            val dialog = DisplayedEnvSensorInfoDialog(item, fragment)
+            dialog.show(fragment.parentFragmentManager, "sensors_info")
+            true
+        }
 
-            binding.apply {
-                envSensor = item
-                executePendingBindings()
-            }
+        binding.apply {
+            envSensor = item
+            executePendingBindings()
         }
     }
 }

@@ -38,4 +38,13 @@
     <string name="global_server_address_tittle">Глобальный адрес сервера</string>
     <string name="save">Сохранить</string>
     <string name="local_wifi_ssid_tittle">Локальный WI-FI SSID</string>
+    <string name="add_delete_modify_devices_button">Добавить/Удалить/Изменить устройства</string>
+    <string name="device_type_setup_tittle">Тип</string>
+
+    <string-array name="device_setup_types">
+        <item>Датчик окр. среды</item>
+        <item>Роллета</item>
+        <item>Прожектор</item>
+        <item>Датчик движения</item>
+    </string-array>
 </resources>

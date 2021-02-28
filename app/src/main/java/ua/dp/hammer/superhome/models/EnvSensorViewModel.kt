@@ -2,7 +2,6 @@ package ua.dp.hammer.superhome.models
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,42 +15,22 @@ import ua.dp.hammer.superhome.db.entities.EnvSensorSettingAndDisplayedRows
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.repositories.web.sensors.EnvSensorsWebRepository
 
-class EnvSensorViewModel(
-    private val localSettingsRepository: LocalSettingsRepository,
-    serverAddress: String?) : ViewModel() {
-
+class EnvSensorViewModel : AbstractMonitoringViewModel() {
     val sensors: MutableLiveData<List<EnvSensor>> = MutableLiveData()
     var stopUpdating = false
 
     private var envSensorsWebRepository: EnvSensorsWebRepository? = null
-    private var statesJob: Job
 
-    init {
-        if (serverAddress != null) {
+    lateinit var localSettingsRepository: LocalSettingsRepository
+
+    override fun setServerAddressAndInit(serverAddress: String) {
+        if (notInitialized || envSensorsWebRepository?.address != serverAddress) {
             envSensorsWebRepository = EnvSensorsWebRepository(serverAddress)
-        }
-        statesJob = startMonitoring()
-    }
-
-    fun changeServerAddress(serverAddress: String?) {
-        if (serverAddress == null) {
-            envSensorsWebRepository = null
-        } else if (envSensorsWebRepository?.address != serverAddress) {
-            envSensorsWebRepository = EnvSensorsWebRepository(serverAddress)
+            init()
         }
     }
 
-    fun stopMonitoring() {
-        statesJob.cancel()
-    }
-
-    fun resumeMonitoring() {
-        if (statesJob.isCancelled) {
-            statesJob = startMonitoring()
-        }
-    }
-
-    private fun startMonitoring(): Job {
+    override fun startMonitoring(): Job {
         return viewModelScope.launch {
             var success = false
 

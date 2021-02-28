@@ -1,7 +1,6 @@
 package ua.dp.hammer.superhome.models
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -13,42 +12,21 @@ import ua.dp.hammer.superhome.data.PhoneAwareDeviceState
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.repositories.web.techinfo.AllDevicesTechInfoWebRepository
 
-class AllDevicesTechInfoViewModel(
-    private val localSettingsRepository: LocalSettingsRepository,
-    serverAddress: String?
-) : ViewModel() {
+class AllDevicesTechInfoViewModel : AbstractMonitoringViewModel() {
     val devicesInfo: MutableLiveData<MutableList<DeviceTechInfo>> = MutableLiveData()
 
     private var allDevicesTechInfoWebRepository: AllDevicesTechInfoWebRepository? = null
-    private var statesJob: Job
 
-    init {
-        if (serverAddress != null) {
+    lateinit var localSettingsRepository: LocalSettingsRepository
+
+    override fun setServerAddressAndInit(serverAddress: String) {
+        if (notInitialized || allDevicesTechInfoWebRepository?.address != serverAddress) {
             allDevicesTechInfoWebRepository = AllDevicesTechInfoWebRepository(serverAddress)
-        }
-
-        statesJob = startMonitoring()
-    }
-
-    fun changeServerAddress(serverAddress: String?) {
-        if (serverAddress == null) {
-            allDevicesTechInfoWebRepository = null
-        } else if (allDevicesTechInfoWebRepository?.address != serverAddress) {
-            allDevicesTechInfoWebRepository = AllDevicesTechInfoWebRepository(serverAddress)
+            init()
         }
     }
 
-    fun stopMonitoring() {
-        statesJob.cancel()
-    }
-
-    fun resumeMonitoring() {
-        if (statesJob.isCancelled) {
-            statesJob = startMonitoring()
-        }
-    }
-
-    private fun startMonitoring(): Job {
+    override fun startMonitoring(): Job {
         return viewModelScope.launch {
             var oftenAmount = 0
 

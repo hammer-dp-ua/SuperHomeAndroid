@@ -10,13 +10,11 @@ import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.data.FanState
 import ua.dp.hammer.superhome.data.ProjectorState
@@ -24,34 +22,31 @@ import ua.dp.hammer.superhome.data.ShutterState
 import ua.dp.hammer.superhome.data.ShutterStates
 import ua.dp.hammer.superhome.databinding.FragmentManagerBinding
 import ua.dp.hammer.superhome.models.ManagerViewModel
-import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.utilities.getServerAddress
 
 class ManagerFragment : Fragment() {
-    private val viewModel: ManagerViewModel by viewModels {
-        object : ViewModelProvider.NewInstanceFactory() {
-            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
-            val localSettingsRepository = LocalSettingsRepository.getInstance(currentContext)
+    private val viewModel by activityViewModels<ManagerViewModel>()
 
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return runBlocking {
-                    val serverAddress = getServerAddress(context, localSettingsRepository)
-                    ManagerViewModel(serverAddress) as T
-                }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            val serverAddress = getServerAddress(context)
+
+            if (serverAddress.isNullOrEmpty()) {
+                val navController = findNavController()
+
+                navController.navigate(R.id.mainSettingsFragment)
+            } else {
+                viewModel.setServerAddressAndInit(serverAddress)
+                viewModel.startOrResumeMonitoring()
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-
-        lifecycleScope.launch {
-            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
-            val serverAddress = getServerAddress(currentContext, LocalSettingsRepository.getInstance(currentContext))
-            viewModel.changeServerAddress(serverAddress)
-            viewModel.resumeMonitoring()
-        }
+        viewModel.startOrResumeMonitoring()
     }
 
     override fun onStop() {
@@ -84,7 +79,7 @@ class ManagerFragment : Fragment() {
         })
 
         binding.cameraRecordingButton.setOnLongClickListener {
-            val dialog = CameraRecordingSettingsDialog(viewModel.getManagerWebRepository())
+            val dialog = CameraRecordingSettingsDialog(viewModel.managerWebRepository)
 
             dialog.show(this.parentFragmentManager, "camera_settings")
 

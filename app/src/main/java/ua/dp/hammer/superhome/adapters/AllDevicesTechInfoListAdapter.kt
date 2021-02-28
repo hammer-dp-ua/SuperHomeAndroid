@@ -21,16 +21,18 @@ class AllDevicesTechInfoListAdapter(private val fragment: AllDevicesTechInfoFrag
         val sensor = getItem(position)
         (holder as AllDevicesTechInfoViewHolder).bind(sensor)
     }
+}
 
-    class AllDevicesTechInfoViewHolder(private val binding: DeviceTechInfoItemBinding,
-                                       private val fragment: AllDevicesTechInfoFragment): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DeviceTechInfo) {
-            binding.lifecycleOwner = fragment
+private class AllDevicesTechInfoViewHolder(private val binding: DeviceTechInfoItemBinding,
+                                           private val fragment: AllDevicesTechInfoFragment) :
+    RecyclerView.ViewHolder(binding.root) {
 
-            binding.apply {
-                deviceInfo = item
-                executePendingBindings()
-            }
+    fun bind(item: DeviceTechInfo) {
+        binding.lifecycleOwner = fragment
+
+        binding.apply {
+            deviceInfo = item
+            executePendingBindings()
         }
     }
 }

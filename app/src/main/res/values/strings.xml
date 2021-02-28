@@ -39,4 +39,13 @@
     <string name="global_server_address_tittle">Global Server Address</string>
     <string name="save">Save</string>
     <string name="local_wifi_ssid_tittle">Local WI-FI SSID</string>
+    <string name="add_delete_modify_devices_button">Add/Delete/Modify devices</string>
+    <string name="device_type_setup_tittle">Type</string>
+    
+    <string-array name="device_setup_types">
+        <item>Environment sensor</item>
+        <item>Shutter</item>
+        <item>Projector</item>
+        <item>Motion detector</item>
+    </string-array>
 </resources>

@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.adapters.AllDevicesTechInfoListAdapter
 import ua.dp.hammer.superhome.databinding.FragmentAllDevicesTechInfoListBinding
 import ua.dp.hammer.superhome.models.AllDevicesTechInfoViewModel
@@ -20,30 +19,31 @@ import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.utilities.getServerAddress
 
 class AllDevicesTechInfoFragment : Fragment() {
-    private val viewModel: AllDevicesTechInfoViewModel by viewModels {
-        object : ViewModelProvider.NewInstanceFactory() {
-            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
-            val localSettingsRepository = LocalSettingsRepository.getInstance(currentContext)
+    private val viewModel by activityViewModels<AllDevicesTechInfoViewModel>()
 
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return runBlocking {
-                    val serverAddress = getServerAddress(context, localSettingsRepository)
-                    AllDevicesTechInfoViewModel(localSettingsRepository, serverAddress) as T
-                }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val localSettingsRepository = LocalSettingsRepository.getInstance(context)
+
+        lifecycleScope.launch {
+            val serverAddress = getServerAddress(context)
+
+            if (serverAddress.isNullOrEmpty()) {
+                val navController = findNavController()
+
+                navController.navigate(R.id.mainSettingsFragment)
+            } else {
+                viewModel.localSettingsRepository = localSettingsRepository
+                viewModel.setServerAddressAndInit(serverAddress)
+                viewModel.startOrResumeMonitoring()
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-
-        lifecycleScope.launch {
-            val currentContext = context ?: throw IllegalStateException("Context cannot be null")
-            val serverAddress = getServerAddress(currentContext, LocalSettingsRepository.getInstance(currentContext))
-            viewModel.changeServerAddress(serverAddress)
-            viewModel.resumeMonitoring()
-        }
+        viewModel.startOrResumeMonitoring()
     }
 
     override fun onStop() {

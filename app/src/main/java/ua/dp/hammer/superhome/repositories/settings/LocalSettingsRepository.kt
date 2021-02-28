@@ -54,7 +54,9 @@ class LocalSettingsRepository private constructor(val database: AppDatabase) {
         @Volatile
         private var instance: LocalSettingsRepository? = null
 
-        fun getInstance(context: Context) : LocalSettingsRepository {
+        fun getInstance(context: Context?) : LocalSettingsRepository {
+            context ?: throw IllegalStateException("Context cannot be null")
+
             return instance ?: synchronized(this) {
                 instance ?: LocalSettingsRepository(AppDatabase.getInstance(context)).also { instance = it }
             }
