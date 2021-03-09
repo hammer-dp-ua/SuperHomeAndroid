@@ -1,6 +1,8 @@
-package ua.dp.hammer.superhome.data
+package ua.dp.hammer.superhome.transport
 
-data class DeviceSetupInfo(
+import ua.dp.hammer.superhome.data.DeviceTypeSetupInfo
+
+data class DeviceSetupTransport(
     val id: Int?,
     val type: DeviceTypeSetupInfo,
     val name: String,

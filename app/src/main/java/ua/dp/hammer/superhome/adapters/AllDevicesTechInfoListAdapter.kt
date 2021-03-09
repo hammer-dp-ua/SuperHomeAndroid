@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment
+import ua.dp.hammer.superhome.fragments.AllDevicesTechInfoFragment
 import ua.dp.hammer.superhome.data.DeviceTechInfo
 import ua.dp.hammer.superhome.databinding.DeviceTechInfoItemBinding
 
@@ -24,7 +24,8 @@ class AllDevicesTechInfoListAdapter(private val fragment: AllDevicesTechInfoFrag
 }
 
 private class AllDevicesTechInfoViewHolder(private val binding: DeviceTechInfoItemBinding,
-                                           private val fragment: AllDevicesTechInfoFragment) :
+                                           private val fragment: AllDevicesTechInfoFragment
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: DeviceTechInfo) {

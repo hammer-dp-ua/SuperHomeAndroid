@@ -15,6 +15,24 @@
         android:padding="@dimen/main_fragment_layout_padding_margin">
 
         <TextView
+            android:id="@+id/localWiFiSsidTittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/local_wifi_ssid_tittle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/localWiFiSsidValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SSID"
+            android:inputType="textPersonName"
+            android:text="@={viewModel.localWiFiSsid}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/localWiFiSsidTittle" />
+
+        <TextView
             android:id="@+id/localServerAddressTittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,6 +47,7 @@
 
             android:inputType="none"
             android:textIsSelectable="true"
+            android:focusable="false"
 
             android:text="@{viewModel.localServerAddress}"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +72,16 @@
             app:layout_constraintTop_toBottomOf="@+id/globalServerAddressTittle" />
 
         <Button
+            android:id="@+id/setupDevicesButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_delete_modify_devices_button"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/globalServerAddressValue" />
+
+        <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,32 +91,5 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/localWiFiSsidTittle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/local_wifi_ssid_tittle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/localWiFiSsidValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="SSID"
-            android:text="@={viewModel.localWiFiSsid}"
-            android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/localWiFiSsidTittle" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add_delete_modify_devices_button"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/globalServerAddressValue" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

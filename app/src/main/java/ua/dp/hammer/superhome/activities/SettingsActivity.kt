@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import ua.dp.hammer.superhome.R
-import ua.dp.hammer.superhome.activities.fragments.MainSettingsFragment
+import ua.dp.hammer.superhome.fragments.MainSettingsFragment
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

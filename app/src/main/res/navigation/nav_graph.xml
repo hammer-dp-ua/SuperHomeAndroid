@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/managerFragment">
 
     <fragment
         android:id="@+id/managerFragment"
-        android:name="ua.dp.hammer.superhome.activities.fragments.ManagerFragment"
+        android:name="ua.dp.hammer.superhome.fragments.ManagerFragment"
         android:label="ManagerFragment" />
     <fragment
         android:id="@+id/envSensorsListFragment"
-        android:name="ua.dp.hammer.superhome.activities.fragments.EnvSensorsListFragment"
+        android:name="ua.dp.hammer.superhome.fragments.EnvSensorsListFragment"
         android:label="EnvSensorsListFragment" />
     <fragment
         android:id="@+id/allDevicesTechInfoFragment"
-        android:name="ua.dp.hammer.superhome.activities.fragments.AllDevicesTechInfoFragment"
+        android:name="ua.dp.hammer.superhome.fragments.AllDevicesTechInfoFragment"
         android:label="AllDevicesTechInfoFragment" />
     <fragment
         android:id="@+id/mainSettingsFragment"
-        android:name="ua.dp.hammer.superhome.activities.fragments.MainSettingsFragment"
-        android:label="MainSettingsFragment" />
+        android:name="ua.dp.hammer.superhome.fragments.MainSettingsFragment"
+        android:label="MainSettingsFragment" >
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_devicesSetupListFragment"
+            app:destination="@id/devicesSetupListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/devicesSetupListFragment"
+        android:name="ua.dp.hammer.superhome.fragments.DevicesSetupListFragment"
+        android:label="DevicesSetupListFragment" />
 </navigation>

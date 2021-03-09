@@ -5,11 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ua.dp.hammer.superhome.activities.fragments.DevicesSetupListFragment
-import ua.dp.hammer.superhome.data.DeviceSetupInfo
+import ua.dp.hammer.superhome.data.DeviceSetupObservable
 import ua.dp.hammer.superhome.databinding.DeviceSetupItemBinding
+import ua.dp.hammer.superhome.dialogs.DeviceSettingDeleteConfirmationDialog
+import ua.dp.hammer.superhome.fragments.DevicesSetupListFragment
 
-class DevicesSetupListAdapter(private val fragment: DevicesSetupListFragment) : ListAdapter<DeviceSetupInfo, RecyclerView.ViewHolder>(SetupDeviceCallback()) {
+class DevicesSetupListAdapter(private val fragment: DevicesSetupListFragment) :
+    ListAdapter<DeviceSetupObservable, RecyclerView.ViewHolder>(SetupDeviceCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DeviceSetupItemBinding.inflate(layoutInflater, parent, false)
@@ -20,27 +23,40 @@ class DevicesSetupListAdapter(private val fragment: DevicesSetupListFragment) : 
         val sensor = getItem(position)
         (holder as DevicesSetupListViewHolder).bind(sensor)
     }
+}
 
-    class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBinding,
-                                     private val fragment: DevicesSetupListFragment
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DeviceSetupInfo) {
-            binding.lifecycleOwner = fragment
+private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBinding,
+                                         private val fragment: DevicesSetupListFragment
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: DeviceSetupObservable) {
+        binding.lifecycleOwner = fragment
 
-            binding.apply {
-                deviceSetup = item
-                executePendingBindings()
+        binding.deleteButton.setOnClickListener {
+            val id = item.id.value
+            val name = item.name.value
+
+            if (!id.isNullOrEmpty()) {
+                val dialog = DeviceSettingDeleteConfirmationDialog(fragment.viewModel, id, name)
+
+                dialog.show(fragment.parentFragmentManager, "confirm_delete_device")
+            } else if (!name.isNullOrEmpty()) {
+                fragment.viewModel.deleteByName(name)
             }
+        }
+
+        binding.apply {
+            deviceSetup = item
+            executePendingBindings()
         }
     }
 }
 
-private class SetupDeviceCallback : DiffUtil.ItemCallback<DeviceSetupInfo>() {
-    override fun areItemsTheSame(oldItem: DeviceSetupInfo, newItem: DeviceSetupInfo): Boolean {
+private class SetupDeviceCallback : DiffUtil.ItemCallback<DeviceSetupObservable>() {
+    override fun areItemsTheSame(oldItem: DeviceSetupObservable, newItem: DeviceSetupObservable): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: DeviceSetupInfo, newItem: DeviceSetupInfo): Boolean {
+    override fun areContentsTheSame(oldItem: DeviceSetupObservable, newItem: DeviceSetupObservable): Boolean {
         return oldItem == newItem
     }
 }

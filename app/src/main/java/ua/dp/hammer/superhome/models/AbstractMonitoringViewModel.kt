@@ -20,7 +20,7 @@ abstract class AbstractMonitoringViewModel : ViewModel() {
         statesJob?.cancel()
     }
 
-    fun init() {
+    protected fun init() {
         notInitialized = false
     }
 

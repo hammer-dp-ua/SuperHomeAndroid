@@ -3,8 +3,8 @@ package ua.dp.hammer.superhome.repositories.web.setup
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ua.dp.hammer.superhome.data.DeviceSetupInfo
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
+import ua.dp.hammer.superhome.transport.DeviceSetupTransport
 import java.util.concurrent.TimeUnit
 
 class DevicesSetupWebRepository(val address: String) {
@@ -26,15 +26,15 @@ class DevicesSetupWebRepository(val address: String) {
         devicesSetupWebRepository = retrofit.create(DevicesSetupWebServiceDao::class.java)
     }
 
-    suspend fun getAllDevices(): List<DeviceSetupInfo> {
+    suspend fun getAllDevices(): List<DeviceSetupTransport> {
         return devicesSetupWebRepository.getAllDevices().await()
     }
 
-    suspend fun addDevice(device: DeviceSetupInfo): Any {
+    suspend fun addDevice(device: DeviceSetupTransport): Any {
         return devicesSetupWebRepository.addDevice(device).await()
     }
 
-    suspend fun deleteDevice(deviceName: String): Any {
-        return devicesSetupWebRepository.deleteDevice(deviceName).await()
+    suspend fun deleteDevice(id: Int): Any {
+        return devicesSetupWebRepository.deleteDevice(id).await()
     }
 }

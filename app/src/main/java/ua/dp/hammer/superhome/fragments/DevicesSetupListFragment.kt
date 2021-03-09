@@ -1,13 +1,13 @@
-package ua.dp.hammer.superhome.activities.fragments
+package ua.dp.hammer.superhome.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.R
@@ -17,7 +17,7 @@ import ua.dp.hammer.superhome.models.DevicesSetupViewModel
 import ua.dp.hammer.superhome.utilities.getServerAddress
 
 class DevicesSetupListFragment : Fragment() {
-    private val viewModel by activityViewModels<DevicesSetupViewModel>()
+    val viewModel by activityViewModels<DevicesSetupViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +42,20 @@ class DevicesSetupListFragment : Fragment() {
         context ?: return binding.root
 
         val adapter = DevicesSetupListAdapter(this)
+
         viewModel.devices.observe(viewLifecycleOwner) {
+            Log.i(null, "~~~ 'devices' list changed")
             adapter.submitList(it)
         }
 
         binding.setupDevicesList.adapter = adapter
+
+        binding.saveButton.setOnClickListener {
+            viewModel.save()
+        }
+
         return binding.root
     }
+
+
 }

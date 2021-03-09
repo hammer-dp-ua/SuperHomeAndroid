@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.activities.fragments
+package ua.dp.hammer.superhome.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

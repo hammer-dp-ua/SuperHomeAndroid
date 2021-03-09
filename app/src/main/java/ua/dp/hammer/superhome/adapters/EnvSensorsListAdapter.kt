@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ua.dp.hammer.superhome.activities.fragments.DisplayedEnvSensorInfoDialog
-import ua.dp.hammer.superhome.activities.fragments.EnvSensorsListFragment
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.databinding.EnvSensorListItemBinding
+import ua.dp.hammer.superhome.dialogs.DisplayedEnvSensorInfoDialog
+import ua.dp.hammer.superhome.fragments.EnvSensorsListFragment
 
 class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) :
     ListAdapter<EnvSensor, RecyclerView.ViewHolder>(EnvSensorCallback()) {
@@ -26,7 +26,8 @@ class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) :
 }
 
 private class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding,
-                                   private val fragment: EnvSensorsListFragment) : RecyclerView.ViewHolder(binding.root) {
+                                   private val fragment: EnvSensorsListFragment
+) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: EnvSensor) {
         binding.lifecycleOwner = fragment
 

@@ -1,4 +1,4 @@
-package ua.dp.hammer.superhome.activities.fragments
+package ua.dp.hammer.superhome.fragments
 
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
@@ -21,6 +21,8 @@ import ua.dp.hammer.superhome.data.ProjectorState
 import ua.dp.hammer.superhome.data.ShutterState
 import ua.dp.hammer.superhome.data.ShutterStates
 import ua.dp.hammer.superhome.databinding.FragmentManagerBinding
+import ua.dp.hammer.superhome.dialogs.CameraRecordingSettingsDialog
+import ua.dp.hammer.superhome.dialogs.FanSettingsDialog
 import ua.dp.hammer.superhome.models.ManagerViewModel
 import ua.dp.hammer.superhome.utilities.getServerAddress
 
