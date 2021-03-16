@@ -16,7 +16,7 @@ class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = EnvSensorListItemBinding.inflate(layoutInflater, parent, false)
-        return EnvSensorsViewHolder(binding, fragment)
+        return EnvSensorsViewHolder(binding, fragment, this)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -26,13 +26,14 @@ class EnvSensorsListAdapter(private val fragment: EnvSensorsListFragment) :
 }
 
 private class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding,
-                                   private val fragment: EnvSensorsListFragment
+                                   private val fragment: EnvSensorsListFragment,
+                                   private val adapter: EnvSensorsListAdapter
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: EnvSensor) {
         binding.lifecycleOwner = fragment
 
         binding.root.setOnLongClickListener {
-            val dialog = DisplayedEnvSensorInfoDialog(item, fragment)
+            val dialog = DisplayedEnvSensorInfoDialog(item, fragment, adapter)
             dialog.show(fragment.parentFragmentManager, "sensors_info")
             true
         }

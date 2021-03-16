@@ -3,26 +3,29 @@ package ua.dp.hammer.superhome.data
 import androidx.lifecycle.MutableLiveData
 import ua.dp.hammer.superhome.transport.DeviceSetupTransport
 
-class DeviceSetupObservable(transport: DeviceSetupTransport) {
-    val id = MutableLiveData<String>()
-    //val type: MutableLiveData<DeviceTypeSetupInfo>
-    val name = MutableLiveData<String>()
-    val keepAliveInterval = MutableLiveData<String>()
-    val ip4Address = MutableLiveData<String>()
-
-    var initState = 0
-
-    init {
+class DeviceSetupObservable  {
+    constructor(transport: DeviceSetupTransport) {
         id.value = transport.id?.toString()
+        type.value = transport.type
         name.value = transport.name
         keepAliveInterval.value = transport.keepAliveIntervalSec?.toString()
         ip4Address.value = transport.ip4Address ?: ""
         saveInitState()
     }
 
+    constructor()
+
+    val id = MutableLiveData<String>()
+    val type = MutableLiveData<DeviceTypeSetupInfo>()
+    val name = MutableLiveData<String>()
+    val keepAliveInterval = MutableLiveData<String>()
+    val ip4Address = MutableLiveData<String>()
+
+    var initState = 0
+
     fun createTransport(): DeviceSetupTransport {
         return DeviceSetupTransport(id.value?.toInt(),
-            DeviceTypeSetupInfo.ENV_SENSOR,
+            type.value ?: throw IllegalStateException("Type can't be null"),
             name.value ?: throw IllegalStateException("Name can't be null"),
             null,
             ip4Address.value
@@ -60,6 +63,7 @@ class DeviceSetupObservable(transport: DeviceSetupTransport) {
         val thatObject: DeviceSetupObservable = other
         return id.value == thatObject.id.value &&
                 name.value == thatObject.name.value &&
+                type.value == thatObject.type.value &&
                 keepAliveInterval.value == thatObject.keepAliveInterval.value &&
                 ip4Address.value == thatObject.ip4Address.value
     }

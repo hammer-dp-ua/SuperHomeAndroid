@@ -7,15 +7,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ua.dp.hammer.superhome.fragments.EnvSensorsListFragment
+import ua.dp.hammer.superhome.adapters.EnvSensorsListAdapter
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
 import ua.dp.hammer.superhome.databinding.DisplayedEnvSensorInfoDialogBinding
+import ua.dp.hammer.superhome.fragments.EnvSensorsListFragment
 import ua.dp.hammer.superhome.models.EnvSensorDisplayedInfoViewModel
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 
 class DisplayedEnvSensorInfoDialog(private val envSensor: EnvSensor,
-                                   private val parentFragment: EnvSensorsListFragment
+                                   private val parentFragment: EnvSensorsListFragment,
+                                   private val adapter: EnvSensorsListAdapter
 ) : DialogFragment() {
     init {
         parentFragment.stopInfoUpdating()
@@ -50,7 +52,7 @@ class DisplayedEnvSensorInfoDialog(private val envSensor: EnvSensor,
                     parentFragment.resumeInfoUpdating()
                 }
 
-                parentFragment.updateVisibility(result)
+                parentFragment.updateVisibility(result, adapter)
                 dialog.cancel()
             }
             binding.cancelButton.setOnClickListener {

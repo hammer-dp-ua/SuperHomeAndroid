@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -45,10 +46,24 @@ class DevicesSetupListFragment : Fragment() {
 
         viewModel.devices.observe(viewLifecycleOwner) {
             Log.i(null, "~~~ 'devices' list changed")
+
             adapter.submitList(it)
         }
 
         binding.setupDevicesList.adapter = adapter
+
+        binding.addButton.setOnClickListener {
+            // Scroll after a new element is really added
+            val layoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding.setupDevicesList.smoothScrollToPosition(0)
+                    binding.setupDevicesList.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            }
+            binding.setupDevicesList.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+
+            viewModel.addNew()
+        }
 
         binding.saveButton.setOnClickListener {
             viewModel.save()

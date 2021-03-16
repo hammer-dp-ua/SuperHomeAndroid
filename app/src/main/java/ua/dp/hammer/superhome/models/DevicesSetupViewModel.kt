@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.DeviceSetupObservable
+import ua.dp.hammer.superhome.data.DeviceTypeSetupInfo
 import ua.dp.hammer.superhome.repositories.web.setup.DevicesSetupWebRepository
 import ua.dp.hammer.superhome.transport.DeviceSetupTransport
 
@@ -46,35 +47,60 @@ class DevicesSetupViewModel : ViewModel() {
         Log.i(null, "To be saved devices amount: " + toBeSavedDevices.size)
     }
 
-    fun deleteById(id: String) {
-        delete(id, null)
-    }
+    fun addNew() {
+        val newDevice = DeviceSetupObservable()
+        newDevice.type.value = DeviceTypeSetupInfo.ENV_SENSOR
+        val newDevices = mutableListOf(newDevice)
+        val currentDevicesIterator = devices.value?.asIterable()
 
-    fun deleteByName(name: String) {
-        delete(null, name)
-    }
-
-    private fun delete(id: String?, name: String?) {
-        if (!id.isNullOrEmpty()) {
-            val foundDevice = devices.value?.stream()?.filter {
-                it.id.value == id
-            }?.findFirst()?.orElse(null)
-
-            if (foundDevice != null) {
-                viewModelScope.launch {
-                    //devicesSetupWebRepository.deleteDevice(id.toInt())
-                    //loadAllDevices()
-                    Log.i(null, "Deleting setting device: $id")
-                }
-            }
-        } else if (!name.isNullOrEmpty()) {
-            val foundDevice = devices.value?.stream()?.filter {
-                it.name.value == name
-            }?.findFirst()?.orElse(null)
-
-            if (foundDevice != null) {
-                devices.value?.remove(foundDevice)
-            }
+        if (currentDevicesIterator != null) {
+            newDevices.addAll(currentDevicesIterator)
         }
+
+        devices.value = newDevices
+    }
+
+    fun deleteById(id: String): Int {
+        return delete(id, null)
+    }
+
+    fun delete(item: DeviceSetupObservable): Int {
+        return delete(null, item)
+    }
+
+    private fun delete(id: String?, item: DeviceSetupObservable?): Int {
+        var itemIndex = 0
+
+
+        if (!id.isNullOrEmpty()) {
+            var foundDevice : DeviceSetupObservable? = null
+
+            for (collectionDevice in devices.value.orEmpty()) {
+                if (collectionDevice.id.value == id) {
+                    foundDevice = collectionDevice
+                    break
+                }
+                itemIndex++
+            }
+
+            if (foundDevice == null) {
+                return -1
+            }
+
+            viewModelScope.launch {
+                //devicesSetupWebRepository.deleteDevice(id.toInt())
+                loadAllDevices()
+                Log.i(null, "Deleting setting device: $id")
+            }
+            return itemIndex
+        } else if (item != null) {
+            itemIndex = devices.value.orEmpty().indexOf(item)
+
+            if (itemIndex >= 0) {
+                devices.value?.remove(item)
+            }
+            return itemIndex
+        }
+        return -1
     }
 }

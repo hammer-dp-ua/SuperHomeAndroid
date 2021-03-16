@@ -58,6 +58,7 @@ class AllDevicesTechInfoFragment : Fragment() {
         val adapter = AllDevicesTechInfoListAdapter(this)
         subscribeUi(adapter)
         binding.devicesTechInfoList.adapter = adapter
+
         lifecycleScope.launch {
             while (true) {
                 binding.devicesTechInfoList.smoothScrollToPosition(0)

@@ -7,6 +7,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import ua.dp.hammer.superhome.adapters.EnvSensorsListAdapter
 import ua.dp.hammer.superhome.data.EnvSensor
 import ua.dp.hammer.superhome.data.EnvSensorDisplayedInfo
 import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
@@ -84,10 +85,21 @@ class EnvSensorViewModel : AbstractMonitoringViewModel() {
         }
     }
 
-    fun updateVisibility(detachedDisplayedInfo: EnvSensorDisplayedInfo.Detached) {
-        val envSensor = sensors.value?.firstOrNull {
-            it.deviceName == detachedDisplayedInfo.name
-        } ?: return
+    fun updateVisibility(detachedDisplayedInfo: EnvSensorDisplayedInfo.Detached, adapter: EnvSensorsListAdapter) {
+        var envSensorIndex = 0
+        var envSensor : EnvSensor? = null
+
+        for (collEnvSensor in sensors.value.orEmpty()) {
+            if (collEnvSensor.deviceName == detachedDisplayedInfo.name) {
+                envSensor = collEnvSensor
+                break
+            }
+            envSensorIndex++
+        }
+
+        if (envSensor == null) {
+            return
+        }
 
         viewModelScope.launch {
             if (detachedDisplayedInfo.displayedName != null) {
@@ -100,6 +112,8 @@ class EnvSensorViewModel : AbstractMonitoringViewModel() {
             envSensor.errorsVisibility.value = getVisibility(detachedDisplayedInfo.areErrorsDisplayed)
             envSensor.uptimeVisibility.value = getVisibility(detachedDisplayedInfo.isUptimeDisplayed)
             envSensor.freeHeapSpaceVisibility.value = getVisibility(detachedDisplayedInfo.isFreeHeapSpaceDisplayed)
+
+            adapter.notifyItemChanged(envSensorIndex)
         }
     }
 

@@ -43,6 +43,8 @@
     <string name="device_type_setup_tittle">Type</string>
     <string name="device_setup_keep_alive_interval_sec">Keep alive interval, sec.</string>
     <string name="device_setup_ip4_address">IP 4 address</string>
+    <string name="add_new_button">Add new</string>
+    <string name="confirm_delete_dialog_tittle">Delete</string>
     
     <string-array name="device_setup_types">
         <item>Environment sensor</item>
@@ -50,6 +52,4 @@
         <item>Projector</item>
         <item>Motion detector</item>
     </string-array>
-    <string name="add_new_button">Add new</string>
-    <string name="confirm_delete_dialog_tittle">Delete</string>
 </resources>

@@ -75,8 +75,8 @@ class EnvSensorsListFragment : Fragment() {
         viewModel.stopUpdating = false
     }
 
-    fun updateVisibility(detachedDisplayedInfo: EnvSensorDisplayedInfo.Detached) {
-        viewModel.updateVisibility(detachedDisplayedInfo)
+    fun updateVisibility(detachedDisplayedInfo: EnvSensorDisplayedInfo.Detached, adapter: EnvSensorsListAdapter) {
+        viewModel.updateVisibility(detachedDisplayedInfo, adapter)
     }
 
     private fun subscribeUi(adapter: EnvSensorsListAdapter) {
