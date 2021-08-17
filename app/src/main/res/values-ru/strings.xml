@@ -51,4 +51,8 @@
     </string-array>
     <string name="add_new_button">Добавить</string>
     <string name="confirm_delete_dialog_tittle">Удалить</string>
+    <string name="alarms">Тревоги</string>
+    <string name="motion_detector_tittle">Датчик движения</string>
+    <string name="date_time_tittle">Дата/время</string>
+    <string name="street_entrance_md">Вход</string>
 </resources>

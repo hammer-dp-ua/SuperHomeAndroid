@@ -10,6 +10,10 @@
         android:name="ua.dp.hammer.superhome.fragments.ManagerFragment"
         android:label="ManagerFragment" />
     <fragment
+        android:id="@+id/alarmsFragment"
+        android:name="ua.dp.hammer.superhome.fragments.AlarmsFragment"
+        android:label="AlarmsFragment" />
+    <fragment
         android:id="@+id/envSensorsListFragment"
         android:name="ua.dp.hammer.superhome.fragments.EnvSensorsListFragment"
         android:label="EnvSensorsListFragment" />

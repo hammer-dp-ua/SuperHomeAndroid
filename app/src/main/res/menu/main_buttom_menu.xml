@@ -6,6 +6,11 @@
         android:title="@string/menu_manager_tittle">
     </item>
     <item
+        android:id="@+id/alarmsFragment"
+        android:icon="@drawable/directions_walk"
+        android:title="@string/alarms">
+    </item>
+    <item
         android:id="@+id/envSensorsListFragment"
         android:icon="@drawable/temperature"
         android:title="@string/menu_sensors_tittle" />

@@ -14,7 +14,7 @@ class DevicesSetupViewModel : ViewModel() {
     val devices: MutableLiveData<MutableList<DeviceSetupObservable>> = MutableLiveData()
 
     private var notInitialized = true
-    lateinit private var devicesSetupWebRepository: DevicesSetupWebRepository
+    private lateinit var devicesSetupWebRepository: DevicesSetupWebRepository
 
     fun setServerAddress(serverAddress: String) {
         if (notInitialized || devicesSetupWebRepository.address != serverAddress) {

@@ -52,4 +52,8 @@
         <item>Projector</item>
         <item>Motion detector</item>
     </string-array>
+    <string name="alarms">Alarms</string>
+    <string name="motion_detector_tittle">Motion detector</string>
+    <string name="date_time_tittle">Date/time</string>
+    <string name="street_entrance_md">Entrance</string>
 </resources>
