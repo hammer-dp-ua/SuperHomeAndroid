@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="motionDetector"
+            type="ua.dp.hammer.superhome.data.MotionDetectorInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/topDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/alarmSourceNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text=""
+            android:textSize="@dimen/fragment_alarms_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/bottomDivider"
+            app:layout_constraintStart_toEndOf="@+id/alarmSourceImageButton"
+            app:layout_constraintTop_toBottomOf="@+id/topDivider"
+            tools:text="Source name"/>
+
+        <ImageButton
+            android:id="@+id/alarmSourceImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topDivider"
+            app:srcCompat="@drawable/street_entrance_md" />
+
+        <TextView
+            android:id="@+id/alarmDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text=""
+            android:textSize="@dimen/fragment_alarms_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topDivider"
+            tools:text="31-12-2020"/>
+
+        <TextView
+            android:id="@+id/alarmTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text=""
+            android:textSize="@dimen/fragment_alarms_text_size"
+            app:layout_constraintStart_toStartOf="@+id/alarmDate"
+            app:layout_constraintTop_toBottomOf="@+id/alarmDate"
+            tools:text="23:59:58"/>
+
+        <View
+            android:id="@+id/bottomDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@+id/alarmTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

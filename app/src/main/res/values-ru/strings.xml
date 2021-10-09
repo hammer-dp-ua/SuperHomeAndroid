@@ -38,7 +38,7 @@
     <string name="global_server_address_tittle">Глобальный адрес сервера</string>
     <string name="save">Сохранить</string>
     <string name="local_wifi_ssid_tittle">Локальный WI-FI SSID</string>
-    <string name="add_delete_modify_devices_button">Добавить/Удалить/Изменить устройства</string>
+    <string name="devices_button_tittle">Устройства</string>
     <string name="device_type_setup_tittle">Тип</string>
     <string name="device_setup_keep_alive_interval_sec">Интервал передачи информации, сек.</string>
     <string name="device_setup_ip4_address">IP 4 адрес</string>
@@ -55,4 +55,10 @@
     <string name="motion_detector_tittle">Датчик движения</string>
     <string name="date_time_tittle">Дата/время</string>
     <string name="street_entrance_md">Вход</string>
+    <string name="street_entrance_yard_md">Вход двор</string>
+    <string name="street_porch_md">Крыльцо</string>
+    <string name="street_yard_md">Двор</string>
+    <string name="devices_types_button_tittle">Типы устройств</string>
+    <string name="device_type_id">ID типа</string>
+    <string name="displayed_device_type">Отображаемый тип</string>
 </resources>

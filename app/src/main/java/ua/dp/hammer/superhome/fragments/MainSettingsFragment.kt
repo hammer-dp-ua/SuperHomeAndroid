@@ -29,6 +29,11 @@ class MainSettingsFragment : Fragment() {
             this.findNavController().navigate(action)
         }
 
+        binding.setupDevicesTypesButton.setOnClickListener {
+            val action = MainSettingsFragmentDirections.actionMainSettingsFragmentToDevicesTypesSetupListFragment()
+            this.findNavController().navigate(action)
+        }
+
         binding.saveButton.setOnClickListener {
             viewModel.saveSettings()
         }

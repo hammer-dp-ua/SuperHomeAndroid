@@ -18,7 +18,7 @@ class ServerSettingsWebRepository private constructor() {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://192.168.0.2/server/devicesSetup/")
+            .baseUrl("https://192.168.0.2/server/settings/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)

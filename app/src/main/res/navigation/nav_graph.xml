@@ -11,7 +11,7 @@
         android:label="ManagerFragment" />
     <fragment
         android:id="@+id/alarmsFragment"
-        android:name="ua.dp.hammer.superhome.fragments.AlarmsFragment"
+        android:name="ua.dp.hammer.superhome.fragments.AlarmsListFragment"
         android:label="AlarmsFragment" />
     <fragment
         android:id="@+id/envSensorsListFragment"
@@ -28,9 +28,16 @@
         <action
             android:id="@+id/action_mainSettingsFragment_to_devicesSetupListFragment"
             app:destination="@id/devicesSetupListFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_devicesTypesSetupListFragment"
+            app:destination="@id/devicesTypesSetupListFragment" />
     </fragment>
     <fragment
         android:id="@+id/devicesSetupListFragment"
         android:name="ua.dp.hammer.superhome.fragments.DevicesSetupListFragment"
         android:label="DevicesSetupListFragment" />
+    <fragment
+        android:id="@+id/devicesTypesSetupListFragment"
+        android:name="ua.dp.hammer.superhome.fragments.DevicesTypesSetupListFragment"
+        android:label="DevicesTypesSetupListFragment" />
 </navigation>

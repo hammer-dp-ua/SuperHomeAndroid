@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ua.dp.hammer.superhome.data.DeviceSetupObservable
-import ua.dp.hammer.superhome.data.DeviceTypeSetupInfo
+import ua.dp.hammer.superhome.data.setup.DeviceSetupObservable
 import ua.dp.hammer.superhome.repositories.web.setup.DevicesSetupWebRepository
 import ua.dp.hammer.superhome.transport.DeviceSetupTransport
 
@@ -43,13 +42,11 @@ class DevicesSetupViewModel : ViewModel() {
                 toBeSavedDevices.add(device.createTransport())
             }
         }
-
-        Log.i(null, "To be saved devices amount: " + toBeSavedDevices.size)
     }
 
     fun addNew() {
         val newDevice = DeviceSetupObservable()
-        newDevice.type.value = DeviceTypeSetupInfo.ENV_SENSOR
+        //newDevice.type.value = DeviceTypeSetupInfo.ENV_SENSOR
         val newDevices = mutableListOf(newDevice)
         val currentDevicesIterator = devices.value?.asIterable()
 
@@ -71,7 +68,6 @@ class DevicesSetupViewModel : ViewModel() {
     private fun delete(id: String?, item: DeviceSetupObservable?): Int {
         var itemIndex = 0
 
-
         if (!id.isNullOrEmpty()) {
             var foundDevice : DeviceSetupObservable? = null
 
@@ -88,7 +84,7 @@ class DevicesSetupViewModel : ViewModel() {
             }
 
             viewModelScope.launch {
-                //devicesSetupWebRepository.deleteDevice(id.toInt())
+                devicesSetupWebRepository.deleteDevice(id.toInt())
                 loadAllDevices()
                 Log.i(null, "Deleting setting device: $id")
             }

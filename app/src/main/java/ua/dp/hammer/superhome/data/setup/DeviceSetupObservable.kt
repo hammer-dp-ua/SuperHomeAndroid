@@ -1,14 +1,14 @@
-package ua.dp.hammer.superhome.data
+package ua.dp.hammer.superhome.data.setup
 
 import androidx.lifecycle.MutableLiveData
 import ua.dp.hammer.superhome.transport.DeviceSetupTransport
 
-class DeviceSetupObservable  {
+class DeviceSetupObservable {
     constructor(transport: DeviceSetupTransport) {
         id.value = transport.id?.toString()
         type.value = transport.type
         name.value = transport.name
-        keepAliveInterval.value = transport.keepAliveIntervalSec?.toString()
+        keepAliveInterval.value = transport.keepAliveIntervalSec.toString()
         ip4Address.value = transport.ip4Address ?: ""
         saveInitState()
     }
@@ -16,7 +16,7 @@ class DeviceSetupObservable  {
     constructor()
 
     val id = MutableLiveData<String>()
-    val type = MutableLiveData<DeviceTypeSetupInfo>()
+    val type = MutableLiveData<String>()
     val name = MutableLiveData<String>()
     val keepAliveInterval = MutableLiveData<String>()
     val ip4Address = MutableLiveData<String>()
@@ -27,7 +27,7 @@ class DeviceSetupObservable  {
         return DeviceSetupTransport(id.value?.toInt(),
             type.value ?: throw IllegalStateException("Type can't be null"),
             name.value ?: throw IllegalStateException("Name can't be null"),
-            null,
+            keepAliveInterval.value?.toInt() ?: 0,
             ip4Address.value
         )
     }
@@ -49,6 +49,7 @@ class DeviceSetupObservable  {
         var result = 17
 
         result = 31 * result + id.value.hashCode()
+        result = 31 * result + type.value.hashCode()
         result = 31 * result + name.value.hashCode()
         result = 31 * result + keepAliveInterval.value.hashCode()
         result = 31 * result + ip4Address.value.hashCode()

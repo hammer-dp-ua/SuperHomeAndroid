@@ -49,6 +49,14 @@ class LocalSettingsRepository private constructor(val database: AppDatabase) {
         return database.getLocalSettingsDao().saveLocalSettings(localSettings)
     }
 
+    suspend fun saveDeviceDisplayedType(deviceDisplayedType: DeviceDisplayedTypeEntity) {
+        database.getDevicesDisplayedTypesDao().saveDeviceDisplayedType(deviceDisplayedType)
+    }
+
+    suspend fun getDeviceDisplayedType(type: String): DeviceDisplayedTypeEntity? {
+        return database.getDevicesDisplayedTypesDao().getDeviceDisplayedType(type)
+    }
+
     companion object {
         // For Singleton instantiation
         @Volatile

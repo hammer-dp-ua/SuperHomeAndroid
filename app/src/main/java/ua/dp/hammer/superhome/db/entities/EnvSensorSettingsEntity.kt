@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class EnvSensorSettingsEntity(
-    @PrimaryKey val name: String,
+    @PrimaryKey
+    val name: String,
     val displayedName: String?
 ) {
     override fun toString(): String {

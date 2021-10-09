@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ua.dp.hammer.superhome.fragments.AllDevicesTechInfoFragment
 import ua.dp.hammer.superhome.data.DeviceTechInfo
 import ua.dp.hammer.superhome.databinding.DeviceTechInfoItemBinding
+import ua.dp.hammer.superhome.fragments.AllDevicesTechInfoFragment
 
 class AllDevicesTechInfoListAdapter(private val fragment: AllDevicesTechInfoFragment) :
     ListAdapter<DeviceTechInfo, RecyclerView.ViewHolder>(DeviceTechInfoCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DeviceTechInfoItemBinding.inflate(layoutInflater, parent, false)

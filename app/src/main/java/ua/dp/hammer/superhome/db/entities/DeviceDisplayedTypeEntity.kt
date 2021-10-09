@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class CameraSettingsEntity(
+data class DeviceDisplayedTypeEntity(
     @PrimaryKey
-    var id: Int?,
-    var resumeRecordingHour: Int,
-    var resumeRecordingMinute: Int)
+    val type: String,
+    val displayedType: String?
+)

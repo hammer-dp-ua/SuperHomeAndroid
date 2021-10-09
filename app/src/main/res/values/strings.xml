@@ -39,7 +39,8 @@
     <string name="global_server_address_tittle">Global Server Address</string>
     <string name="save">Save</string>
     <string name="local_wifi_ssid_tittle">Local WI-FI SSID</string>
-    <string name="add_delete_modify_devices_button">Add/Delete/Modify devices</string>
+    <string name="devices_button_tittle">Devices</string>
+    <string name="devices_types_button_tittle">Devices Types</string>
     <string name="device_type_setup_tittle">Type</string>
     <string name="device_setup_keep_alive_interval_sec">Keep alive interval, sec.</string>
     <string name="device_setup_ip4_address">IP 4 address</string>
@@ -56,4 +57,9 @@
     <string name="motion_detector_tittle">Motion detector</string>
     <string name="date_time_tittle">Date/time</string>
     <string name="street_entrance_md">Entrance</string>
+    <string name="street_entrance_yard_md">Entrance yard</string>
+    <string name="street_porch_md">Porch</string>
+    <string name="street_yard_md">Backyard</string>
+    <string name="device_type_id">Device Type ID</string>
+    <string name="displayed_device_type">Displayed Device Type</string>
 </resources>

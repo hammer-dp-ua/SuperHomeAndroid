@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ua.dp.hammer.superhome.R
-import ua.dp.hammer.superhome.data.DeviceSetupObservable
+import ua.dp.hammer.superhome.data.setup.DeviceSetupObservable
 import ua.dp.hammer.superhome.databinding.DeviceSetupItemBinding
-import ua.dp.hammer.superhome.dialogs.DeviceSettingDeleteConfirmationDialog
+import ua.dp.hammer.superhome.dialogs.DeviceSettingDeleteDeviceConfirmationDialog
 import ua.dp.hammer.superhome.fragments.DevicesSetupListFragment
 
 class DevicesSetupListAdapter(private val fragment: DevicesSetupListFragment) :
-    ListAdapter<DeviceSetupObservable, RecyclerView.ViewHolder>(SetupDeviceCallback()) {
+    ListAdapter<DeviceSetupObservable, RecyclerView.ViewHolder>(DevicesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -35,6 +35,7 @@ private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBin
                                          private val fragment: DevicesSetupListFragment,
                                          private val adapter: DevicesSetupListAdapter
 ) : RecyclerView.ViewHolder(binding.root) {
+
     fun bind(item: DeviceSetupObservable) {
         binding.lifecycleOwner = fragment
 
@@ -43,7 +44,7 @@ private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBin
             val name = item.name.value
 
             if (!id.isNullOrEmpty()) {
-                val dialog = DeviceSettingDeleteConfirmationDialog(fragment.viewModel, id, name)
+                val dialog = DeviceSettingDeleteDeviceConfirmationDialog(fragment.viewModel, id, name)
 
                 dialog.show(fragment.parentFragmentManager, "confirm_delete_device")
             } else {
@@ -78,11 +79,11 @@ private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBin
         }
 
         val typeValue = item.type.value ?: throw IllegalStateException("Type can't be null")
-        spinner.setSelection(typeValue.ordinal)
+        //spinner.setSelection(typeValue.ordinal)
     }
 }
 
-private class SetupDeviceCallback : DiffUtil.ItemCallback<DeviceSetupObservable>() {
+private class DevicesDiffCallback : DiffUtil.ItemCallback<DeviceSetupObservable>() {
     override fun areItemsTheSame(oldItem: DeviceSetupObservable, newItem: DeviceSetupObservable): Boolean {
         return oldItem.name == newItem.name
     }

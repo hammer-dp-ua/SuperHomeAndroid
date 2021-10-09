@@ -4,7 +4,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ua.dp.hammer.superhome.repositories.CoroutineCallAdapterFactory
+import ua.dp.hammer.superhome.transport.AlarmSourceSetupTransport
 import ua.dp.hammer.superhome.transport.DeviceSetupTransport
+import ua.dp.hammer.superhome.transport.DeviceTypeSetupTransport
 import java.util.concurrent.TimeUnit
 
 class DevicesSetupWebRepository(val address: String) {
@@ -18,7 +20,7 @@ class DevicesSetupWebRepository(val address: String) {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://$address/server/devicesSetup/")
+            .baseUrl("https://$address/server/setup/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
@@ -36,5 +38,29 @@ class DevicesSetupWebRepository(val address: String) {
 
     suspend fun deleteDevice(id: Int): Any {
         return devicesSetupWebRepository.deleteDevice(id).await()
+    }
+
+    suspend fun getAllDeviceTypes(): List<DeviceTypeSetupTransport> {
+        return devicesSetupWebRepository.getAllDeviceTypes().await()
+    }
+
+    suspend fun saveDeviceType(deviceType: DeviceTypeSetupTransport): Any {
+        return devicesSetupWebRepository.saveDeviceType(deviceType).await()
+    }
+
+    suspend fun deleteDeviceType(deviceType: DeviceTypeSetupTransport): Any {
+        return devicesSetupWebRepository.deleteDeviceType(deviceType).await()
+    }
+
+    suspend fun addAlarmSource(alarmSource: AlarmSourceSetupTransport): Any {
+        return devicesSetupWebRepository.addAlarmSource(alarmSource).await()
+    }
+
+    suspend fun deleteAlarmSource(alarmSource: AlarmSourceSetupTransport): Any {
+        return devicesSetupWebRepository.deleteAlarmSource(alarmSource).await()
+    }
+
+    suspend fun getAlarmSources(): List<AlarmSourceSetupTransport> {
+        return devicesSetupWebRepository.getAlarmSources().await()
     }
 }

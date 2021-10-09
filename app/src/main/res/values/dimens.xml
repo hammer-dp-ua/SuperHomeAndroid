@@ -39,4 +39,6 @@
     <dimen name="dialog_layout_padding_margin">8dp</dimen>
 
     <dimen name="main_fragment_layout_padding_margin">8dp</dimen>
+
+    <dimen name="fragment_alarms_text_size">24sp</dimen>
 </resources>

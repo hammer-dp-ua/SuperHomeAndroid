@@ -6,20 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ua.dp.hammer.superhome.db.dao.DevicesDisplayedTypesDao
 import ua.dp.hammer.superhome.db.dao.EnvSensorSettingsDao
 import ua.dp.hammer.superhome.db.dao.LocalSettingsDao
 import ua.dp.hammer.superhome.db.dao.ManagerSettingsDao
-import ua.dp.hammer.superhome.db.entities.CameraSettingsEntity
-import ua.dp.hammer.superhome.db.entities.EnvSensorDisplayedRowEntity
-import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
-import ua.dp.hammer.superhome.db.entities.LocalSettingsEntity
+import ua.dp.hammer.superhome.db.entities.*
 
 @Database(entities = [EnvSensorSettingsEntity::class, EnvSensorDisplayedRowEntity::class, CameraSettingsEntity::class,
-    LocalSettingsEntity::class], version = 4, exportSchema = true)
+    LocalSettingsEntity::class, DeviceDisplayedTypeEntity::class], version = 4, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getEnvSensorSettingsDao(): EnvSensorSettingsDao
     abstract fun getManagerSettingsDao(): ManagerSettingsDao
     abstract fun getLocalSettingsDao(): LocalSettingsDao
+    abstract fun getDevicesDisplayedTypesDao(): DevicesDisplayedTypesDao
 
     companion object {
         // For Singleton instantiation
@@ -83,5 +82,16 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             }
         }
+
+        /*val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE `DeviceDisplayedTypeEntity` " +
+                        "(" +
+                        "`type` TEXT," +
+                        "`displayedType` TEXT," +
+                        "PRIMARY KEY(`type`)" +
+                        ")")
+            }
+        }*/
     }
 }
