@@ -5,6 +5,7 @@
     <string name="light">Освещённость</string>
     <string name="gain">Усиление</string>
     <string name="name">Имя</string>
+    <string name="deviceName">Имя Устройства</string>
     <string name="name_colon">Имя:</string>
     <string name="displayed_name">Отображаемое имя</string>
     <string name="displayed_name_colon">Отображаемое имя:</string>
@@ -42,13 +43,6 @@
     <string name="device_type_setup_tittle">Тип</string>
     <string name="device_setup_keep_alive_interval_sec">Интервал передачи информации, сек.</string>
     <string name="device_setup_ip4_address">IP 4 адрес</string>
-
-    <string-array name="device_setup_types">
-        <item>Датчик окр. среды</item>
-        <item>Роллета</item>
-        <item>Прожектор</item>
-        <item>Датчик движения</item>
-    </string-array>
     <string name="add_new_button">Добавить</string>
     <string name="confirm_delete_dialog_tittle">Удалить</string>
     <string name="alarms">Тревоги</string>
@@ -61,4 +55,7 @@
     <string name="devices_types_button_tittle">Типы устройств</string>
     <string name="device_type_id">ID типа</string>
     <string name="displayed_device_type">Отображаемый тип</string>
+    <string name="alarm_source">Источник Тревоги</string>
+    <string name="ignore_alarms">Игнорировать Тревоги</string>
+    <string name="alarm_sources">Источники Тревог</string>
 </resources>

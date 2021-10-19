@@ -32,7 +32,10 @@ interface DevicesSetupWebServiceDao {
     fun addAlarmSource(@Body alarmSource: AlarmSourceSetupTransport): Deferred<Any>
 
     @POST("deleteAlarmSource")
-    fun deleteAlarmSource(@Body alarmSource: AlarmSourceSetupTransport): Deferred<Any>
+    fun deleteAlarmSource(@Query("aaId") aaId: Int): Deferred<Any>
+
+    @POST("modifyAlarmSource")
+    fun modifyAlarmSource(@Body alarmSource: AlarmSourceSetupTransport): Deferred<Any>
 
     @GET("getAlarmSources")
     fun getAlarmSources(): Deferred<List<AlarmSourceSetupTransport>>

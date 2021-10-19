@@ -27,13 +27,13 @@ class DevicesTypesSetupViewModel : ViewModel() {
     fun loadAllTypes() {
         viewModelScope.launch {
             val loadedTypes = devicesSetupWebRepository.getAllDeviceTypes()
-            val loadedTypesObservable = mutableListOf<DeviceTypeSetupObservable>()
+            val loadedTypesObservableList = mutableListOf<DeviceTypeSetupObservable>()
 
             for (loadedType in loadedTypes) {
                 val displayedTypeEntity = localSettingsRepository.getDeviceDisplayedType(loadedType.type)
-                loadedTypesObservable.add(DeviceTypeSetupObservable(loadedType, displayedTypeEntity?.displayedType))
+                loadedTypesObservableList.add(DeviceTypeSetupObservable(loadedType, displayedTypeEntity?.displayedType))
             }
-            types.value = loadedTypesObservable
+            types.value = loadedTypesObservableList
         }
     }
 

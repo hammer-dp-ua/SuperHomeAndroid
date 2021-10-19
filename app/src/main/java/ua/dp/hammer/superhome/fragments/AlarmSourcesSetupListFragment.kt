@@ -11,14 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.R
-import ua.dp.hammer.superhome.adapters.DevicesSetupListAdapter
-import ua.dp.hammer.superhome.databinding.FragmentDevicesSetupListBinding
-import ua.dp.hammer.superhome.models.DevicesSetupViewModel
-import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
+import ua.dp.hammer.superhome.adapters.AlarmSourcesSetupListAdapter
+import ua.dp.hammer.superhome.databinding.FragmentAlarmSourcesSetupListBinding
+import ua.dp.hammer.superhome.models.AlarmSourcesSetupViewModel
 import ua.dp.hammer.superhome.utilities.getServerAddress
 
-class DevicesSetupListFragment : Fragment() {
-    val viewModel by activityViewModels<DevicesSetupViewModel>()
+class AlarmSourcesSetupListFragment : Fragment() {
+    val viewModel by activityViewModels<AlarmSourcesSetupViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,34 +31,33 @@ class DevicesSetupListFragment : Fragment() {
                 navController.navigate(R.id.mainSettingsFragment)
             } else {
                 viewModel.setServerAddress(serverAddress)
-                viewModel.loadAllDevices()
+                viewModel.loadAllAlarmSources()
             }
         }
-        viewModel.localSettingsRepository = LocalSettingsRepository.getInstance(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
-        val binding = FragmentDevicesSetupListBinding.inflate(inflater, container, false)
+        val binding = FragmentAlarmSourcesSetupListBinding.inflate(inflater, container, false)
 
         context ?: return binding.root
 
-        val adapter = DevicesSetupListAdapter(this)
+        val adapter = AlarmSourcesSetupListAdapter(this)
 
-        viewModel.devices.observe(viewLifecycleOwner) {
+        viewModel.alarmSources.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
-        binding.setupDevicesList.adapter = adapter
+        binding.alarmSourcesSetupList.adapter = adapter
 
         binding.addButton.setOnClickListener {
             // Scroll after a new element is really added
             val layoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    binding.setupDevicesList.smoothScrollToPosition(0)
-                    binding.setupDevicesList.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    binding.alarmSourcesSetupList.smoothScrollToPosition(0)
+                    binding.alarmSourcesSetupList.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             }
-            binding.setupDevicesList.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+            binding.alarmSourcesSetupList.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
 
             viewModel.addNew()
         }

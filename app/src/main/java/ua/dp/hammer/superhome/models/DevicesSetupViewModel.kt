@@ -1,16 +1,18 @@
 package ua.dp.hammer.superhome.models
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ua.dp.hammer.superhome.data.setup.DeviceSetupObservable
+import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.repositories.web.setup.DevicesSetupWebRepository
 import ua.dp.hammer.superhome.transport.DeviceSetupTransport
 
 class DevicesSetupViewModel : ViewModel() {
     val devices: MutableLiveData<MutableList<DeviceSetupObservable>> = MutableLiveData()
+
+    lateinit var localSettingsRepository: LocalSettingsRepository
 
     private var notInitialized = true
     private lateinit var devicesSetupWebRepository: DevicesSetupWebRepository
@@ -26,9 +28,11 @@ class DevicesSetupViewModel : ViewModel() {
         viewModelScope.launch {
             val loadedDevices = devicesSetupWebRepository.getAllDevices()
             val loadedDevicesObservable = mutableListOf<DeviceSetupObservable>()
+            val types = getTypes()
+            val displayedTypes = getDisplayedTypes(types)
 
             for (loadedDevice in loadedDevices) {
-                loadedDevicesObservable.add(DeviceSetupObservable(loadedDevice))
+                loadedDevicesObservable.add(DeviceSetupObservable(loadedDevice, types, displayedTypes))
             }
             devices.value = loadedDevicesObservable
         }
@@ -86,7 +90,6 @@ class DevicesSetupViewModel : ViewModel() {
             viewModelScope.launch {
                 devicesSetupWebRepository.deleteDevice(id.toInt())
                 loadAllDevices()
-                Log.i(null, "Deleting setting device: $id")
             }
             return itemIndex
         } else if (item != null) {
@@ -98,5 +101,32 @@ class DevicesSetupViewModel : ViewModel() {
             return itemIndex
         }
         return -1
+    }
+
+
+
+    private suspend fun getTypes(): List<String> {
+        val loadedTypes = devicesSetupWebRepository.getAllDeviceTypes()
+        val types = mutableListOf<String>()
+
+        for (loadedType in loadedTypes) {
+            types.add(loadedType.type)
+        }
+        return types
+    }
+
+    private suspend fun getDisplayedTypes(types: List<String>): List<String> {
+        val displayedTypes = mutableListOf<String>()
+
+        for (type in types) {
+            val displayedTypeEntity = localSettingsRepository.getDeviceDisplayedType(type)
+
+            if (displayedTypeEntity != null && !displayedTypeEntity.displayedType.isNullOrEmpty()) {
+                displayedTypes.add(displayedTypeEntity.displayedType)
+            } else {
+                displayedTypes.add(type)
+            }
+        }
+        return displayedTypes
     }
 }

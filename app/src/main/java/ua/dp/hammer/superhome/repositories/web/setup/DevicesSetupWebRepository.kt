@@ -56,8 +56,12 @@ class DevicesSetupWebRepository(val address: String) {
         return devicesSetupWebRepository.addAlarmSource(alarmSource).await()
     }
 
-    suspend fun deleteAlarmSource(alarmSource: AlarmSourceSetupTransport): Any {
-        return devicesSetupWebRepository.deleteAlarmSource(alarmSource).await()
+    suspend fun deleteAlarmSource(aaId: Int): Any {
+        return devicesSetupWebRepository.deleteAlarmSource(aaId).await()
+    }
+
+    suspend fun modifyAlarmSource(alarmSource: AlarmSourceSetupTransport): Any {
+        return devicesSetupWebRepository.modifyAlarmSource(alarmSource).await()
     }
 
     suspend fun getAlarmSources(): List<AlarmSourceSetupTransport> {

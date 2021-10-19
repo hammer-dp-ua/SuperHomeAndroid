@@ -5,6 +5,7 @@
     <string name="light">Light</string>
     <string name="gain">Gain</string>
     <string name="name">Name</string>
+    <string name="deviceName">Device Name</string>
     <string name="name_colon">Name:</string>
     <string name="displayed_name">Displayed name</string>
     <string name="displayed_name_colon">Displayed name:</string>
@@ -46,13 +47,6 @@
     <string name="device_setup_ip4_address">IP 4 address</string>
     <string name="add_new_button">Add new</string>
     <string name="confirm_delete_dialog_tittle">Delete</string>
-    
-    <string-array name="device_setup_types">
-        <item>Environment sensor</item>
-        <item>Shutter</item>
-        <item>Projector</item>
-        <item>Motion detector</item>
-    </string-array>
     <string name="alarms">Alarms</string>
     <string name="motion_detector_tittle">Motion detector</string>
     <string name="date_time_tittle">Date/time</string>
@@ -62,4 +56,7 @@
     <string name="street_yard_md">Backyard</string>
     <string name="device_type_id">Device Type ID</string>
     <string name="displayed_device_type">Displayed Device Type</string>
+    <string name="alarm_source">Alarm Source</string>
+    <string name="ignore_alarms">Ignore Alarms</string>
+    <string name="alarm_sources">Alarm Sources</string>
 </resources>

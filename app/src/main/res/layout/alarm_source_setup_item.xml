@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.InputType"/>
+        <import type="android.view.View"/>
+
         <variable
-            name="deviceSetup"
-            type="ua.dp.hammer.superhome.data.setup.DeviceSetupObservable"/>
+            name="alarmSourceSetup"
+            type="ua.dp.hammer.superhome.data.setup.AlarmSourceSetupObservable"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,12 +17,12 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/deviceNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="@string/name"
+            android:text="@string/deviceName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,112 +36,85 @@
             app:srcCompat="@android:drawable/ic_delete" />
 
         <EditText
-            android:id="@+id/nameEditText"
+            android:id="@+id/deviceNameEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+
             android:layout_marginStart="8dp"
+
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="@={deviceSetup.name}"
+            android:inputType="@{alarmSourceSetup.isNew() ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
+            android:text="@={alarmSourceSetup.deviceName}"
+            android:visibility="@{alarmSourceSetup.isNew() ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-            tools:text="Device setup very-very long name" />
-
-        <TextView
-            android:id="@+id/typeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/device_type_setup_tittle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/deviceNameTextView"
+            tools:text="Device name very-very long name" />
 
         <Spinner
-            android:id="@+id/typeSpinner"
+            android:id="@+id/deviceNamesSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/typeTextView"
-            android:onItemSelected="@{(parent, view, pos, id) -> deviceSetup.onSelectType(parent, view, pos, id)}"/>
-
-        <View
-            android:id="@+id/typeDivider"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:background="?android:attr/listDivider"
+            android:layout_marginEnd="4dp"
+            android:onItemSelected="@{(parent, view, pos, id) -> alarmSourceSetup.onSelectDeviceName(parent, view, pos, id)}"
+            android:spinnerMode="dropdown"
+            android:visibility="@{alarmSourceSetup.isNew() ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/typeSpinner" />
+            app:layout_constraintTop_toBottomOf="@+id/deviceNameEditText" />
 
         <TextView
-            android:id="@+id/ip4AddressTextView"
+            android:id="@+id/alarmSourceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/device_setup_ip4_address"
+            android:text="@string/alarm_source"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/typeDivider" />
+            app:layout_constraintTop_toBottomOf="@+id/deviceNamesSpinner" />
 
         <EditText
-            android:id="@+id/ip4AddressEditText"
+            android:id="@+id/alarmSourceEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:inputType="phone"
-            android:text="@={deviceSetup.ip4Address}"
+
+            android:inputType="@{alarmSourceSetup.isNew() ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
+
+            android:text="@={alarmSourceSetup.alarmSource}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ip4AddressTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/alarmSourceTextView"
+            tools:text="SOME_ALARM_SOURCE" />
 
-        <TextView
-            android:id="@+id/keepAliveIntervalTextView"
-            android:layout_width="wrap_content"
+        <Switch
+            android:id="@+id/gnore_alarms_switch"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/device_setup_keep_alive_interval_sec"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ip4AddressEditText" />
-
-        <EditText
-            android:id="@+id/keepAliveIntervalEditDecimal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-
-            android:ems="10"
-            android:focusable="false"
-            android:inputType="none"
-
-            android:text="@{deviceSetup.keepAliveInterval}"
-            android:textIsSelectable="true"
+            android:checked="@={alarmSourceSetup.ignoreAlarms}"
+            android:text="@string/ignore_alarms"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/keepAliveIntervalTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/alarmSourceEditText" />
 
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="5dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/keepAliveIntervalEditDecimal" />
+            app:layout_constraintTop_toBottomOf="@+id/gnore_alarms_switch" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

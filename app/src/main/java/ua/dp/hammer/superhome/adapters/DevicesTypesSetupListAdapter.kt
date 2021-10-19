@@ -56,7 +56,7 @@ private class DevicesTypesSetupListViewHolder(private val binding: DeviceTypeSet
 
 private class DevicesTypesDiffCallback : DiffUtil.ItemCallback<DeviceTypeSetupObservable>() {
     override fun areItemsTheSame(oldItem: DeviceTypeSetupObservable, newItem: DeviceTypeSetupObservable): Boolean {
-        return oldItem.type == newItem.type
+        return oldItem.type.value == newItem.type.value
     }
 
     override fun areContentsTheSame(oldItem: DeviceTypeSetupObservable, newItem: DeviceTypeSetupObservable): Boolean {
