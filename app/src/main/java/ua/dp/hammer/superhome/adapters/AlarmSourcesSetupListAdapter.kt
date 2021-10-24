@@ -1,6 +1,5 @@
 package ua.dp.hammer.superhome.adapters
 
-import android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -60,7 +59,7 @@ private class AlarmSourcesSetupListViewHolder(private val binding: AlarmSourceSe
             ArrayAdapter(fragment.context ?: throw IllegalStateException(),
                 ua.dp.hammer.superhome.R.layout.spinner_item,
                 item.devicesNames).also { spinnerAdapter ->
-                spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinner.adapter = spinnerAdapter
             }
         }

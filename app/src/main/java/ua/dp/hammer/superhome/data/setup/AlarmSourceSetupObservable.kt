@@ -1,6 +1,5 @@
 package ua.dp.hammer.superhome.data.setup
 
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.lifecycle.MutableLiveData
@@ -78,6 +77,4 @@ class AlarmSourceSetupObservable {
         result = 31 * result + ignoreAlarms.value.hashCode()
         return result
     }
-
-
 }

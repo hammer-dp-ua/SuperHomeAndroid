@@ -100,6 +100,15 @@
             app:layout_constraintTop_toBottomOf="@+id/setupDevicesTypesButton" />
 
         <Button
+            android:id="@+id/alarmsDisplayedOrderButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/alarms_displayed_order"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setupAlarmSourcesButton" />
+
+        <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

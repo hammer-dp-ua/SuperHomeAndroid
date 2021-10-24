@@ -59,4 +59,7 @@
     <string name="alarm_source">Alarm Source</string>
     <string name="ignore_alarms">Ignore Alarms</string>
     <string name="alarm_sources">Alarm Sources</string>
+    <string name="select_device_type">Select Alarms Devices Type</string>
+    <string name="alarms_displayed_order">Alarms Displayed Order</string>
+    <string name="displayed_icon">Displayed Icon</string>
 </resources>

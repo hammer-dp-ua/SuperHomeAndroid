@@ -58,4 +58,7 @@
     <string name="alarm_source">Источник Тревоги</string>
     <string name="ignore_alarms">Игнорировать Тревоги</string>
     <string name="alarm_sources">Источники Тревог</string>
+    <string name="select_device_type">Выбери Тип Устройств Тревог</string>
+    <string name="alarms_displayed_order">Сортировка Списка Тревог</string>
+    <string name="displayed_icon">Отображаемый Значёк</string>
 </resources>

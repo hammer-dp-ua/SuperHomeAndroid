@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_mainSettingsFragment_to_alarmSourcesSetupListFragment"
             app:destination="@id/alarmSourcesSetupListFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_alarmsDisplayedOrderFragment"
+            app:destination="@id/alarmsDisplayedOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/devicesSetupListFragment"
@@ -47,4 +50,8 @@
         android:id="@+id/alarmSourcesSetupListFragment"
         android:name="ua.dp.hammer.superhome.fragments.AlarmSourcesSetupListFragment"
         android:label="AlarmSourcesSetupListFragment" />
+    <fragment
+        android:id="@+id/alarmsDisplayedOrderFragment"
+        android:name="ua.dp.hammer.superhome.fragments.AlarmsDisplayedOrderFragment"
+        android:label="AlarmsDisplayedOrderFragment" />
 </navigation>

@@ -39,6 +39,11 @@ class MainSettingsFragment : Fragment() {
             this.findNavController().navigate(action)
         }
 
+        binding.alarmsDisplayedOrderButton.setOnClickListener {
+            val action = MainSettingsFragmentDirections.actionMainSettingsFragmentToAlarmsDisplayedOrderFragment()
+            this.findNavController().navigate(action)
+        }
+
         binding.saveButton.setOnClickListener {
             viewModel.saveSettings()
         }
