@@ -7,7 +7,7 @@ import ua.dp.hammer.superhome.repositories.web.setup.DevicesSetupWebRepository
 import kotlin.streams.toList
 
 class AlarmsDisplayedOrderViewModel : ViewModel() {
-    val alarmsSources: MutableLiveData<List<AlarmDisplayedOrderItemObservable>> = MutableLiveData()
+    val alarmsSources: MutableLiveData<Array<AlarmDisplayedOrderItemObservable>> = MutableLiveData()
 
     private var notInitialized = true
     private lateinit var devicesSetupWebRepository: DevicesSetupWebRepository
@@ -24,5 +24,16 @@ class AlarmsDisplayedOrderViewModel : ViewModel() {
             .stream()
             .map { AlarmDisplayedOrderItemObservable(it.deviceName, it.alarmSource) }
             .toList()
+            .toTypedArray()
+    }
+
+    fun swap(sourceIndex: Int, destinationIndex: Int) {
+        val sourceItem = alarmsSources.value?.get(sourceIndex)
+        val destinationItem = alarmsSources.value?.get(destinationIndex)
+
+        if (sourceItem != null && destinationItem != null) {
+            alarmsSources.value?.set(sourceIndex, destinationItem)
+            alarmsSources.value?.set(destinationIndex, sourceItem)
+        }
     }
 }

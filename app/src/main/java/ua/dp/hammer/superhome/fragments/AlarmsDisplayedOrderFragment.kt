@@ -18,8 +18,6 @@ import ua.dp.hammer.superhome.utilities.getServerAddress
 class AlarmsDisplayedOrderFragment : Fragment() {
     val viewModel by activityViewModels<AlarmsDisplayedOrderViewModel>()
 
-    var xCoordinatesInsideDragButton = 0F
-
     /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }*/
@@ -38,16 +36,6 @@ class AlarmsDisplayedOrderFragment : Fragment() {
                 viewModel.setServerAddress(serverAddress)
                 viewModel.loadAllAlarmSources()
             }
-
-            /*val devicesTypes = viewModel.loadDevicesTypes()
-            val spinner: Spinner = binding.deviceTypeSelectionSpinner
-
-            ArrayAdapter(context ?: throw IllegalStateException(),
-                R.layout.spinner_item,
-                devicesTypes).also { spinnerAdapter ->
-                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = spinnerAdapter
-            }*/
         }
 
         context ?: return binding.root
@@ -55,7 +43,7 @@ class AlarmsDisplayedOrderFragment : Fragment() {
         val adapter = AlarmsDisplayedOrderListAdapter(this)
 
         viewModel.alarmsSources.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            adapter.submitList(it.toList())
         }
 
         binding.alarmsOrderList.adapter = adapter

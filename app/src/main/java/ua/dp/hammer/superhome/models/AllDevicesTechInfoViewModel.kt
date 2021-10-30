@@ -11,6 +11,7 @@ import ua.dp.hammer.superhome.data.DeviceType
 import ua.dp.hammer.superhome.data.PhoneAwareDeviceState
 import ua.dp.hammer.superhome.repositories.settings.LocalSettingsRepository
 import ua.dp.hammer.superhome.repositories.web.techinfo.AllDevicesTechInfoWebRepository
+import java.net.SocketTimeoutException
 
 class AllDevicesTechInfoViewModel : AbstractMonitoringViewModel() {
     val devicesInfo: MutableLiveData<MutableList<DeviceTechInfo>> = MutableLiveData()
@@ -43,6 +44,8 @@ class AllDevicesTechInfoViewModel : AbstractMonitoringViewModel() {
                     }
 
                     response = allDevicesTechInfoWebRepository?.getAllDevicesTechInfoStates(phoneAwareStates)
+                } catch (e: SocketTimeoutException) {
+                    // Ignore
                 } catch (e: Throwable) {
                     oftenAmount++
                 }
