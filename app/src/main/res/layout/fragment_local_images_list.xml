@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="ua.dp.hammer.superhome.models.AlarmsDisplayedOrderViewModel"/>
+            type="ua.dp.hammer.superhome.models.LocalImagesViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,32 +16,24 @@
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/saveButton"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/alarms_order_list"
+                android:id="@+id/local_images_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:padding="@dimen/main_fragment_layout_padding_margin"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="5"
                 tools:context="ua.dp.hammer.superhome.activities.MainActivity"
-                tools:listitem="@layout/alarms_displayed_order_list_item" />
+                tools:listitem="@layout/local_image_list_item" />
 
         </FrameLayout>
-
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

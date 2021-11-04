@@ -6,6 +6,7 @@ import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import ua.dp.hammer.superhome.R
 import ua.dp.hammer.superhome.data.setup.AlarmDisplayedOrderItemObservable
 import ua.dp.hammer.superhome.databinding.AlarmsDisplayedOrderListItemBinding
 import ua.dp.hammer.superhome.fragments.AlarmsDisplayedOrderFragment
+import ua.dp.hammer.superhome.fragments.AlarmsDisplayedOrderFragmentDirections
 
 class AlarmsDisplayedOrderListAdapter(private val fragment: AlarmsDisplayedOrderFragment) :
     ListAdapter<AlarmDisplayedOrderItemObservable, RecyclerView.ViewHolder>(AlarmsDisplayedOrderDiffCallback()) {
@@ -39,6 +41,11 @@ class AlarmsDisplayedOrderListAdapter(private val fragment: AlarmsDisplayedOrder
 
             it.startDragAndDrop(dragData, shadow, null, 0)
             true
+        }
+
+        binding.displayedIconImageButton.setOnClickListener {
+            val action = AlarmsDisplayedOrderFragmentDirections.actionAlarmsDisplayedOrderFragmentToLocalImagesListFragment()
+            fragment.findNavController().navigate(action)
         }
 
         bindingView.setOnDragListener(dragListener)

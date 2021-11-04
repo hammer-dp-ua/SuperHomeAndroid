@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -28,9 +29,5 @@
 
         <activity android:name=".activities.SettingsActivity">
         </activity>
-
-        <!--<service
-            android:name="ua.dp.hammer.superhome.services.EnvSensorsService"
-            android:exported="false"/>-->
     </application>
 </manifest>

@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.text.InputType" />
-
         <import type="android.view.View" />
 
         <variable
@@ -18,15 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/dragItemImageButton"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            app:icon="@drawable/swap_vert_black"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_swap_vert_black_24dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/displayedIconTextView"
@@ -38,14 +38,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/displayedIconImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            app:icon="@android:drawable/ic_search_category_default"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/displayedIconTextView"
-            app:srcCompat="@android:drawable/ic_search_category_default" />
+            app:layout_constraintTop_toBottomOf="@+id/displayedIconTextView" />
 
         <TextView
             android:id="@+id/deviceNameTextView"
