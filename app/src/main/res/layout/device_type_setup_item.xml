@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.InputType"/>
         <import type="android.view.View"/>
         <variable
             name="deviceTypeSetup"
@@ -39,8 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:inputType="text"
+            android:inputType="@{deviceTypeSetup.isNew() ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
             android:text="@={deviceTypeSetup.type}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:ems="10"
             android:inputType="text"
             android:text="@={deviceTypeSetup.displayedType}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +84,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:ems="10"
             android:inputType="numberDecimal"
             android:text="@={deviceTypeSetup.keepAliveInterval}"
             app:layout_constraintEnd_toEndOf="parent"

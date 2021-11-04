@@ -13,7 +13,7 @@ import ua.dp.hammer.superhome.db.dao.ManagerSettingsDao
 import ua.dp.hammer.superhome.db.entities.*
 
 @Database(entities = [EnvSensorSettingsEntity::class, EnvSensorDisplayedRowEntity::class, CameraSettingsEntity::class,
-    LocalSettingsEntity::class, DeviceDisplayedTypeEntity::class], version = 4, exportSchema = true)
+    LocalSettingsEntity::class, DeviceDisplayedTypeEntity::class], version = 5, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getEnvSensorSettingsDao(): EnvSensorSettingsDao
     abstract fun getManagerSettingsDao(): ManagerSettingsDao
@@ -34,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "super_home_db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build()
         }
 
@@ -83,15 +83,15 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        /*val MIGRATION_4_5 = object : Migration(4, 5) {
+        val MIGRATION_4_5 = object : Migration(4, 5) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("CREATE TABLE `DeviceDisplayedTypeEntity` " +
                         "(" +
-                        "`type` TEXT," +
+                        "`type` TEXT NOT NULL," +
                         "`displayedType` TEXT," +
                         "PRIMARY KEY(`type`)" +
                         ")")
             }
-        }*/
+        }
     }
 }

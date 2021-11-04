@@ -22,6 +22,10 @@ class DeviceTypeSetupObservable {
     var initState = 0
     var initDisplayedType: String? = null
 
+    fun isNew(): Boolean {
+        return initState == 0
+    }
+
     fun createTransport(): DeviceTypeSetupTransport {
         return DeviceTypeSetupTransport(type.value ?: throw IllegalStateException("Type can't be null"),
             keepAliveInterval.value?.toInt() ?: throw IllegalStateException("Keep alive interval can't be null"))
