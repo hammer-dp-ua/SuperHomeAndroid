@@ -1,14 +1,12 @@
 package ua.dp.hammer.superhome.data.setup
 
 import android.graphics.drawable.Drawable
-import androidx.lifecycle.MutableLiveData
 
 class AlarmDisplayedOrderItemObservable(
     val deviceName: String,
-    val alarmSource: String?
+    val alarmSource: String,
+    val image: Drawable?
 ) {
-    val image = MutableLiveData<Drawable>()
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

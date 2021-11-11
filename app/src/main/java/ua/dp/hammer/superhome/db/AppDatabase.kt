@@ -6,19 +6,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ua.dp.hammer.superhome.db.dao.DevicesDisplayedTypesDao
-import ua.dp.hammer.superhome.db.dao.EnvSensorSettingsDao
-import ua.dp.hammer.superhome.db.dao.LocalSettingsDao
-import ua.dp.hammer.superhome.db.dao.ManagerSettingsDao
+import ua.dp.hammer.superhome.db.dao.*
 import ua.dp.hammer.superhome.db.entities.*
 
 @Database(entities = [EnvSensorSettingsEntity::class, EnvSensorDisplayedRowEntity::class, CameraSettingsEntity::class,
-    LocalSettingsEntity::class, DeviceDisplayedTypeEntity::class], version = 5, exportSchema = true)
+    LocalSettingsEntity::class, DeviceDisplayedTypeEntity::class, AlarmSourceImageEntity::class], version = 6, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getEnvSensorSettingsDao(): EnvSensorSettingsDao
     abstract fun getManagerSettingsDao(): ManagerSettingsDao
     abstract fun getLocalSettingsDao(): LocalSettingsDao
     abstract fun getDevicesDisplayedTypesDao(): DevicesDisplayedTypesDao
+    abstract fun getAlarmSourcesImagesDao(): AlarmSourcesImagesDao
 
     companion object {
         // For Singleton instantiation
@@ -34,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "super_home_db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                 .build()
         }
 
@@ -90,6 +88,19 @@ abstract class AppDatabase : RoomDatabase() {
                         "`type` TEXT NOT NULL," +
                         "`displayedType` TEXT," +
                         "PRIMARY KEY(`type`)" +
+                        ")")
+            }
+        }
+
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE `AlarmSourceImageEntity` " +
+                        "(" +
+                        "`deviceName` TEXT NOT NULL," +
+                        "`alarmSource` TEXT NOT NULL," +
+                        "`resourceName` TEXT," +
+                        "`filePath` TEXT," +
+                        "PRIMARY KEY(`deviceName`, `alarmSource`)" +
                         ")")
             }
         }

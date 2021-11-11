@@ -24,17 +24,20 @@ class DevicesTypesSetupViewModel : ViewModel() {
         }
     }
 
-    fun loadAllTypes() {
-        viewModelScope.launch {
-            val loadedTypes = devicesSetupWebRepository.getAllDeviceTypes()
-            val loadedTypesObservableList = mutableListOf<DeviceTypeSetupObservable>()
+    fun clearAllTypesBeforeLoadingNew() {
+        types.value?.clear()
+    }
 
-            for (loadedType in loadedTypes) {
-                val displayedTypeEntity = localSettingsRepository.getDeviceDisplayedType(loadedType.type)
-                loadedTypesObservableList.add(DeviceTypeSetupObservable(loadedType, displayedTypeEntity?.displayedType))
-            }
-            types.value = loadedTypesObservableList
+    suspend fun loadAllTypes() {
+        val loadedTypes = devicesSetupWebRepository.getAllDeviceTypes()
+        val loadedTypesObservableList = mutableListOf<DeviceTypeSetupObservable>()
+
+        for (loadedType in loadedTypes) {
+            val displayedTypeEntity = localSettingsRepository.getDeviceDisplayedType(loadedType.type)
+            loadedTypesObservableList.add(DeviceTypeSetupObservable(loadedType, displayedTypeEntity?.displayedType))
         }
+
+        types.value = loadedTypesObservableList
     }
 
     fun save() {

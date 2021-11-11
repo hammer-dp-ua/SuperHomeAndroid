@@ -38,15 +38,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
+        <!--android:src="@{alarmDisplayedOrderItem.image}"-->
+        <ImageButton
             android:id="@+id/displayedIconImageButton"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginStart="8dp"
-            android:textAlignment="viewStart"
-            app:icon="@android:drawable/ic_search_category_default"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
+            android:src="@{alarmDisplayedOrderItem.image}"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/displayedIconTextView" />
 

@@ -23,6 +23,9 @@ class DevicesSetupListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.localSettingsRepository = LocalSettingsRepository.getInstance(context)
+        viewModel.clearAllDevicesBeforeLoadingNew()
+
         lifecycleScope.launch {
             val serverAddress = getServerAddress(context)
 
@@ -35,21 +38,17 @@ class DevicesSetupListFragment : Fragment() {
                 viewModel.loadAllDevices()
             }
         }
-        viewModel.localSettingsRepository = LocalSettingsRepository.getInstance(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         val binding = FragmentDevicesSetupListBinding.inflate(inflater, container, false)
+        val adapter = DevicesSetupListAdapter(this, inflater)
 
-        context ?: return binding.root
-
-        val adapter = DevicesSetupListAdapter(this)
+        binding.setupDevicesList.adapter = adapter
 
         viewModel.devices.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
-
-        binding.setupDevicesList.adapter = adapter
 
         binding.addButton.setOnClickListener {
             // Scroll after a new element is really added

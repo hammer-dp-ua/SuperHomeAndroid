@@ -23,6 +23,13 @@ class DevicesTypesSetupListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.localSettingsRepository = LocalSettingsRepository.getInstance(context)
+
+        // Without the clearing - on the first fragment opening observable fields work as expected, but on second opening
+        // new values of observable fields aren't get updated.
+        // List adapter doesn't set LifecycleOwner on the first visible bindings, because content is actually the same.
+        viewModel.clearAllTypesBeforeLoadingNew()
+
         lifecycleScope.launch {
             val serverAddress = getServerAddress(context)
 
@@ -34,16 +41,11 @@ class DevicesTypesSetupListFragment : Fragment() {
                 viewModel.setServerAddress(serverAddress)
                 viewModel.loadAllTypes()
             }
-
-            viewModel.localSettingsRepository = LocalSettingsRepository.getInstance(context)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         val binding = FragmentDevicesTypesSetupListBinding.inflate(inflater, container, false)
-
-        context ?: return binding.root
-
         val adapter = DevicesTypesSetupListAdapter(this)
 
         viewModel.types.observe(viewLifecycleOwner) {

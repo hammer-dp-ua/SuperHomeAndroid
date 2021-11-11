@@ -3,6 +3,7 @@ package ua.dp.hammer.superhome.repositories.settings
 import android.content.Context
 import ua.dp.hammer.superhome.db.AppDatabase
 import ua.dp.hammer.superhome.db.entities.*
+import ua.dp.hammer.superhome.utilities.notNullContext
 
 class LocalSettingsRepository private constructor(val database: AppDatabase) {
     suspend fun getEnvSensorSettings(name: String): EnvSensorSettingsEntity? {
@@ -57,16 +58,23 @@ class LocalSettingsRepository private constructor(val database: AppDatabase) {
         return database.getDevicesDisplayedTypesDao().getDeviceDisplayedType(type)
     }
 
+    suspend fun getAlarmSourceImage(deviceName: String, alarmSource: String): AlarmSourceImageEntity? {
+        return database.getAlarmSourcesImagesDao().getAlarmSourceImage(deviceName, alarmSource)
+    }
+
+    suspend fun saveAlarmSourceImage(alarmSourceImageEntity: AlarmSourceImageEntity) {
+        return database.getAlarmSourcesImagesDao().saveAlarmSourceImage(alarmSourceImageEntity)
+    }
+
     companion object {
         // For Singleton instantiation
         @Volatile
         private var instance: LocalSettingsRepository? = null
 
         fun getInstance(context: Context?) : LocalSettingsRepository {
-            context ?: throw IllegalStateException("Context cannot be null")
 
             return instance ?: synchronized(this) {
-                instance ?: LocalSettingsRepository(AppDatabase.getInstance(context)).also { instance = it }
+                instance ?: LocalSettingsRepository(AppDatabase.getInstance(notNullContext(context))).also { instance = it }
             }
         }
     }

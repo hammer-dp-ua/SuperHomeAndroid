@@ -1,9 +1,7 @@
 package ua.dp.hammer.superhome.data
 
-import android.graphics.drawable.Drawable
+import java.io.File
 
 data class ImageItem(
-    val name: String,
-    val resId: Int,
-    val image: Drawable?) {
-}
+    val resourceName: String?,
+    val imageFilePath: File?)

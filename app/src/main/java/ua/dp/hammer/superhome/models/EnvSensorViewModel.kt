@@ -102,9 +102,7 @@ class EnvSensorViewModel : AbstractMonitoringViewModel() {
         }
 
         viewModelScope.launch {
-            if (detachedDisplayedInfo.displayedName != null) {
-                envSensor.displayedName.value = detachedDisplayedInfo.displayedName
-            }
+            envSensor.displayedName.value = detachedDisplayedInfo.displayedName
             envSensor.temperatureVisibility.value = getVisibility(detachedDisplayedInfo.isTemperatureDisplayed)
             envSensor.humidityVisibility.value = getVisibility(detachedDisplayedInfo.isHumidityDisplayed)
             envSensor.lightVisibility.value = getVisibility(detachedDisplayedInfo.isLightDisplayed)
@@ -128,13 +126,13 @@ class EnvSensorViewModel : AbstractMonitoringViewModel() {
         for (envSensor in envSensors) {
             val settingsAndRows: EnvSensorSettingAndDisplayedRows? =
                 localSettingsRepository.getEnvSensorSettingsAndDisplayedRows(envSensor.deviceName)
-            val displayedName = settingsAndRows?.envSensorSettings?.displayedName
+            val displayedNameSettings = settingsAndRows?.envSensorSettings?.displayedName
             val displayedRows = settingsAndRows?.displayedRows
 
             envSensor.initObservables()
 
-            if (displayedName != null) {
-                envSensor.displayedName.value = displayedName
+            if (!displayedNameSettings.isNullOrEmpty()) {
+                envSensor.displayedName.value = displayedNameSettings
             }
 
             envSensor.temperatureVisibility.value =

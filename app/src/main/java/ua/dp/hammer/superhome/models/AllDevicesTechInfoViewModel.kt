@@ -73,11 +73,12 @@ class AllDevicesTechInfoViewModel : AbstractMonitoringViewModel() {
     private suspend fun setCustomNames(response: List<DeviceTechInfo>) {
         response.forEach {
             val customEnvSensorName = localSettingsRepository.getEnvSensorSettings(it.deviceName)
+            val displayedName = customEnvSensorName?.displayedName
 
-            if (customEnvSensorName?.displayedName != null) {
-                it.displayedName = customEnvSensorName.displayedName
-            } else {
+            if (displayedName.isNullOrEmpty()) {
                 it.displayedName = it.deviceName
+            } else {
+                it.displayedName = customEnvSensorName.displayedName
             }
         }
     }

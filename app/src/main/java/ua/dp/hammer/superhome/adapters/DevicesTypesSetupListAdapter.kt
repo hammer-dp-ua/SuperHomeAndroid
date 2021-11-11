@@ -31,7 +31,7 @@ private class DevicesTypesSetupListViewHolder(private val binding: DeviceTypeSet
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: DeviceTypeSetupObservable) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
 
         binding.deleteButton.setOnClickListener {
             if (!item.type.value.isNullOrEmpty()) {

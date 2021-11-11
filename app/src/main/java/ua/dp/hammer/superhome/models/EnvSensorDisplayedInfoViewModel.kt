@@ -23,7 +23,12 @@ class EnvSensorDisplayedInfoViewModel(private val localSettingsRepository: Local
 
             displayedInfo.apply {
                 name.value = envSensor.deviceName
-                displayedName.value = settingsAndRows?.envSensorSettings?.displayedName
+
+                displayedName.value = if (settingsAndRows?.envSensorSettings?.displayedName.isNullOrEmpty()) {
+                    null
+                } else {
+                    settingsAndRows?.envSensorSettings?.displayedName
+                }
 
                 if (envSensor.temperature != null) {
                     temperatureOptionVisibility.value = View.VISIBLE
@@ -58,7 +63,13 @@ class EnvSensorDisplayedInfoViewModel(private val localSettingsRepository: Local
         val deviceName = detachedInfo.name
 
         GlobalScope.launch {
-            val envSensorSettings = EnvSensorSettingsEntity(deviceName, detachedInfo.displayedName)
+            val notEmptyDisplayedName = if (detachedInfo.displayedName.isNullOrEmpty()) {
+                null
+            } else {
+                detachedInfo.displayedName
+            }
+
+            val envSensorSettings = EnvSensorSettingsEntity(deviceName, notEmptyDisplayedName)
 
             localSettingsRepository.insertEnvSensorSettings(envSensorSettings)
 

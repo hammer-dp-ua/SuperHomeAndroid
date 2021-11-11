@@ -8,11 +8,11 @@ import ua.dp.hammer.superhome.db.entities.EnvSensorSettingsEntity
 @Dao
 interface EnvSensorSettingsDao {
     @Query("SELECT * FROM EnvSensorSettingsEntity WHERE name = :name")
-    suspend fun getEnvSensorSettings(name: String): EnvSensorSettingsEntity
+    suspend fun getEnvSensorSettings(name: String): EnvSensorSettingsEntity?
 
     @Transaction
     @Query("SELECT * FROM EnvSensorSettingsEntity WHERE name = :name")
-    suspend fun getEnvSensorSettingsAndDisplayedRows(name: String): EnvSensorSettingAndDisplayedRows
+    suspend fun getEnvSensorSettingsAndDisplayedRows(name: String): EnvSensorSettingAndDisplayedRows?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEnvSensorSettings(envSensorSettings: EnvSensorSettingsEntity)

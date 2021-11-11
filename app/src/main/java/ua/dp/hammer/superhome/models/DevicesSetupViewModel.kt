@@ -1,5 +1,6 @@
 package ua.dp.hammer.superhome.models
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,18 +25,20 @@ class DevicesSetupViewModel : ViewModel() {
         }
     }
 
-    fun loadAllDevices() {
-        viewModelScope.launch {
-            val loadedDevices = devicesSetupWebRepository.getAllDevices()
-            val loadedDevicesObservable = mutableListOf<DeviceSetupObservable>()
-            val types = getTypes()
-            val displayedTypes = getDisplayedTypes(types)
+    fun clearAllDevicesBeforeLoadingNew() {
+        devices.value?.clear()
+    }
 
-            for (loadedDevice in loadedDevices) {
-                loadedDevicesObservable.add(DeviceSetupObservable(loadedDevice, types, displayedTypes))
-            }
-            devices.value = loadedDevicesObservable
+    suspend fun loadAllDevices() {
+        val loadedDevices = devicesSetupWebRepository.getAllDevices()
+        val loadedDevicesObservable = mutableListOf<DeviceSetupObservable>()
+        val types = getTypes()
+        val displayedTypes = getDisplayedTypes(types)
+
+        for (loadedDevice in loadedDevices) {
+            loadedDevicesObservable.add(DeviceSetupObservable(loadedDevice, types, displayedTypes))
         }
+        devices.value = loadedDevicesObservable
     }
 
     fun save() {
@@ -44,6 +47,8 @@ class DevicesSetupViewModel : ViewModel() {
         for (device : DeviceSetupObservable in devices.value.orEmpty()) {
             if (device.isToBeSaved()) {
                 toBeSavedDevices.add(device.createTransport())
+
+                Log.i(null, "~~~ toBeSavedDevice: $device")
             }
         }
     }
@@ -102,8 +107,6 @@ class DevicesSetupViewModel : ViewModel() {
         }
         return -1
     }
-
-
 
     private suspend fun getTypes(): List<String> {
         val loadedTypes = devicesSetupWebRepository.getAllDeviceTypes()

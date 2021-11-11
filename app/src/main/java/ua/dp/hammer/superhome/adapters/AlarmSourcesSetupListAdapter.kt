@@ -33,7 +33,7 @@ private class AlarmSourcesSetupListViewHolder(private val binding: AlarmSourceSe
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: AlarmSourceSetupObservable) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
 
         binding.deleteButton.setOnClickListener {
             if (!item.isNew()) {

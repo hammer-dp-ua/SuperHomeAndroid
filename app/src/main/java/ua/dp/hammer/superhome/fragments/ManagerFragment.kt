@@ -61,7 +61,7 @@ class ManagerFragment : Fragment() {
         val binding = FragmentManagerBinding.inflate(inflater, container, false)
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
 
         binding.root.setOnTouchListener {v, event ->
             true

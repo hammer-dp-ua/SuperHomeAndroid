@@ -12,11 +12,12 @@ import ua.dp.hammer.superhome.databinding.DeviceSetupItemBinding
 import ua.dp.hammer.superhome.dialogs.DeviceSettingDeleteDeviceConfirmationDialog
 import ua.dp.hammer.superhome.fragments.DevicesSetupListFragment
 
-class DevicesSetupListAdapter(private val fragment: DevicesSetupListFragment) :
-    ListAdapter<DeviceSetupObservable, RecyclerView.ViewHolder>(DevicesDiffCallback()) {
+class DevicesSetupListAdapter(
+    private val fragment: DevicesSetupListFragment,
+    private val layoutInflater: LayoutInflater
+) : ListAdapter<DeviceSetupObservable, RecyclerView.ViewHolder>(DevicesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DeviceSetupItemBinding.inflate(layoutInflater, parent, false)
         return DevicesSetupListViewHolder(binding, fragment, this)
     }
@@ -33,7 +34,9 @@ private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBin
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: DeviceSetupObservable) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
+        binding.deviceSetup = item
+        binding.executePendingBindings()
 
         binding.deleteButton.setOnClickListener {
             val id = item.id.value
@@ -49,11 +52,6 @@ private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBin
             }
         }
 
-        binding.apply {
-            deviceSetup = item
-            executePendingBindings()
-        }
-
         val spinner: Spinner = binding.typeSpinner
         ArrayAdapter(fragment.context ?: throw IllegalStateException(),
             android.R.layout.simple_spinner_item,
@@ -67,7 +65,7 @@ private class DevicesSetupListViewHolder(private val binding: DeviceSetupItemBin
 
 private class DevicesDiffCallback : DiffUtil.ItemCallback<DeviceSetupObservable>() {
     override fun areItemsTheSame(oldItem: DeviceSetupObservable, newItem: DeviceSetupObservable): Boolean {
-        return oldItem.name == newItem.name
+        return oldItem.name.value == newItem.name.value
     }
 
     override fun areContentsTheSame(oldItem: DeviceSetupObservable, newItem: DeviceSetupObservable): Boolean {

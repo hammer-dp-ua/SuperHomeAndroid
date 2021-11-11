@@ -18,7 +18,7 @@ import ua.dp.hammer.superhome.fragments.AlarmsDisplayedOrderFragment
 import ua.dp.hammer.superhome.fragments.AlarmsDisplayedOrderFragmentDirections
 
 class AlarmsDisplayedOrderListAdapter(private val fragment: AlarmsDisplayedOrderFragment) :
-    ListAdapter<AlarmDisplayedOrderItemObservable, RecyclerView.ViewHolder>(AlarmsDisplayedOrderDiffCallback()) {
+        ListAdapter<AlarmDisplayedOrderItemObservable, RecyclerView.ViewHolder>(AlarmsDisplayedOrderDiffCallback()) {
 
     private val dragListener = DragListener(fragment, this)
 
@@ -43,11 +43,6 @@ class AlarmsDisplayedOrderListAdapter(private val fragment: AlarmsDisplayedOrder
             true
         }
 
-        binding.displayedIconImageButton.setOnClickListener {
-            val action = AlarmsDisplayedOrderFragmentDirections.actionAlarmsDisplayedOrderFragmentToLocalImagesListFragment()
-            fragment.findNavController().navigate(action)
-        }
-
         bindingView.setOnDragListener(dragListener)
 
         return AlarmsDisplayedOrderListViewHolder(binding, fragment)
@@ -65,11 +60,17 @@ private class AlarmsDisplayedOrderListViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: AlarmDisplayedOrderItemObservable) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
 
         binding.apply {
             alarmDisplayedOrderItem = item
             executePendingBindings()
+        }
+
+        binding.displayedIconImageButton.setOnClickListener {
+            val action = AlarmsDisplayedOrderFragmentDirections
+                .actionAlarmsDisplayedOrderFragmentToLocalImagesListFragment(item.deviceName, item.alarmSource)
+            fragment.findNavController().navigate(action)
         }
     }
 }
@@ -104,12 +105,6 @@ private class DragListener(
 
     override fun onDrag(view: View?, event: DragEvent?): Boolean {
         when (event?.action) {
-            /*DragEvent.ACTION_DRAG_STARTED -> {
-                Log.i("TAG", "~~~ started. View: $view")
-
-                true
-            }*/
-
             DragEvent.ACTION_DRAG_ENTERED -> {
                 val viewIndex = fragment.alarms_order_list.getChildAdapterPosition(view ?: throw IllegalStateException("Can't be null"))
 

@@ -49,7 +49,7 @@ class AlarmSourceSetupObservable {
         return AlarmSourceSetupTransport(
             aaId,
             deviceName.value ?: throw IllegalStateException("Name can't be null"),
-            alarmSource.value,
+            alarmSource.value ?: throw IllegalStateException("Alarm Source can't be null"),
             ignoreAlarms.value ?: throw IllegalStateException("Ignore alarms can't be null")
         )
     }

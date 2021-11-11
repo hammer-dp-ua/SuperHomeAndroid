@@ -30,7 +30,7 @@ private class EnvSensorsViewHolder(private val binding: EnvSensorListItemBinding
                                    private val adapter: EnvSensorsListAdapter
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: EnvSensor) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
 
         binding.root.setOnLongClickListener {
             val dialog = DisplayedEnvSensorInfoDialog(item, fragment, adapter)

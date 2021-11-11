@@ -18,7 +18,7 @@ class MainSettingsFragment : Fragment() {
         val binding = FragmentMainSettingsBinding.inflate(inflater, container, false)
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
 
         viewModel.localSettingsRepository =
             LocalSettingsRepository.getInstance(context ?: throw IllegalStateException("Context cannot be null"))

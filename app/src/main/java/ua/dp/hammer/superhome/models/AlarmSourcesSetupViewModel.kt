@@ -22,6 +22,10 @@ class AlarmSourcesSetupViewModel : ViewModel() {
         }
     }
 
+    fun clearAllAlarmSourcesBeforeLoadingNew() {
+        alarmSources.value?.clear()
+    }
+
     fun loadAllAlarmSources() {
         viewModelScope.launch {
             val loadedAlarmSources = devicesSetupWebRepository.getAlarmSources()

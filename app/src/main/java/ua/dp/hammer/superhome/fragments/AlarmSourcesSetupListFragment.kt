@@ -22,6 +22,8 @@ class AlarmSourcesSetupListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.clearAllAlarmSourcesBeforeLoadingNew()
+
         lifecycleScope.launch {
             val serverAddress = getServerAddress(context)
 
@@ -38,9 +40,6 @@ class AlarmSourcesSetupListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
         val binding = FragmentAlarmSourcesSetupListBinding.inflate(inflater, container, false)
-
-        context ?: return binding.root
-
         val adapter = AlarmSourcesSetupListAdapter(this)
 
         viewModel.alarmSources.observe(viewLifecycleOwner) {

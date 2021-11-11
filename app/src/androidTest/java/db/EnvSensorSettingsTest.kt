@@ -34,37 +34,34 @@ class EnvSensorSettingsTest {
 
     @Test
     fun testIt() = runBlocking {
-        val envSensorSettings: EnvSensorSettingsEntity =
-            EnvSensorSettingsEntity("name", "displayed name")
+        val envSensorSettings = EnvSensorSettingsEntity("name", "displayed name")
         envSensorSettingsDao.insertEnvSensorSettings(envSensorSettings)
 
-        assertEquals(envSensorSettings.name, envSensorSettingsDao.getEnvSensorSettings(envSensorSettings.name).name)
+        assertEquals(envSensorSettings.name, envSensorSettingsDao.getEnvSensorSettings(envSensorSettings.name)?.name)
 
-        var settingsAndDisplayedRows: EnvSensorSettingAndDisplayedRows =
+        var settingsAndDisplayedRows: EnvSensorSettingAndDisplayedRows? =
             envSensorSettingsDao.getEnvSensorSettingsAndDisplayedRows(envSensorSettings.name)
 
-        assertEquals(envSensorSettings.name, settingsAndDisplayedRows.envSensorSettings?.name)
-        assertEquals(0, settingsAndDisplayedRows.displayedRows.size)
+        assertEquals(envSensorSettings.name, settingsAndDisplayedRows?.envSensorSettings?.name)
+        assertEquals(0, settingsAndDisplayedRows?.displayedRows?.size)
 
-        val envSensorDisplayedRow1: EnvSensorDisplayedRowEntity =
-            EnvSensorDisplayedRowEntity(null, "row1", envSensorSettings.name)
-        val envSensorDisplayedRow2: EnvSensorDisplayedRowEntity =
-            EnvSensorDisplayedRowEntity(null, "row2", envSensorSettings.name)
+        val envSensorDisplayedRow1 = EnvSensorDisplayedRowEntity(null, "row1", envSensorSettings.name)
+        val envSensorDisplayedRow2 = EnvSensorDisplayedRowEntity(null, "row2", envSensorSettings.name)
         envSensorSettingsDao.insertEnvSensorDisplayedRow(envSensorDisplayedRow1)
         envSensorSettingsDao.insertEnvSensorDisplayedRow(envSensorDisplayedRow2)
         settingsAndDisplayedRows = envSensorSettingsDao.getEnvSensorSettingsAndDisplayedRows(envSensorSettings.name)
 
-        assertEquals(envSensorSettings.name, settingsAndDisplayedRows.envSensorSettings?.name)
-        assertEquals(2, settingsAndDisplayedRows.displayedRows.size)
-        assertNotNull(settingsAndDisplayedRows.displayedRows.find { it.rowName == "row1" })
-        assertNotNull(settingsAndDisplayedRows.displayedRows.find { it.rowName == "row2" })
-        assertNull(settingsAndDisplayedRows.displayedRows.find { it.rowName == "row3" })
+        assertEquals(envSensorSettings.name, settingsAndDisplayedRows?.envSensorSettings?.name)
+        assertEquals(2, settingsAndDisplayedRows?.displayedRows?.size)
+        assertNotNull(settingsAndDisplayedRows?.displayedRows?.find { it.rowName == "row1" })
+        assertNotNull(settingsAndDisplayedRows?.displayedRows?.find { it.rowName == "row2" })
+        assertNull(settingsAndDisplayedRows?.displayedRows?.find { it.rowName == "row3" })
 
         envSensorSettingsDao.deleteEnvSensorDisplayedRow("row1", envSensorSettings.name)
         envSensorSettingsDao.deleteEnvSensorDisplayedRow("row2", envSensorSettings.name)
         settingsAndDisplayedRows = envSensorSettingsDao.getEnvSensorSettingsAndDisplayedRows(envSensorSettings.name)
 
-        assertEquals(envSensorSettings.name, settingsAndDisplayedRows.envSensorSettings?.name)
-        assertEquals(0, settingsAndDisplayedRows.displayedRows.size)
+        assertEquals(envSensorSettings.name, settingsAndDisplayedRows?.envSensorSettings?.name)
+        assertEquals(0, settingsAndDisplayedRows?.displayedRows?.size)
     }
 }

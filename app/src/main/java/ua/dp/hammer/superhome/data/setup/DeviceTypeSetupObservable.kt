@@ -48,7 +48,12 @@ class DeviceTypeSetupObservable {
         return initDisplayedType != displayedType.value
     }
 
-    override fun equals(other: Any?): Boolean {
+    override fun toString(): String {
+        return DeviceTypeSetupObservable::class.java.simpleName + "@" + super.hashCode() +
+                ". type: ${type.value}, displayedType: ${displayedType.value}, keepAliveInterval: ${keepAliveInterval.value}"
+    }
+
+            override fun equals(other: Any?): Boolean {
         if (other !is DeviceTypeSetupObservable) {
             return false
         }

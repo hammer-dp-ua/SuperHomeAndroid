@@ -30,7 +30,7 @@ private class AllAlarmSourcesSetupInfoViewHolder(private val binding: AlarmsList
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: MotionDetectorInfo) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
 
         binding.apply {
             motionDetector = item

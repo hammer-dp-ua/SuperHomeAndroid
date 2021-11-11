@@ -30,7 +30,7 @@ private class AllDevicesTechInfoViewHolder(private val binding: DeviceTechInfoIt
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: DeviceTechInfo) {
-        binding.lifecycleOwner = fragment
+        binding.lifecycleOwner = fragment.viewLifecycleOwner
 
         binding.apply {
             deviceInfo = item

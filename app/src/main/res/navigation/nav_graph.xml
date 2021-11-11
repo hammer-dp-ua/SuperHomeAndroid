@@ -62,5 +62,12 @@
     <fragment
         android:id="@+id/localImagesListFragment"
         android:name="ua.dp.hammer.superhome.fragments.LocalImagesListFragment"
-        android:label="LocalImagesListFragment" />
+        android:label="LocalImagesListFragment" >
+        <argument
+            android:name="deviceName"
+            app:argType="string" />
+        <argument
+            android:name="alarmSource"
+            app:argType="string" />
+    </fragment>
 </navigation>
